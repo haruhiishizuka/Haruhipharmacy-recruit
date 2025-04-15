@@ -1,0 +1,295 @@
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+
+const QuizScreen = ({ questions, onComplete }) => {
+  const QUESTIONS_PER_PAGE = 3;
+  const [currentPage, setCurrentPage] = useState(0);
+  const [answers, setAnswers] = useState({});
+  const [isNextEnabled, setIsNextEnabled] = useState(false);
+  const [direction, setDirection] = useState(1); // 1:前進, -1:後退
+  
+  const totalPages = Math.ceil(questions.length / QUESTIONS_PER_PAGE);
+  const currentQuestions = questions.slice(
+    currentPage * QUESTIONS_PER_PAGE,
+    (currentPage + 1) * QUESTIONS_PER_PAGE
+  );
+
+  // 回答チェックのみを行う - スクロールなし
+  useEffect(() => {
+    const allAnswered = currentQuestions.every(
+      (q) => answers[q.id] !== undefined
+    );
+    setIsNextEnabled(allAnswered);
+  }, [answers, currentQuestions]);
+
+  const handleAnswer = (questionId, value) => {
+    setAnswers((prev) => ({
+      ...prev,
+      [questionId]: value,
+    }));
+    // 回答時にはスクロールしない
+  };
+
+  // 明示的にスクロール処理を含むページ遷移関数
+  const handleNext = () => {
+    if (!isNextEnabled) return;
+    setDirection(1);
+    
+    if (currentPage < totalPages - 1) {
+      // ページ遷移前にスクロール処理を実行
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      
+      // スクロール後にページを変更
+      setTimeout(() => {
+        setCurrentPage((prev) => prev + 1);
+      }, 100); // スクロールのアニメーションが開始されるのを少し待つ
+    } else {
+      // 結果画面へ遷移する前にスクロール
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      
+      // スクロール開始後に結果画面に遷移
+      setTimeout(() => {
+        // 重要な修正部分: イベントオブジェクトを返さないようにする
+        const answerArray = questions.map((q) => answers[q.id]);
+        if (typeof onComplete === 'function') {
+          onComplete(answerArray);
+        }
+      }, 100);
+    }
+  };
+  
+  const handlePrevious = () => {
+    if (currentPage > 0) {
+      setDirection(-1);
+      
+      // ページ遷移前にスクロール処理を実行
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      
+      // スクロール後にページを変更
+      setTimeout(() => {
+        setCurrentPage((prev) => prev - 1);
+      }, 100);
+    }
+  };
+
+  // ページ遷移アニメーションのバリアント
+  const pageVariants = {
+    initial: (direction) => ({
+      x: direction > 0 ? 300 : -300,
+      opacity: 0
+    }),
+    animate: {
+      x: 0,
+      opacity: 1,
+      transition: {
+        x: { type: "spring", stiffness: 300, damping: 30 },
+        opacity: { duration: 0.2 }
+      }
+    },
+    exit: (direction) => ({
+      x: direction > 0 ? -300 : 300,
+      opacity: 0,
+      transition: {
+        x: { type: "spring", stiffness: 300, damping: 30 },
+        opacity: { duration: 0.2 }
+      }
+    })
+  };
+
+  return (
+    <div
+      style={{
+        minHeight: '100vh',
+        backgroundImage: `url(${process.env.PUBLIC_URL}/images/patterns/medical_pattern_light.png)`,
+        backgroundSize: '400px',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'repeat',
+        backgroundColor: '#65A9E5',
+        fontFamily: `'Inter', 'Noto Sans JP', sans-serif`,
+      }}
+    >
+      <header
+        style={{
+          position: 'sticky',
+          top: 0,
+          width: '100%',
+          background: 'rgba(255, 255, 255, 0.8)',
+          backdropFilter: 'blur(6px)',
+          padding: '16px 0',
+          textAlign: 'center',
+          fontWeight: '600',
+          color: '#1A6CBF',
+          fontSize: '18px',
+          boxShadow: '0 2px 6px rgba(0,0,0,0.05)',
+          zIndex: 10
+        }}
+      >
+        質問 {currentPage * QUESTIONS_PER_PAGE + 1}〜
+        {Math.min((currentPage + 1) * QUESTIONS_PER_PAGE, questions.length)} / {questions.length}
+      </header>
+
+      <div
+        style={{
+          maxWidth: '960px',
+          margin: '0 auto',
+          padding: '40px 20px 100px',
+          position: 'relative'
+        }}
+      >
+        <AnimatePresence initial={false} custom={direction} mode="wait">
+          <motion.div
+            key={currentPage}
+            custom={direction}
+            variants={pageVariants}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+          >
+            {currentQuestions.map((question) => (
+              <div
+                key={question.id}
+                style={{
+                  marginBottom: '60px',
+                  background: '#fff',
+                  padding: '24px',
+                  borderRadius: '16px',
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
+                }}
+              >
+                <h3 style={{ 
+                  fontSize: '18px', 
+                  fontWeight: '600', 
+                  color: '#333', 
+                  marginBottom: '20px'
+                }}>
+                  {question.text}
+                </h3>
+
+                {/* モバイル対応を強化した選択肢表示 */}
+                <div style={{ 
+                  display: 'flex', 
+                  flexDirection: 'column',
+                  gap: '16px',
+                }}>
+                  {/* 「反対する」と「賛成する」のラベル - モバイルでは上部に配置 */}
+                  <div style={{ 
+                    display: 'flex', 
+                    justifyContent: 'space-between',
+                    marginBottom: '8px'
+                  }}>
+                    <span style={{ color: '#4B5563', fontSize: '14px' }}>反対する</span>
+                    <span style={{ color: '#4B5563', fontSize: '14px' }}>賛成する</span>
+                  </div>
+                  
+                  {/* 選択肢のグリッド - モバイル対応 */}
+                  <div style={{ 
+                    display: 'flex', 
+                    justifyContent: 'space-between', 
+                    width: '100%',
+                    gap: '4px' // モバイルでの間隔を調整
+                  }}>
+                    {[-3, -2, -1, 0, 1, 2, 3].map((value) => (
+                      <label key={value} style={{ display: 'block', flex: '1' }}>
+                        <input
+                          type="radio"
+                          name={`q-${question.id}`}
+                          value={value}
+                          checked={answers[question.id] === value}
+                          onChange={() => handleAnswer(question.id, value)}
+                          style={{ display: 'none' }}
+                        />
+                        <div
+                          style={{
+                            width: '100%', // 横幅いっぱいに
+                            aspectRatio: '1/1', // 正方形を維持
+                            maxWidth: '42px', // 最大幅を設定
+                            margin: '0 auto', // 中央寄せ
+                            borderRadius: '50%',
+                            backgroundColor:
+                              answers[question.id] === value ? '#1A6CBF' : '#E5E7EB',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            cursor: 'pointer',
+                            transition: 'all 0.2s',
+                          }}
+                        >
+                          <span
+                            style={{
+                              width: '30%',
+                              height: '30%',
+                              borderRadius: '50%',
+                              backgroundColor: answers[question.id] === value ? '#fff' : 'transparent',
+                            }}
+                          ></span>
+                        </div>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </motion.div>
+        </AnimatePresence>
+
+        {/* ナビゲーションボタン */}
+        <div style={{ 
+          display: 'flex', 
+          justifyContent: 'center', 
+          gap: '16px',
+          marginTop: '40px'
+        }}>
+          {currentPage > 0 && (
+            <motion.button
+              onClick={(e) => {
+                e.preventDefault();
+                handlePrevious();
+              }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              style={{
+                backgroundColor: 'white',
+                color: '#1A6CBF',
+                padding: '12px 24px',
+                fontSize: '16px',
+                fontWeight: '600',
+                border: '2px solid #1A6CBF',
+                borderRadius: '999px',
+                cursor: 'pointer',
+                transition: 'all 0.3s',
+              }}
+            >
+              前へ
+            </motion.button>
+          )}
+          
+          <motion.button
+            onClick={(e) => {
+              e.preventDefault();
+              handleNext();
+            }}
+            disabled={!isNextEnabled}
+            whileHover={isNextEnabled ? { scale: 1.05 } : {}}
+            whileTap={isNextEnabled ? { scale: 0.95 } : {}}
+            style={{
+              backgroundColor: isNextEnabled ? '#1A6CBF' : '#A5B4FC',
+              color: 'white',
+              padding: '12px 32px',
+              fontSize: '16px',
+              fontWeight: '600',
+              border: 'none',
+              borderRadius: '999px',
+              cursor: isNextEnabled ? 'pointer' : 'not-allowed',
+              transition: 'all 0.3s',
+              boxShadow: isNextEnabled ? '0 4px 10px rgba(0,0,0,0.1)' : 'none'
+            }}
+          >
+            {currentPage === totalPages - 1 ? '結果を見る' : '次へ'}
+          </motion.button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default QuizScreen;

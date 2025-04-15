@@ -1,0 +1,898 @@
+/* 基本設定 */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Hiragino Sans', 'Meiryo', sans-serif;
+  background-color: #f8f9fa;
+  color: #333;
+  line-height: 1.6;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.app-header {
+  text-align: center;
+  margin-bottom: 30px;
+  padding: 10px;
+  border-bottom: 2px solid #e1e4e8;
+}
+
+.title {
+  color: #0070f3;
+  font-size: 2.5rem;
+  margin-bottom: 5px;
+}
+
+.subtitle {
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.app-footer {
+  margin-top: auto;
+  text-align: center;
+  padding: 20px;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+/* ウェルカム画面 */
+.welcome-screen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+}
+
+.welcome-card {
+  background-color: white;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  max-width: 700px;
+}
+
+.welcome-title {
+  color: #0070f3;
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.welcome-desc {
+  margin-bottom: 25px;
+  text-align: center;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+.info-box {
+  background-color: #f0f7ff;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 30px;
+  border-left: 4px solid #0070f3;
+}
+
+.info-box h3 {
+  color: #0070f3;
+  margin-bottom: 10px;
+}
+
+.info-box ul {
+  padding-left: 20px;
+}
+
+.info-box li {
+  margin-bottom: 5px;
+  font-size: 0.95rem;
+}
+
+.start-button {
+  display: block;
+  width: 80%;
+  max-width: 300px;
+  margin: 0 auto;
+  padding: 15px 25px;
+  background-color: #0070f3;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.start-button:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 112, 243, 0.2);
+}
+
+/* 質問画面 */
+.quiz-screen {
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 20px;
+  position: relative;
+}
+
+.progress-container {
+  margin-bottom: 30px;
+}
+
+.progress-bar-bg {
+  height: 10px;
+  background-color: #e1e4e8;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-bottom: 5px;
+}
+
+.progress-bar {
+  height: 100%;
+  background-color: #0070f3;
+  border-radius: 5px;
+}
+
+.progress-text {
+  text-align: right;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.question-card {
+  background-color: white;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  margin-bottom: 20px;
+}
+
+.question-text {
+  font-size: 1.3rem;
+  margin-bottom: 30px;
+  text-align: center;
+  color: #333;
+  line-height: 1.4;
+}
+
+.answer-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.answer-button {
+  padding: 30px 20px;
+  background-color: #f0f7ff;
+  border: 2px solid #0070f3;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #0070f3;
+  font-weight: 500;
+}
+
+.answer-button:hover {
+  background-color: #0070f3;
+  color: white;
+}
+
+.back-button {
+  background: none;
+  border: none;
+  color: #666;
+  font-size: 0.95rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 5px 10px;
+  margin-top: 10px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.back-button:hover {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+/* 結果画面 */
+.result-screen {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 10px;
+}
+
+.result-card {
+  background-color: white;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+}
+
+.result-title {
+  text-align: center;
+  margin-bottom: 10px;
+  color: #333;
+  font-size: 1.5rem;
+}
+
+.result-type {
+  text-align: center;
+  color: #0070f3;
+  font-size: 2rem;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #e1e4e8;
+}
+
+.tabs {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 25px;
+  gap: 5px;
+}
+
+.tab {
+  padding: 10px 20px;
+  border: none;
+  background-color: #f0f0f0;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: all 0.3s;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.tab.active {
+  background-color: #0070f3;
+  color: white;
+}
+
+.tab-content {
+  margin-bottom: 30px;
+  min-height: 300px;
+}
+
+.result-desc, .ideal-environment p {
+  margin-bottom: 20px;
+  line-height: 1.7;
+}
+
+.result-char h4, .result-strengths h4, .ideal-environment h4 {
+  margin-bottom: 10px;
+  color: #0070f3;
+}
+
+.result-char ul, .result-strengths ul {
+  padding-left: 20px;
+  margin-bottom: 20px;
+}
+
+.result-char li, .result-strengths li {
+  margin-bottom: 8px;
+}
+
+.institution-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.institution-card {
+  background-color: #f8fcff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s;
+}
+
+.institution-card h5 {
+  font-size: 1.1rem;
+  color: #0070f3;
+  margin-bottom: 8px;
+}
+
+.inst-type, .inst-location {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 5px;
+}
+
+.match-percent {
+  color: #0070f3;
+  font-weight: bold;
+}
+
+.inst-reason {
+  font-size: 0.9rem;
+  margin-top: 10px;
+  color: #333;
+}
+
+.result-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.contact-button {
+  padding: 15px 30px;
+  background-color: #0070f3;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+  width: 100%;
+  max-width: 400px;
+}
+
+.restart-button {
+  background: none;
+  border: 1px solid #0070f3;
+  color: #0070f3;
+  padding: 10px 20px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.3s;
+}
+
+.restart-button:hover {
+  background-color: #f0f7ff;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 768px) {
+  .title {
+    font-size: 2rem;
+  }
+  
+  .welcome-card, .question-card, .result-card {
+    padding: 20px;
+  }
+  
+  .question-text {
+    font-size: 1.2rem;
+  }
+  
+  .answer-button {
+    padding: 12px 15px;
+  }
+  
+  .institution-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* styles.css に追加する拡張スタイル */
+
+/* 結果画面の強化スタイル */
+.result-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 3px solid;
+}
+
+.type-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 24px;
+  margin-right: 20px;
+  flex-shrink: 0;
+}
+
+.result-title-container {
+  flex-grow: 1;
+}
+
+.result-title {
+  margin-bottom: 5px;
+  font-size: 1.2rem;
+  color: #555;
+}
+
+.result-type {
+  font-size: 2rem;
+  margin: 0;
+  font-weight: bold;
+}
+
+.type-match {
+  text-align: right;
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 15px;
+}
+
+.match-percent {
+  font-weight: bold;
+  color: #0070f3;
+  font-size: 1.1rem;
+}
+
+.type-definition {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  margin-bottom: 25px;
+  padding: 0 10px;
+}
+
+/* タブのスタイル強化 */
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 25px;
+  gap: 8px;
+}
+
+.tab {
+  padding: 10px 16px;
+  border: none;
+  background-color: #f0f0f0;
+  cursor: pointer;
+  border-radius: 20px;
+  transition: all 0.3s;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.tab.active {
+  background-color: #0070f3;
+  color: white;
+  box-shadow: 0 2px 8px rgba(0, 112, 243, 0.2);
+}
+
+/* タブコンテンツのスタイル */
+.tab-content {
+  margin-bottom: 30px;
+  min-height: 400px;
+}
+
+.content-section {
+  margin-bottom: 30px;
+}
+
+.content-section h4 {
+  color: #0070f3;
+  margin-bottom: 12px;
+  font-size: 1.1rem;
+  border-left: 4px solid #0070f3;
+  padding-left: 10px;
+}
+
+.core-nursing-view {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  margin-bottom: 20px;
+  background-color: #f8faff;
+  padding: 15px;
+  border-radius: 8px;
+  font-style: italic;
+}
+
+/* 強みリストのスタイル */
+.strengths-section {
+  margin-bottom: 25px;
+}
+
+.strengths-list {
+  list-style: none;
+  padding: 0;
+}
+
+.strength-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 8px 0;
+}
+
+.strength-bullet {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+
+/* アクションセクションのスタイル */
+.action-section {
+  margin-top: 25px;
+}
+
+.action-items {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.action-item {
+  display: flex;
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.action-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  background-color: #0070f3;
+  color: white;
+  border-radius: 50%;
+  font-weight: bold;
+  margin-right: 15px;
+  flex-shrink: 0;
+}
+
+.action-content {
+  flex-grow: 1;
+}
+
+.action-content h5 {
+  margin: 0 0 8px 0;
+  color: #333;
+  font-size: 1rem;
+}
+
+.action-content p {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* リソースリストのスタイル */
+.resources-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.resource-item {
+  background-color: #f0f7ff;
+  padding: 15px;
+  border-radius: 8px;
+  border-left: 3px solid #0070f3;
+}
+
+.resource-item h5 {
+  margin: 0 0 8px 0;
+  color: #0070f3;
+  font-size: 0.95rem;
+}
+
+.resource-item p {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* 相互補完的タイプのスタイル */
+.complementary-types {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 15px;
+}
+
+.complementary-type {
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.complementary-type h5 {
+  margin: 0 0 8px 0;
+  color: #333;
+  font-size: 1rem;
+}
+
+.complementary-type p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+/* 環境要素のスタイル */
+.environment-traits {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.environment-trait {
+  background-color: #f0f7ff;
+  padding: 8px 15px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+}
+
+.environment-traits.negative .environment-trait {
+  background-color: #fff0f0;
+}
+
+.trait-icon {
+  margin-right: 8px;
+  font-weight: bold;
+}
+
+.environment-traits .trait-icon {
+  color: #0070f3;
+}
+
+.environment-traits.negative .trait-icon {
+  color: #e53e3e;
+}
+
+/* 感想メッセージのスタイル */
+.testimonial {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 10px;
+  position: relative;
+  margin: 30px 0;
+}
+
+.testimonial:before {
+  content: "\201D";
+  position: absolute;
+  top: -20px;
+  left: 10px;
+  font-size: 60px;
+  color: #e1e4e8;
+  font-family: serif;
+}
+
+.testimonial-text {
+  font-style: italic;
+  font-size: 1rem;
+  line-height: 1.7;
+  margin-bottom: 10px;
+}
+
+.testimonial-author {
+  text-align: right;
+  font-weight: bold;
+  color: #555;
+}
+
+/* 美しさの描写スタイル */
+.beauty-text {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: #333;
+  padding: 0 10px;
+  border-left: 3px solid #db2777;
+}
+
+/* 名言のスタイル */
+.quote {
+  background-color: #f0f7ff;
+  padding: 20px;
+  border-radius: 10px;
+  margin: 20px 0;
+  text-align: center;
+}
+
+.quote-text {
+  font-style: italic;
+  font-size: 1.2rem;
+  line-height: 1.6;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.quote-author {
+  font-weight: bold;
+  color: #555;
+}
+
+/* アクションボタンのスタイル改善 */
+.result-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.contact-button {
+  padding: 15px 30px;
+  background-color: #0070f3;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 4px 10px rgba(0, 112, 243, 0.2);
+}
+
+.secondary-actions {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.share-button, .restart-button {
+  background: none;
+  border: 1px solid #0070f3;
+  color: #0070f3;
+  padding: 10px 20px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: all 0.3s;
+}
+
+.share-button:hover, .restart-button:hover {
+  background-color: #f0f7ff;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 768px) {
+  .tabs {
+    gap: 5px;
+  }
+  
+  .tab {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    flex-grow: 1;
+    text-align: center;
+  }
+  
+  .result-type {
+    font-size: 1.6rem;
+  }
+  
+  .type-icon {
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+  }
+  
+  .action-items, .complementary-types, .resources-list {
+    grid-template-columns: 1fr;
+  }
+  
+  .secondary-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .share-button, .restart-button {
+    width: 100%;
+    text-align: center;
+  }
+    /* 選択肢ボタンのサイズ改善 */
+  .custom-radio {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid #cbd5e0;
+    margin-right: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    background-color: white;
+  }
+
+  .option.selected .custom-radio {
+    border-color: #3182ce;
+  }
+
+  .radio-selected {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #3182ce;
+  }
+
+  /* 次へボタンの無効化スタイル */
+  .next-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: #a0aec0;
+  }
+/* 選択肢ボタンのサイズ改善 */
+.custom-radio {
+  width: 26px;  /* 元のサイズより大きく */
+  height: 26px; /* 元のサイズより大きく */
+  border-radius: 50%;
+  border: 2px solid #CBD5E0;
+  margin-right: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background-color: white;
+  transition: all 0.2s ease;
+}
+
+.option:hover .custom-radio {
+  border-color: #90CDF4;
+}
+
+.option.selected .custom-radio {
+  border-color: #4299E1;
+}
+
+.radio-selected {
+  width: 14px;  /* 元のサイズより大きく */
+  height: 14px; /* 元のサイズより大きく */
+  border-radius: 50%;
+  background-color: #4299E1;
+}
+
+/* 次へボタンの無効化スタイル */
+.next-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: #A0AEC0;
+}
+
+}
+/* Welcom画面背景：グラデーション＋パターン */
+.welcome-gradient {
+  background: linear-gradient(to bottom, #3E85F3 0%, #A7D5F9 60%, #ffffff 100%);
+  background-repeat: repeat;
+  background-size: 280px;
+  background-position: center;
+  min-height: 100vh;
+  padding: 40px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.bg-pattern {
+  /* background-image: url('/images/patterns/medical_pattern_light.png'); */
+  background-repeat: repeat;
+  background-size: 280px;
+  background-position: center;
+}
