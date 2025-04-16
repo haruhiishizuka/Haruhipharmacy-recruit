@@ -18,19 +18,41 @@ function AppContent() {
   const [profession, setProfession] = useState('');
   const [postalCode, setPostalCode] = useState('');
   const [showContactForm, setShowContactForm] = useState(false);
+  const [initialized, setInitialized] = useState(false);
   
   // React Routerのフック
   const navigate = useNavigate();
   const location = useLocation();
   
+  // アプリケーションの初期化とルートの確認
+  useEffect(() => {
+    console.log('App initializing...', location.pathname);
+    
+    // 無効なルートへのアクセスを修正
+    if (location.pathname !== '/' && 
+        location.pathname !== '/profession' && 
+        location.pathname !== '/quiz' && 
+        location.pathname !== '/result' && 
+        location.pathname !== '/policy') {
+      console.log('無効なルートへのアクセスを検出: ', location.pathname);
+      navigate('/', { replace: true });
+    }
+    
+    setInitialized(true);
+  }, []);
+  
   // 画面遷移のデバッグログ
   useEffect(() => {
-    console.log(`📱 URL遷移: ${location.pathname}`, {
-      profession,
-      postalCode: postalCode || 'なし',
-      quizResult: quizResult ? '結果あり' : '結果なし'
-    });
-  }, [location, profession, postalCode, quizResult]);
+    if (initialized) {
+      console.log(`📱 URL遷移: ${location.pathname}`, {
+        profession,
+        postalCode: postalCode || 'なし',
+        quizResult: quizResult ? '結果あり' : '結果なし',
+        userAgent: navigator.userAgent,
+        isMobile: /Mobi|Android/i.test(navigator.userAgent)
+      });
+    }
+  }, [location, profession, postalCode, quizResult, initialized]);
 
   // アニメーション用のバリアント
   const pageVariants = {
@@ -336,6 +358,28 @@ function AppContent() {
 
   // URLに基づいて適切なコンポーネントをレンダリング
   const renderRouteContent = () => {
+    // 初期化前はローディング表示
+    if (!initialized) {
+      return (
+        <div style={{ 
+          display: 'flex', 
+          justifyContent: 'center', 
+          alignItems: 'center', 
+          height: '100vh',
+          backgroundColor: '#65A9E5'
+        }}>
+          <div className="loading-spinner" style={{
+            width: '50px',
+            height: '50px',
+            border: '5px solid rgba(255, 255, 255, 0.3)',
+            borderRadius: '50%',
+            borderTop: '5px solid white',
+            animation: 'spin 1s linear infinite'
+          }}></div>
+        </div>
+      );
+    }
+    
     // 特定のURLで特定の状態が必要な場合のチェック
     // 例：/resultアクセス時に結果がない場合はリダイレクト
     if (location.pathname === '/result' && !quizResult) {
@@ -424,8 +468,13 @@ function AppContent() {
         />
       )}
       
-      {/* レスポンシブスタイルを追加 */}
+      {/* ローディングアニメーションのスタイル */}
       <style jsx="true">{`
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+        
         * {
           box-sizing: border-box;
         }
@@ -459,7 +508,6 @@ function AppContent() {
 
 // メインのAppコンポーネント - RouterをここでラップしてRootコンポーネントからRenderします
 function App() {
-  // Router経由で共通状態などを含むAppContentコンポーネントをラップ
   return (
     <Router>
       <Routes>
