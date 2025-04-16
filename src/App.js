@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import './styles.css';
 import { motion, AnimatePresence } from 'framer-motion';
 import { processQuizResults, normalizeResultData } from './utils/quizUtils';
@@ -7,25 +8,29 @@ import ProfessionSelect from './components/quiz/ProfessionSelect';
 import QuizScreen from './components/quiz/QuizScreen';
 import ResultScreen from './components/results/ResultScreen';
 import QuickConsultationForm from './components/results/QuickConsultationForm';
-import PolicyPage from './components/PolicyPage'; // 新たにインポート
+import PolicyPage from './components/PolicyPage';
 
-function App() {
+// AppコンテンツコンポーネントはRouteから渡されるパラメータを使用
+function AppContent() {
   // アプリケーションの状態管理
-  const [screen, setScreen] = useState('welcome'); // welcome, profession, quiz, result, policy
   const [answers, setAnswers] = useState([]);
   const [quizResult, setQuizResult] = useState(null);
   const [profession, setProfession] = useState('');
   const [postalCode, setPostalCode] = useState('');
   const [showContactForm, setShowContactForm] = useState(false);
   
+  // React Routerのフック
+  const navigate = useNavigate();
+  const location = useLocation();
+  
   // 画面遷移のデバッグログ
   useEffect(() => {
-    console.log(`📱 画面遷移: ${screen}`, {
+    console.log(`📱 URL遷移: ${location.pathname}`, {
       profession,
       postalCode: postalCode || 'なし',
       quizResult: quizResult ? '結果あり' : '結果なし'
     });
-  }, [screen, profession, postalCode, quizResult]);
+  }, [location, profession, postalCode, quizResult]);
 
   // アニメーション用のバリアント
   const pageVariants = {
@@ -251,19 +256,19 @@ function App() {
     'other': 'その他医療職'
   };
 
-  // 職種選択の処理
+  // 職種選択の処理 - URLも変更
   const handleProfessionSelect = (selectedProfession) => {
     console.log(`👩‍⚕️ 選択された職種: ${selectedProfession} (${professionMap[selectedProfession] || '不明'})`);
     setProfession(professionMap[selectedProfession] || selectedProfession);
-    // 郵便番号入力画面をスキップして直接質問画面へ
-    setScreen('quiz');
+    // 質問画面にナビゲート
+    navigate('/quiz');
   };
 
   // 郵便番号入力の処理
   const handlePostalCodeSubmit = (code) => {
     console.log(`📮 入力された郵便番号: ${code}`);
     setPostalCode(code);
-    setScreen('quiz');
+    navigate('/quiz');
   };
 
   // 質問回答完了時の処理
@@ -281,7 +286,7 @@ function App() {
       setQuizResult(result);
       
       // 結果画面に遷移
-      setScreen('result');
+      navigate('/result');
     } else {
       console.error('❌ 無効な回答データ:', answerArray);
     }
@@ -291,16 +296,17 @@ function App() {
   const handleRestart = () => {
     console.log('🔄 診断をやり直します');
   
-    // 画面上部へのスクロールを追加
+    // 画面上部へのスクロール
     window.scrollTo({ top: 0, behavior: 'smooth' });
   
     // 少し遅延させて状態をリセット
     setTimeout(() => {
-      setScreen('welcome');
       setAnswers([]);
       setQuizResult(null);
       setProfession('');
       setPostalCode('');
+      // ホーム画面にナビゲート
+      navigate('/');
     }, 300); // スクロールが始まってから状態を変更
   };
 
@@ -310,13 +316,13 @@ function App() {
     setShowContactForm(isVisible);
   };
 
-  // プライバシーポリシーページを表示する関数を追加
+  // プライバシーポリシーページを表示する関数
   const handleOpenPolicy = () => {
     console.log('🔖 プライバシーポリシーページを表示します');
     // 画面上部へスクロール
     window.scrollTo({ top: 0, behavior: 'smooth' });
     // ポリシーページに遷移
-    setScreen('policy');
+    navigate('/policy');
   };
 
   // ポリシーページからホームに戻る関数
@@ -325,17 +331,31 @@ function App() {
     // 画面上部へスクロール
     window.scrollTo({ top: 0, behavior: 'smooth' });
     // ウェルカム画面に遷移
-    setScreen('welcome');
+    navigate('/');
   };
 
-  // 画面の切り替え
-  const renderScreen = () => {
-    switch (screen) {
-      case 'welcome':
-        return <WelcomeScreen onStartQuiz={() => setScreen('profession')} onOpenPolicy={handleOpenPolicy} />;
-      case 'profession':
+  // URLに基づいて適切なコンポーネントをレンダリング
+  const renderRouteContent = () => {
+    // 特定のURLで特定の状態が必要な場合のチェック
+    // 例：/resultアクセス時に結果がない場合はリダイレクト
+    if (location.pathname === '/result' && !quizResult) {
+      console.log('結果なしで/resultにアクセスしました - リダイレクトします');
+      return <Navigate to="/" replace />;
+    }
+    
+    // 同様に他のパスもチェック
+    if (location.pathname === '/quiz' && !profession) {
+      console.log('職種選択なしで/quizにアクセスしました - リダイレクトします');
+      return <Navigate to="/profession" replace />;
+    }
+    
+    // URLパスに応じたコンポーネントをレンダリング
+    switch (location.pathname) {
+      case '/':
+        return <WelcomeScreen onStartQuiz={() => navigate('/profession')} onOpenPolicy={handleOpenPolicy} />;
+      case '/profession':
         return <ProfessionSelect selectedProfession="" onSelect={handleProfessionSelect} />;
-      case 'quiz':
+      case '/quiz':
         // 職種に基づいた質問セットを取得
         const questionSet = getQuestionsByProfession();
         console.log(`🧩 職種「${profession}」に対する質問セット:`, questionSet.length, '問');
@@ -347,7 +367,7 @@ function App() {
             onComplete={handleQuizComplete} 
           />
         );
-      case 'result':
+      case '/result':
         const normalizedResult = normalizeResultData(quizResult);
         console.log('📊 正規化された結果データ:', normalizedResult);
         
@@ -361,11 +381,12 @@ function App() {
             onContact={() => toggleContactForm(true)}
           />
         );
-      case 'policy':
-        // 新たに追加したプライバシーポリシーページ
+      case '/policy':
         return <PolicyPage onReturnHome={handleReturnHome} />;
       default:
-        return <WelcomeScreen onStartQuiz={() => setScreen('profession')} onOpenPolicy={handleOpenPolicy} />;
+        // 未定義のURLには404または再度ホームにリダイレクト
+        console.log('未定義のURLパス:', location.pathname);
+        return <Navigate to="/" replace />;
     }
   };
 
@@ -381,7 +402,7 @@ function App() {
     }}>
       <AnimatePresence mode="wait">
         <motion.div
-          key={screen}
+          key={location.pathname}
           initial="initial"
           animate="animate"
           exit="exit"
@@ -390,7 +411,7 @@ function App() {
           className="page-container"
           style={{ width: '100%', flex: 1 }}
         >
-          {renderScreen()}
+          {renderRouteContent()}
         </motion.div>
       </AnimatePresence>
       
@@ -433,6 +454,18 @@ function App() {
         }
       `}</style>
     </div>
+  );
+}
+
+// メインのAppコンポーネント - RouterをここでラップしてRootコンポーネントからRenderします
+function App() {
+  // Router経由で共通状態などを含むAppContentコンポーネントをラップ
+  return (
+    <Router>
+      <Routes>
+        <Route path="/*" element={<AppContent />} />
+      </Routes>
+    </Router>
   );
 }
 
