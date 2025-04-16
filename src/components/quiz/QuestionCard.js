@@ -12,41 +12,58 @@ const QuestionCard = ({ question, onAnswer, currentStep, totalSteps, currentAnsw
     exit: { opacity: 0, y: -50, transition: { duration: 0.2 } },
   };
 
+  // 質問タイプに基づくラベルを取得
+  const getEndLabels = () => {
+    const questionText = question.text.toLowerCase();
+    
+    if (questionText.includes('興味') || questionText.includes('関心')) {
+      return { left: '興味はない', right: '興味がある' };
+    } else if (questionText.includes('好き') || questionText.includes('楽しい')) {
+      return { left: '好きではない', right: '好きである' };
+    } else if (questionText.includes('重要') || questionText.includes('価値')) {
+      return { left: '重要ではない', right: '重要である' };
+    } else {
+      return { left: '反対する', right: '賛成する' };
+    }
+  };
+
+  const endLabels = getEndLabels();
+
+  // 回答オプション
   const options = [
     {
-      value: 'strong_yes',
-      label: '強く同意する',
-      icon: '😄',
+      value: 3,
+      label: '',
       color: '#3B82F6',
     },
     {
-      value: 'yes',
-      label: '同意する',
-      icon: '🙂',
+      value: 2,
+      label: '',
       color: '#60A5FA',
     },
     {
-      value: 'somewhat_yes',
-      label: 'やや同意する',
-      icon: '🤔',
+      value: 1,
+      label: '',
       color: '#93C5FD',
     },
     {
-      value: 'somewhat_no',
-      label: 'やや反対する',
-      icon: '😕',
+      value: 0,
+      label: '',
+      color: '#9CA3AF',
+    },
+    {
+      value: -1,
+      label: '',
       color: '#FCA5A5',
     },
     {
-      value: 'no',
-      label: '反対する',
-      icon: '🙁',
+      value: -2,
+      label: '',
       color: '#F87171',
     },
     {
-      value: 'strong_no',
-      label: '強く反対する',
-      icon: '😠',
+      value: -3,
+      label: '',
       color: '#EF4444',
     },
   ];
@@ -145,80 +162,65 @@ const QuestionCard = ({ question, onAnswer, currentStep, totalSteps, currentAnsw
 
       {/* 選択肢 */}
       <div style={{ display: 'grid', gap: '12px' }}>
-        {options.map((option, index) => {
-          const isSelected = currentAnswer === option.value;
-          
-          return (
-            <motion.button
-              key={option.value}
-              onClick={() => onAnswer(option.value)}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.05 + 0.3 }}
-              whileHover={{ scale: 1.02, boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)' }}
-              whileTap={{ scale: 0.97 }}
-              style={{
-                width: '100%',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '16px',
-                padding: '16px',
-                border: `2px solid ${isSelected ? option.color : '#E5E7EB'}`,
-                borderRadius: '12px',
-                backgroundColor: isSelected ? `${option.color}15` : 'white',
-                color: option.color,
-                cursor: 'pointer',
-                boxShadow: isSelected ? `0 4px 12px ${option.color}30` : '0 2px 6px rgba(0, 0, 0, 0.05)',
-                transition: 'all 0.2s ease',
-                outline: 'none'
-              }}
-            >
-              <div style={{
-                fontSize: '28px',
-                width: '48px',
-                height: '48px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                backgroundColor: isSelected ? 'white' : '#F9FAFB',
-                borderRadius: '50%',
-                flexShrink: 0
-              }}>
-                {option.icon}
-              </div>
-              <div style={{ textAlign: 'left' }}>
-                <div style={{ 
-                  fontSize: '18px', 
-                  fontWeight: '600',
-                  color: isSelected ? option.color : '#4B5563'
-                }}>
-                  {option.label}
-                </div>
-              </div>
-              {isSelected && (
-                <motion.div 
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  style={{ 
-                    marginLeft: 'auto',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    width: '24px',
-                    height: '24px',
-                    backgroundColor: option.color,
+        {/* ラベル表示 - 左右のみ */}
+        <div style={{ 
+          display: 'flex', 
+          justifyContent: 'space-between',
+          marginBottom: '8px'
+        }}>
+          <span style={{ color: '#4B5563', fontSize: '14px' }}>{endLabels.left}</span>
+          <span style={{ color: '#4B5563', fontSize: '14px' }}>{endLabels.right}</span>
+        </div>
+        
+        {/* 7段階の選択肢 */}
+        <div style={{ 
+          display: 'flex', 
+          justifyContent: 'space-between', 
+          width: '100%',
+          gap: '4px'
+        }}>
+          {options.map((option, index) => {
+            const isSelected = currentAnswer === option.value;
+            
+            return (
+              <motion.button
+                key={option.value}
+                onClick={() => onAnswer(option.value)}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.05 + 0.3 }}
+                whileHover={{ scale: 1.02, boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)' }}
+                whileTap={{ scale: 0.97 }}
+                style={{
+                  width: '100%',
+                  aspectRatio: '1/1',
+                  maxWidth: '42px',
+                  margin: '0 auto',
+                  borderRadius: '50%',
+                  backgroundColor: isSelected ? option.color : '#E5E7EB',
+                  border: 'none',
+                  cursor: 'pointer',
+                  boxShadow: isSelected ? `0 4px 12px ${option.color}30` : '0 2px 6px rgba(0, 0, 0, 0.05)',
+                  transition: 'all 0.2s ease',
+                  outline: 'none',
+                  padding: 0,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+              >
+                {isSelected && (
+                  <span style={{
+                    width: '30%',
+                    height: '30%',
                     borderRadius: '50%',
-                    color: 'white'
-                  }}
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                  </svg>
-                </motion.div>
-              )}
-            </motion.button>
-          );
-        })}
+                    backgroundColor: 'white'
+                  }}></span>
+                )}
+              </motion.button>
+            );
+          })}
+        </div>
       </div>
 
       {/* ヒント */}

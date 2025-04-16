@@ -1,3 +1,4 @@
+// TabNavigation.js - 完全に修正されたコンポーネント
 import React from 'react';
 import { motion } from 'framer-motion';
 
@@ -15,8 +16,8 @@ const TabNavigation = ({ tabs, activeTab, onChange }) => {
       boxShadow: '0 4px 14px rgba(0, 102, 255, 0.25)'
     },
     hover: { 
-      backgroundColor: 'var(--primary-400)',
-      y: -2
+      backgroundColor: 'var(--primary-400)'
+      // 上下の動きを削除 (y: -2)
     }
   };
 
@@ -34,15 +35,15 @@ const TabNavigation = ({ tabs, activeTab, onChange }) => {
 
   return (
     <div className="tab-navigation mb-6">
-      {/* タブヘッダー */}
+      {/* タブヘッダー - 2列グリッドに修正 */}
       <div className="relative mb-1">
         <div className="absolute inset-0 bottom-2 bg-neutral-100 rounded-full -z-10"></div>
-        <div className="flex overflow-x-auto space-x-2 py-1 px-1 md:px-2 rounded-full bg-neutral-100 shadow-sm">
+        <div className="tabs-grid-container rounded-full bg-neutral-100 shadow-sm p-2">
           {tabs.map((tab) => (
             <motion.button
               key={tab.id}
               onClick={() => onChange(tab.id)}
-              className={`px-4 py-2 rounded-full font-medium whitespace-nowrap text-sm md:text-base transition-all flex items-center`}
+              className={`px-4 py-2 rounded-full font-medium whitespace-nowrap text-sm md:text-base transition-all flex items-center justify-center`}
               initial="inactive"
               animate={activeTab === tab.id ? "active" : "inactive"}
               whileHover={activeTab === tab.id ? "active" : "hover"}
@@ -79,6 +80,26 @@ const TabNavigation = ({ tabs, activeTab, onChange }) => {
           </div>
         ))}
       </div>
+
+      {/* モバイル用の2列レイアウトのためのスタイル */}
+      <style jsx="true">{`
+        /* モバイル向けの2列グリッドレイアウト */
+        .tabs-grid-container {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 8px;
+        }
+        
+        /* タブレット以上の画面サイズでは横並び */
+        @media (min-width: 768px) {
+          .tabs-grid-container {
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: center;
+            gap: 8px;
+          }
+        }
+      `}</style>
     </div>
   );
 };

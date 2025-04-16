@@ -14,36 +14,6 @@ const QuizScreen = ({ questions, onComplete }) => {
     (currentPage + 1) * QUESTIONS_PER_PAGE
   );
 
-  // 質問ごとのラベル定義
-  const getQuestionLabels = (questionId) => {
-    // 質問IDに基づいて適切なラベルを返す
-    const labelsMap = {
-      // 基本質問
-      1: { negative: "関心がない", positive: "関心がある" },
-      2: { negative: "好きではない", positive: "好き" },
-      3: { negative: "得意ではない", positive: "得意である" },
-      4: { negative: "重視していない", positive: "重視している" },
-      5: { negative: "指示を受ける方が好き", positive: "自分で判断したい" },
-      6: { negative: "やりがいを感じない", positive: "やりがいを感じる" },
-      7: { negative: "抵抗がある", positive: "抵抗はない" },
-      8: { negative: "興味がない", positive: "興味がある" },
-      9: { negative: "あまり重視していない", positive: "重視している" },
-      10: { negative: "大規模な環境が好き", positive: "小規模な環境が好き" },
-      11: { negative: "専門性を重視する", positive: "幅広さを重視する" },
-      12: { negative: "興味がない", positive: "興味がある" },
-      13: { negative: "あまり考えない", positive: "貢献したいと考える" },
-      14: { negative: "あまり重視していない", positive: "重視している" },
-      15: { negative: "キャリアアップを重視する", positive: "安定を重視する" },
-      // 看護師向け追加質問
-      16: { negative: "興味がない", positive: "興味がある" },
-      17: { negative: "あまり関心がない", positive: "関心がある" },
-      18: { negative: "あまりやりがいを感じない", positive: "やりがいを感じる" },
-    };
-    
-    // 質問IDに対応するラベルがない場合はデフォルト値を返す
-    return labelsMap[questionId] || { negative: "反対する", positive: "賛成する" };
-  };
-
   // 回答チェックのみを行う - スクロールなし
   useEffect(() => {
     const allAnswered = currentQuestions.every(
@@ -175,96 +145,91 @@ const QuizScreen = ({ questions, onComplete }) => {
             animate="animate"
             exit="exit"
           >
-            {currentQuestions.map((question) => {
-              // 質問ごとのラベルを取得
-              const labels = getQuestionLabels(question.id);
-              
-              return (
-                <div
-                  key={question.id}
-                  style={{
-                    marginBottom: '60px',
-                    background: '#fff',
-                    padding: '24px',
-                    borderRadius: '16px',
-                    boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
-                  }}
-                >
-                  <h3 style={{ 
-                    fontSize: '18px', 
-                    fontWeight: '600', 
-                    color: '#333', 
-                    marginBottom: '20px'
-                  }}>
-                    {question.text}
-                  </h3>
+            {currentQuestions.map((question) => (
+              <div
+                key={question.id}
+                style={{
+                  marginBottom: '60px',
+                  background: '#fff',
+                  padding: '24px',
+                  borderRadius: '16px',
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
+                }}
+              >
+                <h3 style={{ 
+                  fontSize: '18px', 
+                  fontWeight: '600', 
+                  color: '#333', 
+                  marginBottom: '20px'
+                }}>
+                  {question.text}
+                </h3>
 
-                  {/* 7段階選択の新しいUIスタイル */}
+                {/* 7段階選択の新しいUIスタイル */}
+                <div style={{ 
+                  display: 'flex', 
+                  flexDirection: 'column',
+                  gap: '16px',
+                }}>
+                  {/* ラベル表示 - 「反対する」「賛成する」 */}
                   <div style={{ 
                     display: 'flex', 
-                    flexDirection: 'column',
-                    gap: '16px',
+                    justifyContent: 'space-between',
+                    marginBottom: '8px'
                   }}>
-                    {/* ラベル表示 - 「反対する」「賛成する」 */}
-                    <div style={{ 
-                      display: 'flex', 
-                      justifyContent: 'space-between',
-                      marginBottom: '8px'
-                    }}>
-                      <span style={{ color: '#4B5563', fontSize: '14px' }}>{labels.negative}</span>
-                      <span style={{ color: '#4B5563', fontSize: '14px' }}>{labels.positive}</span>
-                    </div>
-                    
-                    {/* 7段階の選択肢 */}
-                    <div style={{ 
-                      display: 'flex', 
-                      justifyContent: 'space-between', 
-                      width: '100%',
-                      gap: '4px'
-                    }}>
-                      {[-3, -2, -1, 0, 1, 2, 3].map((value) => (
-                        <label key={value} style={{ display: 'block', flex: '1' }}>
-                          <input
-                            type="radio"
-                            name={`q-${question.id}`}
-                            value={value}
-                            checked={answers[question.id] === value}
-                            onChange={() => handleAnswer(question.id, value)}
-                            style={{ display: 'none' }}
-                          />
-                          <div
+                    <span style={{ color: '#4B5563', fontSize: '14px' }}>反対する</span>
+                    <span style={{ color: '#4B5563', fontSize: '14px' }}>賛成する</span>
+                  </div>
+                  
+                  {/* 7段階の選択肢 */}
+                  <div style={{ 
+                    display: 'flex', 
+                    justifyContent: 'space-between', 
+                    width: '100%',
+                    gap: '4px'
+                  }}>
+                    {[-3, -2, -1, 0, 1, 2, 3].map((value) => (
+                      <label key={value} style={{ display: 'block', flex: '1' }}>
+                        <input
+                          type="radio"
+                          name={`q-${question.id}`}
+                          value={value}
+                          checked={answers[question.id] === value}
+                          onChange={() => handleAnswer(question.id, value)}
+                          style={{ display: 'none' }}
+                        />
+                        <div
+                          style={{
+                            width: '100%',
+                            aspectRatio: '1/1',
+                            maxWidth: '42px',
+                            margin: '0 auto',
+                            borderRadius: '50%',
+                            backgroundColor: 
+                              answers[question.id] === value ? '#1A6CBF' : '#E5E7EB',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            cursor: 'pointer',
+                            transition: 'all 0.2s',
+                          }}
+                        >
+                          <span
                             style={{
-                              width: '100%',
-                              aspectRatio: '1/1',
-                              maxWidth: '42px',
-                              margin: '0 auto',
+                              width: '30%',
+                              height: '30%',
                               borderRadius: '50%',
                               backgroundColor: 
-                                answers[question.id] === value ? '#1A6CBF' : '#E5E7EB',
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              cursor: 'pointer',
-                              transition: 'all 0.2s',
+                                answers[question.id] === value ? '#fff' : 'transparent',
                             }}
-                          >
-                            <span
-                              style={{
-                                width: '30%',
-                                height: '30%',
-                                borderRadius: '50%',
-                                backgroundColor: 
-                                  answers[question.id] === value ? '#fff' : 'transparent',
-                              }}
-                            ></span>
-                          </div>
-                        </label>
-                      ))}
-                    </div>
+                          ></span>
+                        </div>
+                      </label>
+                    ))}
                   </div>
                 </div>
-              );
-            })}
+              </div>
+            ))}
           </motion.div>
         </AnimatePresence>
 
