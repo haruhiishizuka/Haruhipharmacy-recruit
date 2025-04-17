@@ -120,10 +120,9 @@ const ProfessionSelect = ({ onSelect }) => {
               key={profession.id}
               variants={itemVariants}
               whileHover={{ 
-                scale: 1.03,
-                boxShadow: '0 12px 30px rgba(0, 0, 0, 0.15)'
+                boxShadow: '0 8px 20px rgba(0, 0, 0, 0.1)' // 拡大効果を削除し、影を控えめに
               }}
-              whileTap={{ scale: 0.97 }}
+              whileTap={{ scale: 0.98 }}
               onClick={() => handleSelect(profession.id)}
               style={{
                 backgroundColor: selectedProfession === profession.id 
@@ -147,7 +146,7 @@ const ProfessionSelect = ({ onSelect }) => {
                 marginBottom: '12px',
                 position: 'relative'
               }}>
-                {/* アイコン表示にフェードインアニメーションを適用 (キラッとエフェクトを削除) */}
+                {/* アイコン表示は単純なフェードインのみ - キラッとエフェクトを完全削除 */}
                 <motion.img 
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -157,9 +156,8 @@ const ProfessionSelect = ({ onSelect }) => {
                   style={{
                     width: '100%',
                     height: '100%',
-                    objectFit: 'contain',
-                    transition: 'transform 0.3s ease',
-                    transform: selectedProfession === profession.id ? 'scale(1.1)' : 'scale(1)'
+                    objectFit: 'contain'
+                    // 拡大・変形効果を完全に削除
                   }}
                 />
                 {selectedProfession === profession.id && (
