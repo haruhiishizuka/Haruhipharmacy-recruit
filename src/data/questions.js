@@ -1,4 +1,4 @@
-﻿// 質問データ
+// 質問データ
 
 // 質問配列に軸情報を追加
 export const questions = [
