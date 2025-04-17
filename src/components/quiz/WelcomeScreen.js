@@ -70,6 +70,17 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
     tap: { scale: 0.95 }
   };
 
+  // 診断開始ボタンクリック時の処理
+  const handleStartQuizClick = (e) => {
+    e.preventDefault();
+    if (typeof onStartQuiz === 'function') {
+      console.log("診断を開始します...");
+      onStartQuiz();
+    } else {
+      console.error("onStartQuiz is not a function");
+    }
+  };
+
   return (
     <div style={{ 
       minHeight: '100vh',
@@ -82,10 +93,9 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
       display: 'flex',
       flexDirection: 'column'
     }}>
-      {/* ヒーローセクション - 高さを75vhに縮小し、コンテンツを上に寄せる */}
+      {/* ヒーローセクション */}
       <div style={{
-        minHeight: '75vh',
-        padding: '40px 20px',
+        padding: '60px 20px 120px',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -93,19 +103,20 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
         position: 'relative',
         color: 'white',
         textAlign: 'center',
-        // グラデーションオーバーレイでコントラスト改善
-        background: 'linear-gradient(180deg, rgba(26, 108, 191, 0.2), rgba(101, 169, 229, 0.1))',
-        backdropFilter: 'blur(2px)'
+        backgroundImage: 'linear-gradient(to bottom, rgba(26, 108, 191, 0.3), rgba(101, 169, 229, 0.1))',
+        backdropFilter: 'blur(2px)',
+        boxShadow: 'inset 0 -4px 6px rgba(0, 0, 0, 0.1)'
       }}>
-        {/* MediMatchロゴ */}
+        {/* MediMatchロゴ - 新しいロゴを使用 */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           style={{ 
-            marginBottom: '24px',
-            maxWidth: '280px',
-            width: '100%'
+            marginBottom: '30px',
+            maxWidth: '360px',
+            width: '100%',
+            position: 'relative'
           }}
         >
           <img 
@@ -113,6 +124,7 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
             alt="MediMatch Logo" 
             style={{
               width: '100%',
+              maxWidth: '280px',
               height: 'auto'
             }}
           />
@@ -120,123 +132,65 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
             fontSize: '14px',
             fontWeight: '500',
             opacity: 0.9,
-            letterSpacing: '1px',
-            marginTop: '8px'
+            letterSpacing: '2px',
+            textTransform: 'uppercase',
+            marginTop: '10px'
           }}>
             医療キャリア診断ツール
           </div>
         </motion.div>
         
-        {/* 説明文 - 簡潔に */}
+        {/* サブタイトルを削除し、説明文のみに */}
         <motion.div
-          initial={{ opacity: 0, y: -10 }}
+          initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.5 }}
+          style={{ maxWidth: '800px' }}
         >          
           <p style={{
-            fontSize: '16px',
-            lineHeight: 1.6,
-            maxWidth: '540px',
-            margin: '0 auto 32px',
-            color: 'white',
-            // 背景をつけて可読性向上
-            padding: '12px 20px',
-            borderRadius: '16px',
-            background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(0, 52, 109, 0.15))',
-            backdropFilter: 'blur(4px)'
+            fontSize: '17px',
+            lineHeight: 1.7,
+            maxWidth: '600px',
+            margin: '0 auto 40px',
+            color: 'rgba(255, 255, 255, 0.9)'
           }}>
             あなたの価値観と強みを分析し、適性に合った職場環境や成長のヒントを提案します。
-            たった5分で、あなたの医療キャリアの道しるべを見つけましょう。
+            たった5分の診断で、あなたの医療キャリアの道しるべを見つけましょう。
           </p>
         </motion.div>
         
-        {/* CTAとイラストを横に並べるフレックスコンテナ */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.5 }}
+        {/* 診断開始ボタン */}
+        <motion.button
+          variants={buttonVariants}
+          initial="hidden"
+          animate="visible"
+          whileHover="hover"
+          whileTap="tap"
+          onClick={handleStartQuizClick}
           style={{
+            backgroundColor: 'white',
+            color: '#1A6CBF',
+            border: 'none',
+            borderRadius: '50px',
+            padding: '18px 36px',
+            fontSize: '18px',
+            fontWeight: '700',
+            cursor: 'pointer',
+            boxShadow: '0 4px 15px rgba(0, 0, 0, 0.15)',
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center',
-            gap: '20px',
-            marginBottom: '30px',
-            width: '100%',
-            maxWidth: '500px'
+            gap: '10px',
+            zIndex: 5
           }}
         >
-          {/* 診断開始ボタン - プライマリカラーに変更 */}
-          <motion.button
-            variants={buttonVariants}
-            initial="hidden"
-            animate="visible"
-            whileHover="hover"
-            whileTap="tap"
-            onClick={onStartQuiz}
-            style={{
-              backgroundColor: '#1A6CBF',
-              color: 'white',
-              border: 'none',
-              borderRadius: '50px',
-              padding: '16px 24px',
-              fontSize: '17px',
-              fontWeight: '700',
-              cursor: 'pointer',
-              boxShadow: '0 6px 16px rgba(0, 0, 0, 0.2)',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              flex: '1 0 auto',
-              maxWidth: '220px',
-              justifyContent: 'center'
-            }}
-          >
-            <span>診断をはじめる</span>
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-              <polyline points="12 5 19 12 12 19"></polyline>
-            </svg>
-          </motion.button>
-          
-          {/* キャラクターイラスト - 位置調整 */}
-          <div style={{
-            width: '100px',
-            height: '100px',
-            position: 'relative',
-            flex: '0 0 auto'
-          }}>
-            <motion.img
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.6, duration: 0.5 }}
-              src="/images/navigator_clean.png"
-              alt="キャラクター"
-              style={{ 
-                width: '100%', 
-                height: 'auto'
-              }}
-            />
-          </div>
-        </motion.div>
+          <span>診断をはじめる</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </motion.button>
         
-        {/* スクロールヒント */}
-        <motion.div
-          animate={{ 
-            y: [0, 8, 0], 
-            opacity: [0.6, 1, 0.6]
-          }}
-          transition={{ 
-            repeat: Infinity, 
-            duration: 1.5 
-          }}
-          style={{
-            fontSize: '14px',
-            opacity: 0.8,
-            marginTop: '10px'
-          }}
-        >
-          ↓ 特徴を見る
-        </motion.div>
+        {/* キャラクターイラストを削除 */}
       </div>
 
       {/* 特徴紹介セクション - モバイルでの2列表示に最適化 */}
@@ -247,7 +201,7 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
         style={{
           maxWidth: '1080px',
           margin: '0 auto',
-          marginTop: '-40px', // オーバーラップ量を減らす
+          marginTop: '-60px',
           padding: '40px 20px 60px',
           backgroundColor: 'rgba(255, 255, 255, 0.85)',
           backdropFilter: 'blur(10px)',
@@ -259,13 +213,14 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
           flex: 1
         }}
       >
-        {/* タイトル */}
+        {/* タイトルを「MediMatchの特徴」のみに */}
         <h2 style={{
-          fontSize: '26px',
+          fontSize: '28px',
           fontWeight: '700',
           color: '#1A6CBF',
-          marginBottom: '32px',
-          textAlign: 'center'
+          marginBottom: '40px',
+          textAlign: 'center',
+          letterSpacing: '-0.3px'
         }}>
           MediMatchの特徴
         </h2>
@@ -274,7 +229,7 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
         <div className="features-grid" style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-          gap: '24px',
+          gap: '30px',
           padding: '0 10px'
         }}>
           {features.map((feature, i) => (
@@ -284,8 +239,8 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
               className="feature-card"
               style={{
                 backgroundColor: 'white',
-                borderRadius: '16px',
-                padding: '24px 20px',
+                borderRadius: '20px',
+                padding: '20px',
                 boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
                 display: 'flex',
                 flexDirection: 'column',
@@ -294,8 +249,8 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
               }}
             >
               <div style={{
-                width: '80px',
-                height: '80px',
+                width: '100px',
+                height: '100px',
                 marginBottom: '16px',
                 display: 'flex',
                 alignItems: 'center',
@@ -334,11 +289,10 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
         {/* 補足情報 */}
         <div style={{
           backgroundColor: '#F0F7FF',
-          borderRadius: '16px',
+          borderRadius: '12px',
           padding: '24px',
-          margin: '36px auto 0',
-          border: '1px solid #BFDBFE',
-          maxWidth: '800px'
+          margin: '40px 20px 0',
+          border: '1px solid #BFDBFE'
         }}>
           <h3 style={{
             fontSize: '18px',
@@ -360,7 +314,7 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
             fontSize: '15px',
             color: '#2D3748',
             lineHeight: 1.7,
-            marginBottom: '20px'
+            marginBottom: '16px'
           }}>
             MediMatchの診断は、専門性(S/G)、革新性(I/C)、対象(H/T)、思考(A/P)の4軸16タイプで、
             あなたの医療職としての適性を分析します。診断結果は無料でご利用いただけます。
@@ -368,12 +322,12 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
           <div style={{ 
             display: 'flex', 
             justifyContent: 'center',
-            marginTop: '20px' 
+            marginTop: '24px' 
           }}>
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={onStartQuiz}
+              onClick={handleStartQuizClick}
               style={{
                 backgroundColor: '#1A6CBF',
                 color: 'white',
@@ -395,10 +349,11 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
       {/* フッター */}
       <footer style={{
         textAlign: 'center',
-        padding: '20px',
+        marginTop: '40px',
         color: 'white',
+        padding: '20px',
         fontSize: '14px',
-        background: 'rgba(26, 108, 191, 0.1)',
+        backgroundColor: 'rgba(26, 108, 191, 0.1)',
         backdropFilter: 'blur(5px)'
       }}>
         <p style={{ marginBottom: '8px' }}>
@@ -436,12 +391,6 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
           100% { box-shadow: 0 0 0 0 rgba(26, 108, 191, 0); }
         }
         
-        /* Safe Area 対応 */
-        body {
-          padding-top: env(safe-area-inset-top, 0);
-          padding-bottom: env(safe-area-inset-bottom, 0);
-        }
-        
         /* デスクトップ向けスタイル */
         @media (min-width: 769px) {
           .features-grid {
@@ -453,8 +402,16 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
           }
           
           .feature-card img {
-            width: 100px !important;
-            height: 100px !important;
+            width: 120px !important;
+            height: 120px !important;
+          }
+          
+          .feature-card h3 {
+            font-size: 20px !important;
+          }
+          
+          .feature-card p {
+            font-size: 16px !important;
           }
         }
         
@@ -462,6 +419,7 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
         @media (min-width: 481px) and (max-width: 768px) {
           .features-grid {
             grid-template-columns: repeat(2, 1fr) !important;
+            gap: 20px !important;
           }
           
           .feature-card {
@@ -473,7 +431,7 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
         @media (max-width: 480px) {
           .features-grid {
             grid-template-columns: repeat(2, 1fr) !important;
-            gap: 16px !important;
+            gap: 12px !important;
           }
           
           .feature-card {
@@ -481,8 +439,9 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
           }
           
           .feature-card img {
-            width: 64px !important;
-            height: 64px !important;
+            width: 70px !important;
+            height: 70px !important;
+            margin-bottom: 10px !important;
           }
           
           .feature-card h3 {
@@ -491,7 +450,7 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
           }
           
           .feature-card p {
-            font-size: 13px !important;
+            font-size: 12px !important;
             line-height: 1.4 !important;
           }
         }
