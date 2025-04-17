@@ -69,9 +69,21 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
     },
     tap: { scale: 0.95 }
   };
+  
+  // Click handler with debug logs
+  const handleStartClick = (e) => {
+    console.log('診断開始ボタンがクリックされました');
+    e.preventDefault(); // イベントのデフォルト動作を防止
+    if (typeof onStartQuiz === 'function') {
+      console.log('onStartQuiz関数を実行します');
+      onStartQuiz();
+    } else {
+      console.error('onStartQuiz関数が定義されていません');
+    }
+  };
 
   return (
-    <div style={{ 
+    <div className="welcome-screen" style={{ 
       minHeight: '100vh',
       backgroundImage: `url('/images/patterns/medical_pattern_light.png')`,
       backgroundSize: '400px',
@@ -80,10 +92,13 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
       backgroundColor: '#65A9E5',
       fontFamily: "'Inter', 'Noto Sans JP', sans-serif",
       display: 'flex',
-      flexDirection: 'column'
+      flexDirection: 'column',
+      width: '100%',
+      position: 'relative',
+      overflow: 'hidden'
     }}>
       {/* ヒーローセクション */}
-      <div style={{
+      <div className="hero-section" style={{
         padding: '60px 20px 120px',
         display: 'flex',
         flexDirection: 'column',
@@ -94,16 +109,17 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
         textAlign: 'center',
         backgroundImage: 'linear-gradient(to bottom, rgba(26, 108, 191, 0.3), rgba(101, 169, 229, 0.1))',
         backdropFilter: 'blur(2px)',
-        boxShadow: 'inset 0 -4px 6px rgba(0, 0, 0, 0.1)'
+        boxShadow: 'inset 0 -4px 6px rgba(0, 0, 0, 0.1)',
+        width: '100%'
       }}>
-        {/* MediMatchロゴ - 新しいロゴを使用 */}
+        {/* MediMatchロゴ */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           style={{ 
             marginBottom: '30px',
-            maxWidth: '360px',
+            maxWidth: '280px',
             width: '100%',
             position: 'relative'
           }}
@@ -113,7 +129,6 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
             alt="MediMatch Logo" 
             style={{
               width: '100%',
-              maxWidth: '280px',
               height: 'auto'
             }}
           />
@@ -129,12 +144,12 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
           </div>
         </motion.div>
         
-        {/* サブタイトルを削除し、説明文のみに */}
+        {/* 説明文 */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.5 }}
-          style={{ maxWidth: '800px' }}
+          style={{ maxWidth: '800px', width: '100%' }}
         >          
           <p style={{
             fontSize: '17px',
@@ -148,14 +163,14 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
           </p>
         </motion.div>
         
-        {/* 診断開始ボタン */}
+        {/* 診断開始ボタン - モバイル向けにタッチイベント最適化 */}
         <motion.button
           variants={buttonVariants}
           initial="hidden"
           animate="visible"
           whileHover="hover"
           whileTap="tap"
-          onClick={onStartQuiz}
+          onClick={handleStartClick}
           style={{
             backgroundColor: 'white',
             color: '#1A6CBF',
@@ -169,7 +184,12 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
             display: 'flex',
             alignItems: 'center',
             gap: '10px',
-            zIndex: 5
+            zIndex: 5,
+            position: 'relative', // タップ領域のために相対位置を設定
+            touchAction: 'manipulation', // タッチ操作を最適化
+            WebkitTapHighlightColor: 'transparent', // タップ時のハイライトを無効化
+            outline: 'none', // アウトラインを削除
+            userSelect: 'none' // テキスト選択を無効化
           }}
         >
           <span>診断をはじめる</span>
@@ -179,14 +199,14 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
           </svg>
         </motion.button>
         
-        {/* キャラクターイラスト - 位置調整とモバイル表示の修正 */}
+        {/* キャラクターイラスト - モバイル表示時にサイズを調整 */}
         <div className="character-container" style={{
           position: 'absolute',
           left: '5%',
           bottom: '-60px',
           width: '180px',
           zIndex: 10,
-          display: 'block' // 必ず表示させる
+          display: 'block'
         }}>
           <motion.img
             initial={{ opacity: 0, y: 20 }}
@@ -200,11 +220,12 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
         </div>
       </div>
 
-      {/* 特徴紹介セクション - モバイルでの2列表示に最適化 */}
+      {/* 特徴紹介セクション */}
       <motion.div
         variants={containerVariants}
         initial="hidden"
         animate="visible"
+        className="features-section"
         style={{
           maxWidth: '1080px',
           margin: '0 auto',
@@ -217,10 +238,11 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
           boxShadow: '0 8px 32px rgba(0, 0, 0, 0.15)',
           position: 'relative',
           zIndex: 2,
-          flex: 1
+          flex: 1,
+          width: '90%'
         }}
       >
-        {/* タイトルを「MediMatchの特徴」のみに */}
+        {/* タイトル */}
         <h2 style={{
           fontSize: '28px',
           fontWeight: '700',
@@ -232,10 +254,10 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
           MediMatchの特徴
         </h2>
 
-        {/* 特徴カードのグリッド - モバイル対応を強化 */}
+        {/* 特徴カードのグリッド */}
         <div className="features-grid" style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
           gap: '30px',
           padding: '0 10px'
         }}>
@@ -331,10 +353,11 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
             justifyContent: 'center',
             marginTop: '24px' 
           }}>
+            {/* 2つ目の診断開始ボタン - タップ検出向けに最適化 */}
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={onStartQuiz}
+              onClick={handleStartClick}
               style={{
                 backgroundColor: '#1A6CBF',
                 color: 'white',
@@ -344,7 +367,11 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
                 fontSize: '16px',
                 fontWeight: '600',
                 cursor: 'pointer',
-                boxShadow: '0 4px 12px rgba(26, 108, 191, 0.2)'
+                boxShadow: '0 4px 12px rgba(26, 108, 191, 0.2)',
+                touchAction: 'manipulation',
+                WebkitTapHighlightColor: 'transparent',
+                outline: 'none',
+                userSelect: 'none'
               }}
             >
               診断をはじめる
@@ -354,14 +381,15 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
       </motion.div>
 
       {/* フッター */}
-      <footer style={{
+      <footer className="footer" style={{
         textAlign: 'center',
         marginTop: '40px',
         color: 'white',
         padding: '20px',
         fontSize: '14px',
         backgroundColor: 'rgba(26, 108, 191, 0.1)',
-        backdropFilter: 'blur(5px)'
+        backdropFilter: 'blur(5px)',
+        width: '100%'
       }}>
         <p style={{ marginBottom: '8px' }}>
           MediMatchは看護師・薬剤師・リハビリ系（PT/OT/ST）などのためのキャリア診断
@@ -390,12 +418,53 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
         </a>
       </footer>
 
-      {/* モバイル対応用スタイル */}
+      {/* モバイル対応用スタイル - 特にiOS向けの最適化を追加 */}
       <style jsx="true">{`
         @keyframes pulse {
           0% { box-shadow: 0 0 0 0 rgba(26, 108, 191, 0.3); }
           70% { box-shadow: 0 0 0 10px rgba(26, 108, 191, 0); }
           100% { box-shadow: 0 0 0 0 rgba(26, 108, 191, 0); }
+        }
+        
+        /* すべての要素に適用 */
+        * {
+          box-sizing: border-box !important;
+          -webkit-tap-highlight-color: transparent;
+        }
+        
+        html, body {
+          margin: 0;
+          padding: 0;
+          width: 100%;
+          overflow-x: hidden;
+          -webkit-text-size-adjust: 100%;
+        }
+        
+        .welcome-screen {
+          width: 100%;
+          max-width: 100vw;
+          overflow-x: hidden;
+        }
+        
+        .hero-section {
+          width: 100%;
+        }
+        
+        .features-section {
+          max-width: 90%;
+        }
+        
+        /* フォーカス時のスタイルを調整（モバイル向け） */
+        button:focus {
+          outline: none;
+        }
+        
+        /* iOS向けの特別な調整 */
+        @supports (-webkit-touch-callout: none) {
+          button {
+            cursor: pointer;
+            -webkit-touch-callout: none;
+          }
         }
         
         /* デスクトップ向けスタイル */
@@ -440,11 +509,32 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
           }
         }
         
-        /* モバイル向けスタイル */
+        /* モバイル向けスタイル - 特に重要 */
         @media (max-width: 480px) {
+          .welcome-screen {
+            width: 100vw;
+            overflow-x: hidden;
+          }
+          
+          .hero-section {
+            padding: 40px 15px 100px !important;
+          }
+          
+          .features-section {
+            width: 92% !important;
+            margin-top: -50px !important;
+            padding: 30px 15px 40px !important;
+          }
+          
+          h2 {
+            font-size: 22px !important;
+            margin-bottom: 25px !important;
+          }
+          
           .features-grid {
-            grid-template-columns: repeat(2, 1fr) !important;
-            gap: 12px !important;
+            grid-template-columns: 1fr !important;
+            gap: 15px !important;
+            padding: 0 !important;
           }
           
           .feature-card {
@@ -480,6 +570,22 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
           .character-image {
             width: 100% !important;
             display: block !important;
+          }
+          
+          .footer {
+            font-size: 12px !important;
+            padding: 15px 10px !important;
+          }
+          
+          .footer p {
+            margin-bottom: 5px !important;
+          }
+          
+          /* iOSでのタッチ動作を最適化 */
+          button {
+            padding: 16px 30px !important;
+            font-size: 16px !important;
+            touch-action: manipulation;
           }
         }
       `}</style>
