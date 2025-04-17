@@ -19,6 +19,7 @@ function AppContent() {
   const [postalCode, setPostalCode] = useState('');
   const [showContactForm, setShowContactForm] = useState(false);
   const [initialized, setInitialized] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // ローディング状態を追加
   
   // React Routerのフック
   const navigate = useNavigate();
@@ -38,7 +39,13 @@ function AppContent() {
       navigate('/', { replace: true });
     }
     
-    setInitialized(true);
+    // 画面表示時に短いローディング状態を設ける (特にモバイル向け)
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+      setInitialized(true);
+    }, 300);
+    
+    return () => clearTimeout(timer);
   }, []);
   
   // 画面遷移のデバッグログ
@@ -356,28 +363,36 @@ function AppContent() {
     navigate('/');
   };
 
+  // ローディング表示
+  if (isLoading) {
+    return (
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        height: '100vh',
+        width: '100vw',
+        margin: 0,
+        padding: 0,
+        backgroundColor: '#65A9E5'
+      }}>
+        <div className="loading-spinner" style={{
+          width: '50px',
+          height: '50px',
+          border: '5px solid rgba(255, 255, 255, 0.3)',
+          borderRadius: '50%',
+          borderTop: '5px solid white',
+          animation: 'spin 1s linear infinite'
+        }}></div>
+      </div>
+    );
+  }
+
   // URLに基づいて適切なコンポーネントをレンダリング
   const renderRouteContent = () => {
     // 初期化前はローディング表示
     if (!initialized) {
-      return (
-        <div style={{ 
-          display: 'flex', 
-          justifyContent: 'center', 
-          alignItems: 'center', 
-          height: '100vh',
-          backgroundColor: '#65A9E5'
-        }}>
-          <div className="loading-spinner" style={{
-            width: '50px',
-            height: '50px',
-            border: '5px solid rgba(255, 255, 255, 0.3)',
-            borderRadius: '50%',
-            borderTop: '5px solid white',
-            animation: 'spin 1s linear infinite'
-          }}></div>
-        </div>
-      );
+      return null;
     }
     
     // 特定のURLで特定の状態が必要な場合のチェック
@@ -443,6 +458,7 @@ function AppContent() {
       maxWidth: '100%',
       margin: 0,
       padding: 0,
+      overflowX: 'hidden'
     }}>
       <AnimatePresence mode="wait">
         <motion.div
@@ -453,7 +469,15 @@ function AppContent() {
           variants={pageVariants}
           transition={{ duration: 0.3 }}
           className="page-container"
-          style={{ width: '100%', flex: 1 }}
+          style={{ 
+            width: '100%', 
+            flex: 1, 
+            display: 'flex', 
+            flexDirection: 'column',
+            alignItems: 'center',
+            maxWidth: '100vw',
+            overflowX: 'hidden'
+          }}
         >
           {renderRouteContent()}
         </motion.div>
@@ -490,15 +514,26 @@ function AppContent() {
         .app-container {
           width: 100%;
           max-width: 100%;
+          overflow-x: hidden;
         }
         
         .page-container {
           width: 100%;
         }
         
-        @media (max-width: 768px) {
+        /* モバイル向けの追加スタイル */
+        @media (max-width: 480px) {
           .app-container {
             padding: 0;
+            max-width: 100vw;
+            overflow-x: hidden;
+          }
+          
+          .page-container {
+            width: 100vw;
+            max-width: 100vw;
+            overflow-x: hidden;
+            box-sizing: border-box;
           }
         }
       `}</style>
