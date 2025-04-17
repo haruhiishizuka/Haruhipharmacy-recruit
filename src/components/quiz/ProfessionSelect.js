@@ -70,9 +70,9 @@ const ProfessionSelect = ({ onSelect }) => {
       minHeight: '100vh',
       width: '100%',
       display: 'flex',
-      alignItems: 'center',
+      alignItems: 'flex-start', // 中央寄せから上寄せに変更
       justifyContent: 'center',
-      padding: '20px 0',
+      padding: '40px 0 20px', // 上部に余白を追加
       backgroundImage: `url('/images/patterns/medical_pattern_light.png')`,
       backgroundSize: '400px',
       backgroundPosition: 'center',
@@ -88,7 +88,8 @@ const ProfessionSelect = ({ onSelect }) => {
         WebkitBackdropFilter: 'blur(10px)',
         borderRadius: '24px',
         boxShadow: '0 8px 32px rgba(0, 0, 0, 0.15)',
-        padding: '30px 20px'
+        padding: '30px 20px',
+        marginTop: '40px' // 上部に追加余白
       }}>
         <h2 style={{
           fontSize: '28px',
@@ -146,7 +147,11 @@ const ProfessionSelect = ({ onSelect }) => {
                 marginBottom: '12px',
                 position: 'relative'
               }}>
-                <img 
+                {/* アイコン表示にフェードインアニメーションを適用 (キラッとエフェクトを削除) */}
+                <motion.img 
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5 }}
                   src={profession.imagePath}
                   alt={profession.label}
                   style={{
@@ -193,9 +198,9 @@ const ProfessionSelect = ({ onSelect }) => {
         </motion.div>
       </div>
       
-      {/* PC版のみのレスポンシブスタイル - スマホ・タブレットはそのまま維持 */}
+      {/* モバイル対応のレスポンシブスタイル */}
       <style jsx="true">{`
-        /* PC版のみのスタイル調整 */
+        /* PC版のスタイル調整 */
         @media (min-width: 768px) {
           .professions-grid {
             grid-template-columns: repeat(4, 1fr);
@@ -208,7 +213,7 @@ const ProfessionSelect = ({ onSelect }) => {
             padding: 40px 30px;
             width: 55%; /* 適切な幅に調整 */
             max-width: 720px; /* 最適な最大幅 */
-            margin: 0 auto;
+            margin: 80px auto 0; /* 上部余白を増加 */
             border-radius: 32px;
           }
           
@@ -233,8 +238,28 @@ const ProfessionSelect = ({ onSelect }) => {
           }
         }
         
-        /* スマホ表示はそのまま維持 */
+        /* タブレット表示 */
+        @media (min-width: 481px) and (max-width: 767px) {
+          .profession-select-content {
+            margin-top: 60px; /* タブレットでも上部に余白 */
+            width: 90%;
+          }
+        }
+        
+        /* スマホ表示 */
         @media (max-width: 480px) {
+          .profession-select-container {
+            padding-top: 20px; /* 上部パディングを調整 */
+            align-items: flex-start; /* 上寄せに固定 */
+          }
+          
+          .profession-select-content {
+            margin-top: 20px; /* スマホでは上部余白を少なめに */
+            padding: 25px 15px;
+            border-radius: 20px;
+            width: 92%;
+          }
+          
           .profession-icon-container {
             width: 60px !important;
             height: 60px !important;
@@ -248,10 +273,16 @@ const ProfessionSelect = ({ onSelect }) => {
             font-size: 24px !important;
             margin-bottom: 20px !important;
           }
+        }
+        
+        /* iOS向けの特別対応 */
+        @supports (-webkit-touch-callout: none) {
+          .profession-select-container {
+            padding-top: 30px; /* iOSでは上部にさらに余白 */
+          }
           
           .profession-select-content {
-            padding: 25px 15px;
-            border-radius: 20px;
+            -webkit-backdrop-filter: blur(10px);
           }
         }
       `}</style>
