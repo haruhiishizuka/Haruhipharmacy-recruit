@@ -29,15 +29,6 @@ function AppContent() {
   useEffect(() => {
     console.log('App initializing...', location.pathname);
     
-    // モバイル検出のデバッグログを追加
-    const isMobile = /Mobi|Android/i.test(navigator.userAgent);
-    console.log("デバイス検出:", { 
-      isMobile, 
-      userAgent: navigator.userAgent,
-      width: window.innerWidth,
-      path: location.pathname 
-    });
-    
     // 無効なルートへのアクセスを修正
     if (location.pathname !== '/' && 
         location.pathname !== '/profession' && 
@@ -47,38 +38,35 @@ function AppContent() {
       console.log('無効なルートへのアクセスを検出: ', location.pathname);
       navigate('/', { replace: true });
     } else if (location.pathname === '/') {
-      // デバイスに関係なく必ずウェルカム画面から始める
-      console.log('ホームページへのアクセスを確認 - WelcomeScreenを表示します');
+      // ルートパスの場合は必ずWelcomeScreenを表示するようにする
+      console.log('ルートパスを検出: WelcomeScreenを表示します');
     }
     
     // 画面表示時に短いローディング状態を設ける (特にモバイル向け)
     const timer = setTimeout(() => {
       setIsLoading(false);
       setInitialized(true);
+      
+      // 初期化後に明示的にルートをチェック (モバイル向け対策)
+      if (location.pathname === '/profession' && !profession) {
+        console.log('職種選択画面が選択されましたが、初期遷移の場合はホームに戻します');
+        navigate('/', { replace: true });
+      }
     }, 300);
     
     return () => clearTimeout(timer);
-  }, []);
+  }, [location.pathname, navigate, profession]);
   
   // 画面遷移のデバッグログ
   useEffect(() => {
     if (initialized) {
-      const isMobile = /Mobi|Android/i.test(navigator.userAgent);
       console.log(`📱 URL遷移: ${location.pathname}`, {
         profession,
         postalCode: postalCode || 'なし',
         quizResult: quizResult ? '結果あり' : '結果なし',
         userAgent: navigator.userAgent,
-        isMobile,
-        screenWidth: window.innerWidth,
-        screenHeight: window.innerHeight,
-        isInitialLoad: location.key === 'default'
+        isMobile: /Mobi|Android/i.test(navigator.userAgent)
       });
-      
-      // モバイルでウェルカム画面がスキップされる問題のデバッグ
-      if (isMobile && location.pathname === '/profession') {
-        console.log('⚠️ モバイルで職種選択画面に直接アクセスしました - 通常フローを確認中');
-      }
     }
   }, [location, profession, postalCode, quizResult, initialized]);
 
@@ -413,8 +401,30 @@ function AppContent() {
   const renderRouteContent = () => {
     // 初期化前はローディング表示
     if (!initialized) {
-      return null;
+      return (
+        <div style={{ 
+          display: 'flex', 
+          justifyContent: 'center', 
+          alignItems: 'center', 
+          height: '100vh',
+          width: '100%',
+          backgroundColor: '#65A9E5'
+        }}>
+          <div className="loading-spinner" style={{
+            width: '40px',
+            height: '40px',
+            border: '4px solid rgba(255, 255, 255, 0.3)',
+            borderRadius: '50%',
+            borderTop: '4px solid white',
+            animation: 'spin 1s linear infinite'
+          }}></div>
+        </div>
+      );
     }
+    
+    // デバッグ情報を追加
+    const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+    console.log(`📱 レンダリングコンテキスト: パス=${location.pathname}, 職種=${profession || 'なし'}, モバイル=${isMobile}`);
     
     // 特定のURLで特定の状態が必要な場合のチェック
     // 例：/resultアクセス時に結果がない場合はリダイレクト
@@ -432,10 +442,10 @@ function AppContent() {
     // URLパスに応じたコンポーネントをレンダリング
     switch (location.pathname) {
       case '/':
-        // モバイル検出に関わらず必ずWelcomeScreenを表示
-        console.log('ルート(/)パスの処理: WelcomeScreenを表示します');
+        console.log('WelcomeScreenをレンダリングします');
         return <WelcomeScreen onStartQuiz={() => navigate('/profession')} onOpenPolicy={handleOpenPolicy} />;
       case '/profession':
+        console.log('ProfessionSelectをレンダリングします');
         return <ProfessionSelect selectedProfession="" onSelect={handleProfessionSelect} />;
       case '/quiz':
         // 職種に基づいた質問セットを取得
