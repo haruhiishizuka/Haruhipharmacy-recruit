@@ -289,6 +289,8 @@ function AppContent() {
   const handleProfessionSelect = (selectedProfession) => {
     console.log(`👩‍⚕️ 選択された職種: ${selectedProfession} (${professionMap[selectedProfession] || '不明'})`);
     setProfession(professionMap[selectedProfession] || selectedProfession);
+    // セッションストレージに保存
+    sessionStorage.setItem('profession', professionMap[selectedProfession] || selectedProfession);
     // 質問画面にナビゲート
     navigate('/quiz');
   };
@@ -404,8 +406,8 @@ function AppContent() {
     
     // 同様に他のパスもチェック
     if (location.pathname === '/quiz' && !profession) {
-      console.log('職種選択なしで/quizにアクセスしました - リダイレクトします');
-      return <Navigate to="/profession" replace />;
+      // ルート復元時はホームに戻す 
+      return <Navigate to="/" replace />;
     }
     
     // URLパスに応じたコンポーネントをレンダリング

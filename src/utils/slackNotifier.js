@@ -195,15 +195,18 @@ const sendNotificationToSlack = async (formData, diagnosticInfo, resolve, reject
   // Format the message
   const messageData = formatSlackMessage(formData, diagnosticInfo);
   
-  // Get the Slack webhook URL from environment
-  const webhookUrl = process.env.REACT_APP_SLACK_WEBHOOK_URL;
-  
-  // If no webhook is configured, use the mock implementation
+  // ①ビルド時 / 実行時どちらでも読めるよう fallback を用意
+  const webhookUrl = 
+    process.env.REACT_APP_SLACK_WEBHOOK_URL || 
+    window.env?.REACT_APP_SLACK_WEBHOOK_URL ||
+    '';
+
+  console.log(`🌐 Slack Webhook URL status: ${webhookUrl ? 'configured' : 'missing'}`);
+
+  // Webhook URLが設定されていない場合はモック関数を使用
   if (!webhookUrl) {
     console.log('⚠️ No webhook URL configured, using mock implementation');
-    const mockResult = await mockSendToSlack(formData, diagnosticInfo);
-    resolve(mockResult);
-    return;
+    return mockSendToSlack(formData, diagnosticInfo);
   }
   
   try {
