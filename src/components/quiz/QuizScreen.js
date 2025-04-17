@@ -130,6 +130,9 @@ const QuizScreen = ({ questions, onComplete }) => {
     <div
       style={{
         minHeight: '100vh',
+        width: '100%',
+        maxWidth: '100%',
+        overflowX: 'hidden', // オーバーフロー処理を追加
         backgroundImage: `url(${process.env.PUBLIC_URL}/images/patterns/medical_pattern_light.png)`,
         backgroundSize: '400px',
         backgroundPosition: 'center',
@@ -324,6 +327,29 @@ const QuizScreen = ({ questions, onComplete }) => {
           </motion.button>
         </div>
       </div>
+      
+      {/* レスポンシブ対応用のグローバルスタイル */}
+      <style jsx="true">{`
+        /* グローバルスタイル */
+        body, html {
+          margin: 0;
+          padding: 0;
+          width: 100%;
+          min-height: 100vh;
+          overflow-x: hidden;
+        }
+        
+        /* モバイル対応 */
+        @media (max-width: 768px) {
+          h3 {
+            font-size: 16px !important;
+          }
+          
+          .navigation-buttons {
+            padding-bottom: 30px;
+          }
+        }
+      `}</style>
     </div>
   );
 };

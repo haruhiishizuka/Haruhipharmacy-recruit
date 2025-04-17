@@ -46,7 +46,7 @@ function AppContent() {
     }, 300);
     
     return () => clearTimeout(timer);
-  }, [location.pathname, navigate]);
+  }, []);
   
   // 画面遷移のデバッグログ
   useEffect(() => {
@@ -290,7 +290,6 @@ function AppContent() {
     console.log(`👩‍⚕️ 選択された職種: ${selectedProfession} (${professionMap[selectedProfession] || '不明'})`);
     setProfession(professionMap[selectedProfession] || selectedProfession);
     // 質問画面にナビゲート
-    console.log('質問画面にナビゲートします');
     navigate('/quiz');
   };
 
@@ -364,13 +363,6 @@ function AppContent() {
     navigate('/');
   };
 
-  // ウェルカム画面から職種選択画面に遷移する関数
-  const handleStartQuiz = () => {
-    console.log('🏁 診断を開始します - 職種選択へ遷移');
-    // 職種選択画面に遷移
-    navigate('/profession');
-  };
-
   // ローディング表示
   if (isLoading) {
     return (
@@ -419,7 +411,7 @@ function AppContent() {
     // URLパスに応じたコンポーネントをレンダリング
     switch (location.pathname) {
       case '/':
-        return <WelcomeScreen onStartQuiz={handleStartQuiz} onOpenPolicy={handleOpenPolicy} />;
+        return <WelcomeScreen onStartQuiz={() => navigate('/profession')} onOpenPolicy={handleOpenPolicy} />;
       case '/profession':
         return <ProfessionSelect selectedProfession="" onSelect={handleProfessionSelect} />;
       case '/quiz':
