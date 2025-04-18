@@ -7,6 +7,8 @@ import WelcomeScreen from './components/quiz/WelcomeScreen';
 import ProfessionSelect from './components/quiz/ProfessionSelect';
 import QuizScreen from './components/quiz/QuizScreen';
 import ResultScreen from './components/results/ResultScreen';
+import EnhancedResultScreen from './components/results/EnhancedResultScreen';
+import AnimalIcon from './components/results/AnimalIcons';
 import QuickConsultationForm from './components/results/QuickConsultationForm';
 import PolicyPage from './components/PolicyPage';
 
@@ -433,13 +435,12 @@ function AppContent() {
         console.log('📊 正規化された結果データ:', normalizedResult);
         
         return (
-          <ResultScreen 
+          <EnhancedResultScreen 
             results={normalizedResult} 
             profession={profession}
             postalCode={postalCode}
             answers={answers}
             onRestart={handleRestart}
-            onContact={() => toggleContactForm(true)}
           />
         );
       case '/policy':
