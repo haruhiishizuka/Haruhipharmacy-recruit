@@ -67,10 +67,7 @@ export const sendToSlack = async (formData, diagnosticInfo) => {
   try {
 
     // 2. プロキシサーバー経由で送信
-    const proxyUrl = 
-      process.env.REACT_APP_SLACK_PROXY_URL || 
-      'https://api.medimatch.vercel.app/api/slack';
-    
+    const proxyUrl = '/.netlify/functions/slack';
     console.log('🌐 プロキシ経由で送信を試みます:', proxyUrl);
     
     const response = await fetch(proxyUrl, {
