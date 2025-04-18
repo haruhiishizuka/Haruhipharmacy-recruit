@@ -65,26 +65,6 @@ export const sendToSlack = async (formData, diagnosticInfo) => {
   };
 
   try {
-    // 1. 直接Webhook送信を試みる（テスト用）
-    const directWebhook = process.env.REACT_APP_SLACK_WEBHOOK_URL;
-    if (directWebhook) {
-      console.log('💡 直接Webhookを使用して送信を試みます');
-      try {
-        const directResponse = await fetch(directWebhook, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(messageData)
-        });
-        
-        if (directResponse.ok) {
-          console.log('✅ Webhook送信成功!');
-          return { success: true };
-        }
-        console.log('⚠️ Webhook送信失敗、プロキシ試行へ', directResponse.status);
-      } catch (err) {
-        console.log('⚠️ Webhook直接送信中にエラー:', err.message);
-      }
-    }
 
     // 2. プロキシサーバー経由で送信
     const proxyUrl = 
