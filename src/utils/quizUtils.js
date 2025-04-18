@@ -1,11 +1,100 @@
 // utils/quizUtils.js
 
 import {
-  calculateResult,
   getResultDescription,
   getMedicalInstitutions,
   getDetailedContent
 } from '../data/questions';
+
+/**
+ * 回答からタイプごとのスコアを集計し、最もスコアの高いタイプを返す
+ * @param {Array} answers - ユーザーの選択データ
+ * @returns {Object} - 診断結果
+ */
+export const calculateResult = (answers) => {
+  // 各軸のスコアを初期化
+  const axisScores = {
+    specialist: 0,   // 専門的 vs 総合的
+    innovative: 0,   // 革新的 vs 継続的
+    human: 0,        // 人間中心 vs 技術中心
+    analytical: 0    // 分析的 vs 実践的
+  };
+  
+  // 回答データが配列でなかった場合は空配列として扱う
+  const safeAnswers = Array.isArray(answers) ? answers : [];
+  
+  // 各回答のスコアを集計
+  safeAnswers.forEach((answer, index) => {
+    // 有効な数値回答かチェック (-3〜3の範囲を想定)
+    if (typeof answer !== 'number' || isNaN(answer)) {
+      console.warn(`質問 ${index + 1}: 無効な回答値 "${answer}"`);
+      return; // この質問をスキップ
+    }
+    
+    // App.jsから渡されるquestionは使用せず、回答インデックスに基づいて軸を決定
+    // 回答インデックスモジュロ4で基本的な軸を循環させる
+    let axis;
+    switch (index % 4) {
+      case 0: axis = 'specialist'; break;
+      case 1: axis = 'innovative'; break;
+      case 2: axis = 'human'; break;
+      case 3: axis = 'analytical'; break;
+    }
+    
+    // 特定の質問についてはオーバーライド（必要に応じて調整）
+    // インデックスベースのハードコードされた例外
+    if (index === 9 || index === 10) axis = 'specialist'; // 総合的/専門的に関する質問
+    if (index === 7 || index === 8 || index === 13) axis = 'human'; // 人間関係に関する質問
+    if (index === 2 || index === 14) axis = 'analytical'; // 分析に関する質問
+    if (index === 6 || index === 15) axis = 'innovative'; // 革新性に関する質問
+    
+    // スコア加算（回答値を-1から1の範囲にスケール）
+    const normalizedValue = answer / 3;
+    axisScores[axis] += normalizedValue;
+  });
+  
+  // 各軸のスコアを正規化（-1〜1の範囲に）
+  Object.keys(axisScores).forEach(axis => {
+    const rawScore = axisScores[axis];
+    // 質問数で割って正規化（答えがすべて最大/最小でも-1〜1の範囲に収まるように）
+    // 最大で4つの質問が各軸に影響する場合、4で割る
+    axisScores[axis] = Math.max(-1, Math.min(1, rawScore / 4));
+  });
+  
+  // タイプコードを生成（S/G, I/C, H/T, A/P）
+  const typeCode = 
+    (axisScores.specialist > 0 ? 'S' : 'G') + 
+    (axisScores.innovative > 0 ? 'I' : 'C') + 
+    (axisScores.human > 0 ? 'H' : 'T') + 
+    (axisScores.analytical > 0 ? 'A' : 'P');
+  
+  // 従来の8タイプに基づくレガシータイプも計算（必要に応じて）
+  let legacyType = '';
+  if (axisScores.specialist > 0.2 && axisScores.innovative > 0.2) {
+    legacyType = 'イノベーター型';
+  } else if (axisScores.specialist > 0.2 && axisScores.human > 0.2) {
+    legacyType = '専門家型';
+  } else if (axisScores.specialist > 0.2 && axisScores.analytical > 0.2) {
+    legacyType = 'コンサルタント型';
+  } else if (axisScores.innovative > 0.2 && axisScores.human > 0.2) {
+    legacyType = 'フロンティア型';
+  } else if (axisScores.human > 0.2 && axisScores.analytical < -0.2) {
+    legacyType = 'ケアスペシャリスト型';
+  } else if (axisScores.innovative > 0.2 && axisScores.analytical > 0.2) {
+    legacyType = '改革者型';
+  } else if (axisScores.specialist < -0.2 && axisScores.innovative < -0.2) {
+    legacyType = '独立志向型';
+  } else {
+    legacyType = 'リーダー型';
+  }
+  
+  // 診断結果を返す
+  return {
+    typeCode,      // 新16タイプのコード (例: "SIHA")
+    legacyType,    // 従来の8タイプの名称 (例: "専門家型")
+    axisScores     // 4軸それぞれのスコア値
+  };
+};
 
 /**
  * 回答からタイプごとのスコアを集計し、最もスコアの高いタイプを返す
@@ -74,7 +163,7 @@ export const processQuizResults = (answers) => {
   console.log('処理された回答:', processedAnswers);
   
   try {
-    // questions.jsのcalculateResult関数を使用して診断タイプを判定
+    // calculateResult関数を使用して診断タイプを判定
     const result = calculateResult(processedAnswers);
     console.log('診断結果:', result);
     return result;
@@ -93,12 +182,12 @@ export const processQuizResults = (answers) => {
     };
   }
 };
+
 /**
  * 診断タイプ名から、すべての診断結果データ（表示用）をまとめて返す
  * @param {Object} resultObj - 判定された診断タイプを含むオブジェクト
  * @returns {Object} - 表示用の診断結果オブジェクト
  */
-// utils/quizUtils.js内のnormalizeResultData関数の一部
 export const normalizeResultData = (resultObj) => {
   if (!resultObj || !resultObj.typeCode) {
     console.warn('結果オブジェクトが不完全またはnullです');
