@@ -450,6 +450,87 @@ const QuickConsultationForm = ({ resultType, profession, onClose }) => {
                     >
                       閉じる
                     </button>
+                    
+                    {/* シェア機能追加 */}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const shareData = {
+                          title: 'キャリア診断 結果',
+                          text: `私は ${resultType} タイプでした！ MediMatch で診断してみませんか？`,
+                          url: window.location.href
+                        };
+                        if (navigator.share) {
+                          navigator.share(shareData).catch(console.error);
+                        } else {
+                          navigator.clipboard.writeText(`${shareData.text} ${shareData.url}`)
+                            .then(() => alert('リンクをコピーしました！'))
+                            .catch(() => alert('コピーできませんでした'));
+                        }
+                      }}
+                      style={{
+                        marginTop: '12px',
+                        backgroundColor: '#38B2AC',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '50px',
+                        padding: '12px 24px',
+                        fontSize: '16px',
+                        fontWeight: '600',
+                        cursor: 'pointer',
+                        display: 'block',
+                        margin: '12px auto 0'
+                      }}
+                    >
+                      結果をシェアする
+                    </button>
+                    
+                    {/* SNSシェアボタン */}
+                    <div style={{ marginTop: '16px', display: 'flex', gap: '12px', justifyContent: 'center' }}>
+                      
+                      <a href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
+                          `私は ${resultType} タイプでした！ #MediMatch診断`
+                        )}&url=${encodeURIComponent(window.location.href)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          backgroundColor: '#1DA1F2',
+                          color: 'white',
+                          width: '40px',
+                          height: '40px',
+                          borderRadius: '50%',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          textDecoration: 'none'
+                        }}
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+                        </svg>
+                      </a>
+
+                      
+                      <a href={`https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(window.location.href)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          backgroundColor: '#06C755',
+                          color: 'white',
+                          width: '40px',
+                          height: '40px',
+                          borderRadius: '50%',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          textDecoration: 'none'
+                        }}
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M24 10.304c0-5.369-5.383-9.738-12-9.738-6.616 0-12 4.369-12 9.738 0 4.819 4.588 8.857 10.778 9.623.421.091.999.28 1.145.641.132.331.089.848.044 1.182-.132.611-.611 2.38-.611 2.38-.033.16-.066.26.088.33.154.07.275-.05.421-.111 1.893-.798 9.488-5.494 12.954-9.412 2.354-2.581 2.851-5.239 2.181-7.593z"></path>
+                        </svg>
+                      </a>
+                    </div>
                   </div>
                 ) : (
                   <form onSubmit={handleSubmit} noValidate>
@@ -762,8 +843,8 @@ const QuickConsultationForm = ({ resultType, profession, onClose }) => {
                               <strong>LINEで相談</strong>をご希望の方は、公式アカウントを友だち追加してください。
                             </p>
                             
-                            <a
-                              href="https://lin.ee/xolKvUO"
+                            
+                            <a   href="https://lin.ee/xolKvUO"
                               target="_blank"
                               rel="noopener noreferrer"
                               style={{
