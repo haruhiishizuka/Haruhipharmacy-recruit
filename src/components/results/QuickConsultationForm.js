@@ -1,8 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { sendToSlack } from '../../utils/slackNotifier';
 
+/**
+ * QuickConsultationForm
+ * -------------------------------------------------------------
+ * - フォーム入力 + MediMatch の強み紹介をタブで切替表示
+ * - バリデーションはリアルタイム & 送信前の二段構え
+ * - LINE 相談を選択すると友だち追加ボタンが展開
+ * - 成功時は 24h 以内連絡メッセージ、LINE 選択時は自動で友だち追加ページを開く
+ * - UI / 配色 / アニメーションは WelcomeScreen に合わせた一貫デザイン
+ * -------------------------------------------------------------
+ */
 const QuickConsultationForm = ({ resultType, profession, onClose }) => {
+  /* ------------------------------------------------------------------
+   * state
+   * ----------------------------------------------------------------*/
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -14,170 +27,165 @@ const QuickConsultationForm = ({ resultType, profession, onClose }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  // タブ切り替え用の状態
-  const [activeTab, setActiveTab] = useState('form'); // 'form' or 'about'
+  const [touched, setTouched] = useState({});
+  const [activeTab, setActiveTab] = useState('form'); // 'form' | 'about'
 
-  // マウント時のデバッグログ
-  useEffect(() => {
-    console.log('📋 QuickConsultationForm マウント', { resultType, profession });
-    console.log('🔄 onClose function:', typeof onClose);
-  }, [resultType, profession, onClose]);
+  /* ------------------------------------------------------------------
+   * helpers
+   * ----------------------------------------------------------------*/
+  // フィールド単体バリデーション
+  const validateField = (name, value) => {
+    switch (name) {
+      case 'name':
+        if (!value.trim()) return '氏名は必須項目です';
+        break;
+      case 'email':
+        if (!value.trim()) return 'メールアドレスは必須項目です';
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return '有効なメールアドレスを入力してください';
+        break;
+      case 'phone':
+        if (value.trim() && !/^[0-9\-+\s()]*$/.test(value)) return '有効な電話番号を入力してください';
+        break;
+      case 'postalCode':
+        if (value.trim()) {
+          const clean = value.replace(/-/g, '');
+          if (clean.length !== 7) return '正しい郵便番号を入力してください（例：123-4567）';
+        }
+        break;
+      default:
+        break;
+    }
+    return '';
+  };
+
+  // フォーム全体バリデーション
+  const validateForm = () => {
+    const fields = Object.keys(formData);
+    const newTouched = fields.reduce((acc, f) => ({ ...acc, [f]: true }), {});
+    setTouched(newTouched);
+
+    for (const f of ['name', 'email']) {
+      const msg = validateField(f, formData[f]);
+      if (msg) {
+        setErrorMessage(msg);
+        return false;
+      }
+    }
+    const pcMsg = validateField('postalCode', formData.postalCode);
+    if (pcMsg) { setErrorMessage(pcMsg); return false; }
+
+    const phMsg = validateField('phone', formData.phone);
+    if (phMsg) { setErrorMessage(phMsg); return false; }
+
+    setErrorMessage('');
+    return true;
+  };
+
+  // 入力フィールドスタイル
+  const getInputStyle = (field) => {
+    const base = {
+      width: '100%', padding: '12px', borderRadius: '8px',
+      border: '1px solid #CBD5E0', fontSize: '16px', transition: 'all .2s'
+    };
+    if (!touched[field]) return base;
+    const msg = validateField(field, formData[field]);
+    if (msg) return { ...base, border: '1px solid #E53E3E', background: '#FFF5F5' };
+    if (formData[field]) return { ...base, border: '1px solid #48BB78', background: '#F0FFF4' };
+    return base;
+  };
+
+  /* ------------------------------------------------------------------
+   *  handlers
+   * ----------------------------------------------------------------*/
+  const handleBlur = (e) => {
+    const { name } = e.target;
+    setTouched((prev) => ({ ...prev, [name]: true }));
+    const msg = validateField(name, formData[name]);
+    setErrorMessage(msg);
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log(`🔄 Input changed: ${name} = ${value}`);
-    
-    // 郵便番号の場合、数字とハイフンのみ許可する処理
+    // 郵便番号フォーマット
     if (name === 'postalCode') {
-      const cleanValue = value.replace(/[^\d-]/g, '');
-      
-      // 自動的に3文字後にハイフンを挿入
-      if (cleanValue.length === 3 && !cleanValue.includes('-') && formData.postalCode.length < 3) {
-        setFormData(prev => ({
-          ...prev,
-          [name]: cleanValue + '-'
-        }));
-        return;
-      }
-      
-      // 郵便番号の最大長を8文字（xxx-xxxx）に制限
-      if (cleanValue.length <= 8) {
-        setFormData(prev => ({
-          ...prev,
-          [name]: cleanValue
-        }));
-      }
+      const digits = value.replace(/\D/g, '');
+      const formatted = digits.length > 3 ? `${digits.slice(0, 3)}-${digits.slice(3, 7)}` : digits;
+      if (formatted.length <= 8) setFormData((p) => ({ ...p, postalCode: formatted }));
+      if (touched[name]) setErrorMessage(validateField(name, formatted));
       return;
     }
-    
-    // それ以外のフィールドは通常処理
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    // 電話番号半角数字などのみ許可
+    if (name === 'phone') {
+      const cleaned = value.replace(/[^0-9\-+\s()]/g, '');
+      setFormData((p) => ({ ...p, phone: cleaned }));
+      if (touched[name]) setErrorMessage(validateField(name, cleaned));
+      return;
+    }
+    setFormData((p) => ({ ...p, [name]: value }));
+    if (touched[name]) setErrorMessage(validateField(name, value));
   };
 
   const handleSubmit = async (e) => {
-    console.log("🚀 Form submission started");
     e.preventDefault();
-    
+    if (!validateForm()) return;
+
     setIsSubmitting(true);
-    setErrorMessage('');
-  
-    // バリデーションチェック
-    if (!formData.name || !formData.email) {
-      console.log("🛑 Validation error: Name or email is missing");
-      setErrorMessage('氏名とメールアドレスは必須項目です');
-      setIsSubmitting(false);
-      return;
-    }
-    
-    // 郵便番号の基本的な検証（入力されている場合）
-    if (formData.postalCode) {
-      const cleanCode = formData.postalCode.replace(/-/g, '');
-      if (cleanCode.length !== 7) {
-        setErrorMessage('正しい郵便番号を入力してください（例：123-4567）');
-        setIsSubmitting(false);
-        return;
-      }
-    }
-  
-    // 送信データのログ出力
-    const diagnosticInfo = { 
-      resultType, 
-      profession, 
-      postalCode: formData.postalCode 
-    };
-    console.log("📤 Sending data:", { formData, diagnosticInfo });
-  
+
+    const diagnosticInfo = { resultType, profession, postalCode: formData.postalCode };
     try {
-      // sendToSlack関数を呼び出す
-      const result = await sendToSlack(formData, diagnosticInfo);
-      console.log("📬 Slack API response:", result);
-  
-      if (result.success) {
-        setIsSubmitted(true);
-      } else {
-        setErrorMessage(result.message || '送信に失敗しました。後ほどお試しください。');
+      const res = await sendToSlack(formData, diagnosticInfo);
+      if (!res.success) throw new Error(res.message || 'Slack 送信失敗');
+      setIsSubmitted(true);
+      // LINE 自動誘導
+      if (formData.contactMethod === 'line') {
+        setTimeout(() => window.open('https://lin.ee/xolKvUO', '_blank'), 1500);
       }
     } catch (err) {
-      console.error("💥 Error sending to Slack:", err);
-      setErrorMessage("サーバーとの通信中にエラーが発生しました。後ほどお試しください。");
-    } finally {
+      console.error(err);
+      setErrorMessage('送信に失敗しました。後ほどお試しください。');
       setIsSubmitting(false);
     }
   };
 
-  // 閉じるボタンの処理
-  const handleClose = (e) => {
-    if (e) {
-      e.preventDefault();
-    }
-    console.log("❌ Closing form");
-    if (typeof onClose === 'function') {
-      onClose();
-    } else {
-      console.error("⚠️ onClose is not a function:", onClose);
-    }
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+    setErrorMessage('');
   };
 
-  // タブ切り替えの処理
-  const handleTabChange = (tab) => {
-    console.log(`🔖 Tab changed to: ${tab}`);
-    setActiveTab(tab);
+  const handleClose = (e) => {
+    e?.preventDefault();
+    onClose?.();
   };
-  
-  // アニメーションのバリアント
+
+  /* ------------------------------------------------------------------
+   *  UI 定義
+   * ----------------------------------------------------------------*/
   const tabContentVariants = {
     hidden: { opacity: 0, x: -20 },
-    visible: { 
-      opacity: 1, 
-      x: 0,
-      transition: { duration: 0.3 }
-    },
-    exit: { 
-      opacity: 0,
-      x: 20,
-      transition: { duration: 0.2 }
-    }
+    visible: { opacity: 1, x: 0, transition: { duration: 0.3 } },
+    exit: { opacity: 0, x: 20, transition: { duration: 0.2 } }
   };
-  
-  // MediMatchの強みリスト
+
+  // MediMatch 強みカード（6 枚目を追加済み）
   const strengths = [
     {
-      title: "逆指名型転職システム",
-      description: "あなたの「行きたい」医療機関を選び、その希望に沿って私たちが求人を開拓します。従来の転職サービスでは実現できなかった可能性を切り開きます。",
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="m9 18 6-6-6-6"/>
-        </svg>
-      )
+      title: '逆指名型転職システム',
+      description: 'あなたの「行きたい」医療機関を選び、その希望に沿って私たちが求人を開拓します。従来の転職サービスでは実現できなかった可能性を切り開きます。',
+      icon: (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>)
     },
     {
-      title: "医療機関の質的評価",
-      description: "経営基盤、理念、将来性などを独自の視点で評価・分析し、透明性の高い情報を提供します。良質な医療と健全な経営を両立する医療機関との連携を重視します。",
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M2 20h20"/>
-          <path d="M5 20V8.2a1 1 0 0 1 .4-.8l4.2-3.4a1 1 0 0 1 1.2 0l4.2 3.4a1 1 0 0 1 .4.8V20"/>
-          <path d="M12 15v5"/>
-          <path d="M8 9h8"/>
-          <path d="M8 13h8"/>
-        </svg>
-      )
+      title: '医療機関の質的評価',
+      description: '経営基盤、理念、将来性などを独自の視点で評価・分析し、透明性の高い情報を提供します。良質な医療と健全な経営を両立する医療機関との連携を重視します。',
+      icon: (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 20h20"/><path d="M5 20V8.2a1 1 0 0 1 .4-.8l4.2-3.4a1 1 0 0 1 1.2 0l4.2 3.4a1 1 0 0 1 .4.8V20"/><path d="M12 15v5"/><path d="M8 9h8"/><path d="M8 13h8"/></svg>)
     },
     {
-      title: "丁寧さの追求",
-      description: "多くの求職者を扱うのではなく、限られた方々に深く寄り添うことで、量ではなく質を重視し、短期的な成果よりも長期的な満足と成長を大切にします。",
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
-        </svg>
-      )
+      title: '丁寧さの追求',
+      description: '多くの求職者を扱うのではなく、限られた方々に深く寄り添うことで、量ではなく質を重視し、短期的な成果よりも長期的な満足と成長を大切にします。',
+      icon: (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>)
     },
     {
-      title: "主体性の尊重",
-      description: "医療従事者がキャリアを自らの手で切り開く権利を尊重し、「行きたい」という意志を最も尊い動機として受け止め、その実現に全力を尽くします。",
+      title: '主体性の尊重',
+      description: '医療従事者がキャリアを自らの手で切り開く権利を尊重し、「行きたい」という意志を最も尊い動機として受け止め、その実現に全力を尽くします。',
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <circle cx="12" cy="12" r="10"/>
@@ -244,6 +252,7 @@ const QuickConsultationForm = ({ resultType, profession, onClose }) => {
           <button
             onClick={(e) => handleClose(e)}
             type="button"
+            aria-label="閉じる"
             style={{
               position: 'absolute',
               top: '16px',
@@ -271,9 +280,16 @@ const QuickConsultationForm = ({ resultType, profession, onClose }) => {
           borderBottom: '1px solid #E2E8F0',
           backgroundColor: '#F7FAFC',
           padding: '6px'
-        }}>
+        }}
+        role="tablist"
+        aria-label="相談フォームタブ"
+        >
           <button
             onClick={() => handleTabChange('form')}
+            role="tab"
+            aria-selected={activeTab === 'form'}
+            aria-controls="form-tab"
+            id="form-tab-button"
             style={{
               flex: 1,
               padding: '14px 8px',
@@ -324,6 +340,10 @@ const QuickConsultationForm = ({ resultType, profession, onClose }) => {
           
           <button
             onClick={() => handleTabChange('about')}
+            role="tab"
+            aria-selected={activeTab === 'about'}
+            aria-controls="about-tab"
+            id="about-tab-button"
             style={{
               flex: 1,
               padding: '14px 8px',
@@ -372,47 +392,710 @@ const QuickConsultationForm = ({ resultType, profession, onClose }) => {
 
         {/* コンテンツエリア - スクロール可能 */}
         <div style={{ overflowY: 'auto', flex: 1 }}>
-          {/* フォームタブのコンテンツ */}
-          {activeTab === 'form' && (
-            <motion.div 
-              key="form"
-              variants={tabContentVariants}
-              initial="hidden"
-              animate="visible"
-              exit="exit"
-              style={{ padding: '24px' }}
-            >
-              {isSubmitted ? (
-                <div style={{ textAlign: 'center', padding: '20px 0' }}>
-                  <div
-                    style={{
-                      width: '64px',
-                      height: '64px',
-                      borderRadius: '50%',
-                      backgroundColor: '#4CAF50',
-                      color: 'white',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      margin: '0 auto 16px'
-                    }}
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
+          <AnimatePresence mode="wait">
+            {/* フォームタブのコンテンツ */}
+            {activeTab === 'form' && (
+              <motion.div 
+                key="form"
+                variants={tabContentVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                style={{ padding: '24px' }}
+                role="tabpanel"
+                id="form-tab"
+                aria-labelledby="form-tab-button"
+              >
+                {isSubmitted ? (
+                  <div style={{ textAlign: 'center', padding: '20px 0' }}>
+                    <div
+                      style={{
+                        width: '64px',
+                        height: '64px',
+                        borderRadius: '50%',
+                        backgroundColor: '#4CAF50',
+                        color: 'white',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        margin: '0 auto 16px'
+                      }}
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                      </svg>
+                    </div>
+                    <h4 style={{ fontSize: '20px', fontWeight: '600', marginBottom: '12px', color: '#2D3748' }}>
+                      予約を受け付けました
+                    </h4>
+                    <p style={{ fontSize: '16px', color: '#4A5568', marginBottom: '24px' }}>
+                      担当者から24時間以内にご連絡いたします
+                    </p>
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleClose();
+                      }}
+                      type="button"
+                      style={{
+                        backgroundColor: '#1A6CBF',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '50px',
+                        padding: '12px 24px',
+                        fontSize: '16px',
+                        fontWeight: '600',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      閉じる
+                    </button>
                   </div>
-                  <h4 style={{ fontSize: '20px', fontWeight: '600', marginBottom: '12px', color: '#2D3748' }}>
-                    予約を受け付けました
+                ) : (
+                  <form onSubmit={handleSubmit} noValidate>
+                    <p style={{ marginBottom: '20px', fontSize: '15px', color: '#4A5568' }}>
+                      以下の情報を入力いただくと、専任のキャリアアドバイザーからご連絡いたします。
+                    </p>
+                    
+                    {/* エラーメッセージ */}
+                    {errorMessage && (
+                      <motion.div 
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        style={{
+                          backgroundColor: '#FEF2F2',
+                          color: '#DC2626',
+                          padding: '12px 16px',
+                          borderRadius: '8px',
+                          marginBottom: '16px',
+                          fontSize: '14px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '8px'
+                        }}
+                        role="alert"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <circle cx="12" cy="12" r="10"></circle>
+                          <line x1="12" y1="8" x2="12" y2="12"></line>
+                          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                        </svg>
+                        {errorMessage}
+                      </motion.div>
+                    )}
+                    
+                    {/* 名前 */}
+                    <div style={{ marginBottom: '16px' }}>
+                      <label 
+                        htmlFor="name"
+                        style={{ 
+                          display: 'block', 
+                          marginBottom: '6px', 
+                          fontSize: '14px', 
+                          fontWeight: '500',
+                          color: '#4A5568'
+                        }}
+                      >
+                        お名前 <span style={{ color: '#E53E3E' }}>*</span>
+                      </label>
+                      <input
+                        id="name"
+                        type="text"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        required
+                        placeholder="例：田中 花子"
+                        aria-required="true"
+                        style={getInputStyle('name')}
+                      />
+                    </div>
+                    
+                    {/* 電話番号 */}
+                    <div style={{ marginBottom: '16px' }}>
+                      <label 
+                        htmlFor="phone"
+                        style={{ 
+                          display: 'block', 
+                          marginBottom: '6px', 
+                          fontSize: '14px', 
+                          fontWeight: '500',
+                          color: '#4A5568'
+                        }}
+                      >
+                        電話番号 <span style={{ color: '#E53E3E' }}>*</span>
+                      </label>
+                      <input
+                        id="phone"
+                        type="tel"
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        required
+                        placeholder="例：090-1234-5678"
+                        aria-required="true"
+                        style={getInputStyle('phone')}
+                      />
+                    </div>
+                    
+                    {/* メールアドレス */}
+                    <div style={{ marginBottom: '16px' }}>
+                      <label 
+                        htmlFor="email"
+                        style={{ 
+                          display: 'block', 
+                          marginBottom: '6px', 
+                          fontSize: '14px', 
+                          fontWeight: '500',
+                          color: '#4A5568'
+                        }}
+                      >
+                        メールアドレス <span style={{ color: '#E53E3E' }}>*</span>
+                      </label>
+                      <input
+                        id="email"
+                        type="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        required
+                        placeholder="例：tanaka@example.com"
+                        aria-required="true"
+                        style={getInputStyle('email')}
+                      />
+                    </div>
+                    
+                    {/* 郵便番号入力欄 */}
+                    <div style={{ marginBottom: '16px' }}>
+                      <label 
+                        htmlFor="postalCode"
+                        style={{ 
+                          display: 'block', 
+                          marginBottom: '6px', 
+                          fontSize: '14px', 
+                          fontWeight: '500',
+                          color: '#4A5568'
+                        }}
+                      >
+                        郵便番号
+                      </label>
+                      <div style={{ position: 'relative' }}>
+                        <input
+                          id="postalCode"
+                          type="text"
+                          name="postalCode"
+                          value={formData.postalCode}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          placeholder="例：123-4567"
+                          maxLength="8"
+                          aria-describedby="postalCode-hint"
+                          style={{
+                            ...getInputStyle('postalCode'),
+                            paddingLeft: '40px'
+                          }}
+                        />
+                        <span style={{ 
+                          position: 'absolute', 
+                          top: '50%', 
+                          left: '12px', 
+                          transform: 'translateY(-50%)', 
+                          pointerEvents: 'none', 
+                          color: '#718096' 
+                        }}>
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M21.5 12H16c-.7 2-2 3-4 3s-3.3-1-4-3H2.5"></path>
+                            <path d="M5.5 5.1L2 12v6c0 1.1.9 2 2 2h16a2 2 0 002-2v-6l-3.4-6.9A2 2 0 0016.8 4H7.2a2 2 0 00-1.7 1.1z"></path>
+                          </svg>
+                        </span>
+                      </div>
+                      <p id="postalCode-hint" style={{ fontSize: '12px', color: '#718096', marginTop: '4px' }}>
+                        ※お住まいの地域に合った医療機関をご紹介するために使用します
+                      </p>
+                    </div>
+                    
+                    {/* メッセージ欄 */}
+                    <div style={{ marginBottom: '16px' }}>
+                      <label 
+                        htmlFor="message"
+                        style={{ 
+                          display: 'block', 
+                          marginBottom: '6px', 
+                          fontSize: '14px', 
+                          fontWeight: '500',
+                          color: '#4A5568'
+                        }}
+                      >
+                        メッセージ（任意）
+                      </label>
+                      <textarea
+                        id="message"
+                        name="message"
+                        value={formData.message}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        placeholder="質問や希望条件などがあればご記入ください"
+                        style={{
+                          ...getInputStyle('message'),
+                          minHeight: '100px',
+                          resize: 'vertical'
+                        }}
+                      />
+                    </div>
+                    
+                    {/* 希望連絡方法 */}
+                    <div style={{ marginBottom: '24px' }}>
+                      <p style={{ 
+                        marginBottom: '10px', 
+                        fontSize: '14px', 
+                        fontWeight: '500',
+                        color: '#4A5568'
+                      }}>
+                        ご希望の連絡方法 <span style={{ color: '#E53E3E' }}>*</span>
+                      </p>
+    
+                      <div 
+                        style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}
+                        role="radiogroup"
+                        aria-required="true"
+                      >
+                        <label 
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            padding: '10px 16px',
+                            borderRadius: '8px',
+                            border: `1px solid ${formData.contactMethod === 'phone' ? '#1A6CBF' : '#CBD5E0'}`,
+                            backgroundColor: formData.contactMethod === 'phone' ? '#EBF8FF' : 'white',
+                            cursor: 'pointer',
+                            flex: '1',
+                            minWidth: '120px'
+                          }}
+                        >
+                          <input
+                            type="radio"
+                            name="contactMethod"
+                            value="phone"
+                            checked={formData.contactMethod === 'phone'}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            style={{ marginRight: '8px' }}
+                          />
+                          <span style={{ fontSize: '15px', color: '#2D3748' }}>電話</span>
+                        </label>
+      
+                        <label 
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            padding: '10px 16px',
+                            borderRadius: '8px',
+                            border: `1px solid ${formData.contactMethod === 'zoom' ? '#1A6CBF' : '#CBD5E0'}`,
+                            backgroundColor: formData.contactMethod === 'zoom' ? '#EBF8FF' : 'white',
+                            cursor: 'pointer',
+                            flex: '1',
+                            minWidth: '120px'
+                          }}
+                        >
+                          <input
+                            type="radio"
+                            name="contactMethod"
+                            value="zoom"
+                            checked={formData.contactMethod === 'zoom'}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            style={{ marginRight: '8px' }}
+                          />
+                          <span style={{ fontSize: '15px', color: '#2D3748' }}>Zoom</span>
+                        </label>
+      
+                        <label 
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            padding: '10px 16px',
+                            borderRadius: '8px',
+                            border: `1px solid ${formData.contactMethod === 'line' ? '#1A6CBF' : '#CBD5E0'}`,
+                            backgroundColor: formData.contactMethod === 'line' ? '#EBF8FF' : 'white',
+                            cursor: 'pointer',
+                            flex: '1',
+                            minWidth: '120px'
+                          }}
+                        >
+                          <input
+                            type="radio"
+                            name="contactMethod"
+                            value="line"
+                            checked={formData.contactMethod === 'line'}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            style={{ marginRight: '8px' }}
+                          />
+                          <span style={{ fontSize: '15px', color: '#2D3748' }}>LINE</span>
+                        </label>
+                      </div>
+    
+                      {/* LINE友だち追加ボタン - LINEが選択された場合のみ表示 */}
+                      <AnimatePresence>
+                        {formData.contactMethod === 'line' && (
+                          <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: 'auto' }}
+                            exit={{ opacity: 0, height: 0 }}
+                            transition={{ duration: 0.3 }}
+                            style={{
+                              backgroundColor: '#F7FAFC',
+                              borderRadius: '12px',
+                              padding: '16px',
+                              marginTop: '16px',
+                              textAlign: 'center'
+                            }}
+                          >
+                            <p style={{ 
+                              marginBottom: '12px', 
+                              fontSize: '14px', 
+                              color: '#4A5568' 
+                            }}>
+                              <strong>LINEで相談</strong>をご希望の方は、公式アカウントを友だち追加してください。
+                            </p>
+                            
+                            <a
+                              href="https://lin.ee/xolKvUO"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              style={{
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '8px',
+                                backgroundColor: '#06C755',
+                                color: '#fff',
+                                padding: '10px 20px',
+                                borderRadius: '30px',
+                                fontWeight: 600,
+                                textDecoration: 'none',
+                                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                                transition: 'all 0.2s ease'
+                              }}
+                            >
+                              <img src="/images/icons/line.svg" alt="LINE" width="24" height="24" />
+                              <span>友だち追加して相談</span>
+                            </a>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+
+                    {/* 診断情報の表示 */}
+                    <div style={{
+                      backgroundColor: '#F7FAFC',
+                      padding: '16px',
+                      borderRadius: '8px',
+                      marginBottom: '20px',
+                      fontSize: '14px'
+                    }}>
+                      <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1A6CBF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '8px' }}>
+                          <circle cx="12" cy="12" r="10"></circle>
+                          <line x1="12" y1="16" x2="12" y2="12"></line>
+                          <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                        </svg>
+                        <span style={{ color: '#1A6CBF', fontWeight: '600' }}>診断情報</span>
+                      </div>
+                      <p style={{ color: '#4A5568', marginBottom: '4px' }}>
+                        診断結果: <strong>{resultType}</strong>タイプ
+                      </p>
+                      {profession && (
+                        <p style={{ color: '#4A5568', marginBottom: '4px' }}>
+                          職種: <strong>{profession}</strong>
+                        </p>
+                      )}
+                    </div>
+                    
+                    {/* 送信ボタン */}
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      style={{
+                        width: '100%',
+                        backgroundColor: '#1A6CBF',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '50px',
+                        padding: '14px',
+                        fontSize: '16px',
+                        fontWeight: '600',
+                        cursor: isSubmitting ? 'default' : 'pointer',
+                        opacity: isSubmitting ? 0.7 : 1,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '8px',
+                        transition: 'all 0.3s ease'
+                      }}
+                    >
+                      {isSubmitting ? (
+                        <>
+                          <div style={{ 
+                            width: '18px', 
+                            height: '18px', 
+                            borderRadius: '50%', 
+                            border: '3px solid rgba(255,255,255,0.3)',
+                            borderTopColor: 'white',
+                            animation: 'spin 1s linear infinite'
+                          }} 
+                          role="status"
+                          aria-label="送信中">
+                          </div>
+                          <span>送信中...</span>
+                        </>
+                      ) : (
+                        <span>無料相談を予約する</span>
+                      )}
+                    </button>
+                    
+                    <p style={{ 
+                      fontSize: '12px', 
+                      color: '#718096', 
+                      marginTop: '12px',
+                      textAlign: 'center' 
+                    }}>
+                      ※24時間以内に担当者からご連絡いたします
+                    </p>
+
+                    {/* サービスの特徴へのリンク */}
+                    <div style={{ textAlign: 'center', marginTop: '24px' }}>
+                      <button
+                        type="button"
+                        onClick={() => handleTabChange('about')}
+                        style={{
+                          background: 'none',
+                          border: 'none',
+                          color: '#1A6CBF',
+                          textDecoration: 'underline',
+                          cursor: 'pointer',
+                          fontSize: '14px',
+                          padding: '4px 8px'
+                        }}
+                      >
+                        MediMatchの5つの強みを確認する →
+                      </button>
+                    </div>
+                  </form>
+                )}
+              </motion.div>
+            )}
+
+            {/* 会社の強みタブのコンテンツ */}
+            {activeTab === 'about' && (
+              <motion.div 
+                key="about"
+                variants={tabContentVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                style={{ padding: '24px' }}
+                role="tabpanel"
+                id="about-tab"
+                aria-labelledby="about-tab-button"
+              >
+                {/* MediMatchの理念 */}
+                <div style={{
+                  backgroundColor: '#EBF8FF',
+                  borderRadius: '12px',
+                  padding: '20px',
+                  marginBottom: '24px',
+                  border: '1px solid #BEE3F8'
+                }}>
+                  <h4 style={{ 
+                    fontSize: '18px', 
+                    fontWeight: '700', 
+                    color: '#1A6CBF',
+                    marginBottom: '12px' 
+                  }}>
+                    私たちの理念
                   </h4>
-                  <p style={{ fontSize: '16px', color: '#4A5568', marginBottom: '24px' }}>
-                    担当者から24時間以内にご連絡いたします
+                  <p style={{ fontSize: '15px', lineHeight: '1.6', marginBottom: '14px' }}>
+                    「医療機関が選ばれる時代の、信頼できる伴走者でありたい」
                   </p>
+                  <p style={{ fontSize: '15px', lineHeight: '1.6' }}>
+                    MediMatchは、医療従事者一人ひとりの「行きたい」という意志を何よりも尊重します。
+                    私たちは量ではなく質を重視し、短期的な成果よりも長期的な満足と成長を大切にしています。
+                  </p>
+                </div>
+
+                {/* 5つの強み */}
+                <h4 style={{ 
+                  fontSize: '17px', 
+                  fontWeight: '600', 
+                  color: '#2D3748',
+                  marginBottom: '16px' 
+                }}>
+                  MediMatchの5つの強み
+                </h4>
+
+                <div style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '16px',
+                  marginBottom: '24px'
+                }}>
+                  {strengths.map((strength, index) => (
+                    <div key={index} style={{
+                      backgroundColor: 'white',
+                      borderRadius: '12px',
+                      padding: '16px',
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
+                      border: '1px solid #E2E8F0'
+                    }}>
+                      <div style={{ 
+                        display: 'flex', 
+                        gap: '16px',
+                        alignItems: 'flex-start'
+                      }}>
+                        <div style={{
+                          backgroundColor: '#1A6CBF',
+                          color: 'white',
+                          width: '40px',
+                          height: '40px',
+                          borderRadius: '50%',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          flexShrink: 0
+                        }}
+                          aria-hidden="true"
+                        >
+                          {strength.icon}
+                        </div>
+                        <div>
+                          <h5 style={{ 
+                            fontSize: '16px', 
+                            fontWeight: '600', 
+                            color: '#1A6CBF',
+                            marginBottom: '6px' 
+                          }}>
+                            {strength.title}
+                          </h5>
+                          <p style={{ 
+                            fontSize: '14px', 
+                            color: '#4A5568', 
+                            lineHeight: '1.6',
+                            margin: 0
+                          }}>
+                            {strength.description}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* サービスの特徴セクション - 追加情報 */}
+                <div style={{
+                  backgroundColor: '#F7FAFC',
+                  borderRadius: '12px',
+                  padding: '20px',
+                  marginBottom: '24px'
+                }}>
+                  <h4 style={{ 
+                    fontSize: '17px', 
+                    fontWeight: '600', 
+                    color: '#2D3748',
+                    marginBottom: '16px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px'
+                  }}>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <path d="M2 20h20"></path>
+                      <path d="M5 20v-8a3 3 0 0 1 3-3h8a3 3 0 0 1 3 3v8"></path>
+                      <path d="M12 7V2"></path>
+                      <path d="M13 5h-2"></path>
+                    </svg>
+                    私たちのサービスの特徴
+                  </h4>
+                  <ul style={{ 
+                    paddingLeft: '20px',
+                    marginBottom: '0',
+                    fontSize: '14px',
+                    lineHeight: '1.7',
+                    color: '#2D3748'
+                  }}>
+                    <li style={{ marginBottom: '10px' }}>
+                      <strong>「行きたい」医療機関への逆指名型アプローチ</strong>：従来のように求人ありきではなく、あなたの希望を最優先します
+                    </li>
+                    <li style={{ marginBottom: '10px' }}>
+                      <strong>独自の医療機関評価</strong>：経営状態、組織体制、将来計画など詳細な情報を医業経営コンサルタントの視点から分析
+                    </li>
+                    <li style={{ marginBottom: '10px' }}>
+                      <strong>プライベートエージェント制</strong>：少数精鋭のエージェントが担当者制で一人ひとりと丁寧に向き合います
+                    </li>
+                    <li style={{ marginBottom: '10px' }}>
+                      <strong>転職後のフォローアップ</strong>：入職後も定期的なフォローを行い、長期的な成功と成長をサポート
+                    </li>
+                    <li>
+                      <strong>完全無料のサービス</strong>：医療機関からいただく紹介手数料によって運営されているため、求職者の方々は無料でご利用いただけます
+                    </li>
+                  </ul>
+                </div>
+
+                {/* サービスの流れ */}
+                <div style={{
+                  backgroundColor: '#F0F7FF',
+                  borderRadius: '12px',
+                  padding: '20px',
+                  marginBottom: '24px',
+                  border: '1px solid #C3DAFE'
+                }}>
+                  <h4 style={{ 
+                    fontSize: '17px', 
+                    fontWeight: '600', 
+                    color: '#3182CE',
+                    marginBottom: '16px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px'
+                  }}>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <path d="M20.42 4.58a5.4 5.4 0 0 0-7.65 0l-.77.78-.77-.78a5.4 5.4 0 0 0-7.65 0C1.46 6.7 1.33 10.28 4 13l8 8 8-8c2.67-2.72 2.54-6.3.42-8.42z"></path>
+                    </svg>
+                    転職支援の流れ
+                  </h4>
+                  <ol style={{ 
+                    paddingLeft: '25px',
+                    marginBottom: '0',
+                    fontSize: '14px',
+                    color: '#2D3748'
+                  }}>
+                    <li style={{ marginBottom: '8px' }}>
+                      <strong>初回面談</strong>：あなたの希望条件や価値観について丁寧にヒアリングします
+                    </li>
+                    <li style={{ marginBottom: '8px' }}>
+                      <strong>キャリアカウンセリング</strong>：これまでのキャリアを振り返りながら、今後のビジョンを一緒に考えます
+                    </li>
+                    <li style={{ marginBottom: '8px' }}>
+                      <strong>医療機関の選定・提案</strong>：あなたの希望に合った職場を提案。希望する医療機関に対して逆指名でアプローチします
+                    </li>
+                    <li style={{ marginBottom: '8px' }}>
+                      <strong>医療機関情報の詳細提供</strong>：決算情報、経営状況、組織体制など詳細な情報を提供します
+                    </li>
+                    <li style={{ marginBottom: '8px' }}>
+                      <strong>面接サポート</strong>：面接対策からアレンジまで全面的にサポートします
+                    </li>
+                    <li>
+                      <strong>入職後フォロー</strong>：入職後も定期的にフォローアップを行い、新しい環境での活躍をサポートします
+                    </li>
+                  </ol>
+                </div>
+
+                {/* フォームに戻るボタン */}
+                <div style={{ textAlign: 'center', marginTop: '24px' }}>
                   <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handleClose();
-                    }}
                     type="button"
+                    onClick={() => handleTabChange('form')}
                     style={{
                       backgroundColor: '#1A6CBF',
                       color: 'white',
@@ -421,612 +1104,16 @@ const QuickConsultationForm = ({ resultType, profession, onClose }) => {
                       padding: '12px 24px',
                       fontSize: '16px',
                       fontWeight: '600',
-                      cursor: 'pointer'
+                      cursor: 'pointer',
+                      boxShadow: '0 4px 10px rgba(0, 108, 191, 0.2)'
                     }}
                   >
-                    閉じる
+                    相談フォームに戻る
                   </button>
                 </div>
-              ) : (
-                <form onSubmit={handleSubmit}>
-                  <p style={{ marginBottom: '20px', fontSize: '15px', color: '#4A5568' }}>
-                    以下の情報を入力いただくと、専任のキャリアアドバイザーからご連絡いたします。
-                  </p>
-                  
-                  {/* エラーメッセージ */}
-                  {errorMessage && (
-                    <div style={{
-                      backgroundColor: '#FEF2F2',
-                      color: '#DC2626',
-                      padding: '12px 16px',
-                      borderRadius: '8px',
-                      marginBottom: '16px',
-                      fontSize: '14px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '8px'
-                    }}>
-                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <line x1="12" y1="8" x2="12" y2="12"></line>
-                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
-                      </svg>
-                      {errorMessage}
-                    </div>
-                  )}
-                  
-                  {/* 名前 */}
-                  <div style={{ marginBottom: '16px' }}>
-                    <label 
-                      style={{ 
-                        display: 'block', 
-                        marginBottom: '6px', 
-                        fontSize: '14px', 
-                        fontWeight: '500',
-                        color: '#4A5568'
-                      }}
-                    >
-                      お名前 <span style={{ color: '#E53E3E' }}>*</span>
-                    </label>
-                    <input
-                      type="text"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      required
-                      placeholder="例：田中 花子"
-                      style={{
-                        width: '100%',
-                        padding: '12px',
-                        borderRadius: '8px',
-                        border: '1px solid #CBD5E0',
-                        fontSize: '16px'
-                      }}
-                    />
-                  </div>
-                  
-                  {/* 電話番号 */}
-                  <div style={{ marginBottom: '16px' }}>
-                    <label 
-                      style={{ 
-                        display: 'block', 
-                        marginBottom: '6px', 
-                        fontSize: '14px', 
-                        fontWeight: '500',
-                        color: '#4A5568'
-                      }}
-                    >
-                      電話番号 <span style={{ color: '#E53E3E' }}>*</span>
-                    </label>
-                    <input
-                      type="tel"
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleChange}
-                      required
-                      placeholder="例：090-1234-5678"
-                      style={{
-                        width: '100%',
-                        padding: '12px',
-                        borderRadius: '8px',
-                        border: '1px solid #CBD5E0',
-                        fontSize: '16px'
-                      }}
-                    />
-                  </div>
-                  
-                  {/* メールアドレス */}
-                  <div style={{ marginBottom: '16px' }}>
-                    <label 
-                      style={{ 
-                        display: 'block', 
-                        marginBottom: '6px', 
-                        fontSize: '14px', 
-                        fontWeight: '500',
-                        color: '#4A5568'
-                      }}
-                    >
-                      メールアドレス <span style={{ color: '#E53E3E' }}>*</span>
-                    </label>
-                    <input
-                      type="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      required
-                      placeholder="例：tanaka@example.com"
-                      style={{
-                        width: '100%',
-                        padding: '12px',
-                        borderRadius: '8px',
-                        border: '1px solid #CBD5E0',
-                        fontSize: '16px'
-                      }}
-                    />
-                  </div>
-                  
-                  {/* 郵便番号入力欄 */}
-                  <div style={{ marginBottom: '16px' }}>
-                    <label 
-                      style={{ 
-                        display: 'block', 
-                        marginBottom: '6px', 
-                        fontSize: '14px', 
-                        fontWeight: '500',
-                        color: '#4A5568'
-                      }}
-                    >
-                      郵便番号
-                    </label>
-                    <div style={{ position: 'relative' }}>
-                      <input
-                        type="text"
-                        name="postalCode"
-                        value={formData.postalCode}
-                        onChange={handleChange}
-                        placeholder="例：123-4567"
-                        maxLength="8"
-                        style={{
-                          width: '100%',
-                          padding: '12px 12px 12px 40px',
-                          borderRadius: '8px',
-                          border: '1px solid #CBD5E0',
-                          fontSize: '16px'
-                        }}
-                      />
-                      <span style={{ 
-                        position: 'absolute', 
-                        top: '50%', 
-                        left: '12px', 
-                        transform: 'translateY(-50%)', 
-                        pointerEvents: 'none', 
-                        color: '#718096' 
-                      }}>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M21.5 12H16c-.7 2-2 3-4 3s-3.3-1-4-3H2.5"></path>
-                          <path d="M5.5 5.1L2 12v6c0 1.1.9 2 2 2h16a2 2 0 002-2v-6l-3.4-6.9A2 2 0 0016.8 4H7.2a2 2 0 00-1.7 1.1z"></path>
-                        </svg>
-                      </span>
-                    </div>
-                    <p style={{ fontSize: '12px', color: '#718096', marginTop: '4px' }}>
-                      ※お住まいの地域に合った医療機関をご紹介するために使用します
-                    </p>
-                  </div>
-                  
-                  {/* メッセージ欄 */}
-                  <div style={{ marginBottom: '16px' }}>
-                    <label 
-                      style={{ 
-                        display: 'block', 
-                        marginBottom: '6px', 
-                        fontSize: '14px', 
-                        fontWeight: '500',
-                        color: '#4A5568'
-                      }}
-                    >
-                      メッセージ（任意）
-                    </label>
-                    <textarea
-                      name="message"
-                      value={formData.message}
-                      onChange={handleChange}
-                      placeholder="質問や希望条件などがあればご記入ください"
-                      style={{
-                        width: '100%',
-                        padding: '12px',
-                        borderRadius: '8px',
-                        border: '1px solid #CBD5E0',
-                        fontSize: '16px',
-                        minHeight: '100px',
-                        resize: 'vertical'
-                      }}
-                    />
-                  </div>
-                  
-                  {/* 希望連絡方法 */}
-                  <div style={{ marginBottom: '24px' }}>
-                    <p 
-                      style={{ 
-                        marginBottom: '10px', 
-                        fontSize: '14px', 
-                        fontWeight: '500',
-                        color: '#4A5568'
-                      }}
-                    >
-                      ご希望の連絡方法 <span style={{ color: '#E53E3E' }}>*</span>
-                    </p>
-                    
-                    <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-                      <label 
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          padding: '10px 16px',
-                          borderRadius: '8px',
-                          border: `1px solid ${formData.contactMethod === 'phone' ? '#1A6CBF' : '#CBD5E0'}`,
-                          backgroundColor: formData.contactMethod === 'phone' ? '#EBF8FF' : 'white',
-                          cursor: 'pointer',
-                          flex: '1',
-                          minWidth: '120px'
-                        }}
-                      >
-                        <input
-                          type="radio"
-                          name="contactMethod"
-                          value="phone"
-                          checked={formData.contactMethod === 'phone'}
-                          onChange={handleChange}
-                          style={{ marginRight: '8px' }}
-                        />
-                        <span style={{ fontSize: '15px', color: '#2D3748' }}>電話</span>
-                      </label>
-                      
-                      <label 
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          padding: '10px 16px',
-                          borderRadius: '8px',
-                          border: `1px solid ${formData.contactMethod === 'zoom' ? '#1A6CBF' : '#CBD5E0'}`,
-                          backgroundColor: formData.contactMethod === 'zoom' ? '#EBF8FF' : 'white',
-                          cursor: 'pointer',
-                          flex: '1',
-                          minWidth: '120px'
-                        }}
-                      >
-                        <input
-                          type="radio"
-                          name="contactMethod"
-                          value="zoom"
-                          checked={formData.contactMethod === 'zoom'}
-                          onChange={handleChange}
-                          style={{ marginRight: '8px' }}
-                        />
-                        <span style={{ fontSize: '15px', color: '#2D3748' }}>Zoom</span>
-                      </label>
-                      
-                      <label 
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          padding: '10px 16px',
-                          borderRadius: '8px',
-                          border: `1px solid ${formData.contactMethod === 'line' ? '#1A6CBF' : '#CBD5E0'}`,
-                          backgroundColor: formData.contactMethod === 'line' ? '#EBF8FF' : 'white',
-                          cursor: 'pointer',
-                          flex: '1',
-                          minWidth: '120px'
-                        }}
-                      >
-                        <input
-                          type="radio"
-                          name="contactMethod"
-                          value="line"
-                          checked={formData.contactMethod === 'line'}
-                          onChange={handleChange}
-                          style={{ marginRight: '8px' }}
-                        />
-                        <span style={{ fontSize: '15px', color: '#2D3748' }}>LINE</span>
-                      </label>
-                    </div>
-                  </div>
-                  
-                  {/* 診断情報の表示 */}
-                  <div style={{
-                    backgroundColor: '#F7FAFC',
-                    padding: '16px',
-                    borderRadius: '8px',
-                    marginBottom: '20px',
-                    fontSize: '14px'
-                  }}>
-                    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
-                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1A6CBF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '8px' }}>
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <line x1="12" y1="16" x2="12" y2="12"></line>
-                        <line x1="12" y1="8" x2="12.01" y2="8"></line>
-                      </svg>
-                      <span style={{ color: '#1A6CBF', fontWeight: '600' }}>診断情報</span>
-                    </div>
-                    <p style={{ color: '#4A5568', marginBottom: '4px' }}>
-                      診断結果: <strong>{resultType}</strong>タイプ
-                    </p>
-                    {profession && (
-                      <p style={{ color: '#4A5568', marginBottom: '4px' }}>
-                        職種: <strong>{profession}</strong>
-                      </p>
-                    )}
-                  </div>
-                  
-                  {/* 送信ボタン */}
-                  <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    style={{
-                      width: '100%',
-                      backgroundColor: '#1A6CBF',
-                      color: 'white',
-                      border: 'none',
-                      borderRadius: '50px',
-                      padding: '14px',
-                      fontSize: '16px',
-                      fontWeight: '600',
-                      cursor: isSubmitting ? 'default' : 'pointer',
-                      opacity: isSubmitting ? 0.7 : 1,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      gap: '8px'
-                    }}
-                  >
-                    {isSubmitting ? (
-                      <>
-                        <div style={{ 
-                          width: '18px', 
-                          height: '18px', 
-                          borderRadius: '50%', 
-                          border: '3px solid rgba(255,255,255,0.3)',
-                          borderTopColor: 'white',
-                          animation: 'spin 1s linear infinite'
-                        }} />
-                        <span>送信中...</span>
-                      </>
-                    ) : (
-                      <span>無料相談を予約する</span>
-                    )}
-                  </button>
-                  
-                  <p style={{ 
-                    fontSize: '12px', 
-                    color: '#718096', 
-                    marginTop: '12px',
-                    textAlign: 'center' 
-                  }}>
-                    ※24時間以内に担当者からご連絡いたします
-                  </p>
-
-                  {/* サービスの特徴へのリンク */}
-                  <div style={{ textAlign: 'center', marginTop: '24px' }}>
-                    <button
-                      type="button"
-                      onClick={() => handleTabChange('about')}
-                      style={{
-                        background: 'none',
-                        border: 'none',
-                        color: '#1A6CBF',
-                        textDecoration: 'underline',
-                        cursor: 'pointer',
-                        fontSize: '14px',
-                        padding: '4px 8px'
-                      }}
-                    >
-                      MediMatchの5つの強みを確認する →
-                    </button>
-                  </div>
-                </form>
-              )}
-            </motion.div>
-          )}
-
-          {/* 会社の強みタブのコンテンツ */}
-          {activeTab === 'about' && (
-            <motion.div 
-              key="about"
-              variants={tabContentVariants}
-              initial="hidden"
-              animate="visible"
-              exit="exit"
-              style={{ padding: '24px' }}
-            >
-              {/* MediMatchの理念 */}
-              <div style={{
-                backgroundColor: '#EBF8FF',
-                borderRadius: '12px',
-                padding: '20px',
-                marginBottom: '24px',
-                border: '1px solid #BEE3F8'
-              }}>
-                <h4 style={{ 
-                  fontSize: '18px', 
-                  fontWeight: '700', 
-                  color: '#1A6CBF',
-                  marginBottom: '12px' 
-                }}>
-                  私たちの理念
-                </h4>
-                <p style={{ fontSize: '15px', lineHeight: '1.6', marginBottom: '14px' }}>
-                  「医療機関が選ばれる時代の、信頼できる伴走者でありたい」
-                </p>
-                <p style={{ fontSize: '15px', lineHeight: '1.6' }}>
-                  MediMatchは、医療従事者一人ひとりの「行きたい」という意志を何よりも尊重します。
-                  私たちは量ではなく質を重視し、短期的な成果よりも長期的な満足と成長を大切にしています。
-                </p>
-              </div>
-
-              {/* 5つの強み */}
-              <h4 style={{ 
-                fontSize: '17px', 
-                fontWeight: '600', 
-                color: '#2D3748',
-                marginBottom: '16px' 
-              }}>
-                MediMatchの5つの強み
-              </h4>
-
-              <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '16px',
-                marginBottom: '24px'
-              }}>
-                {strengths.map((strength, index) => (
-                  <div key={index} style={{
-                    backgroundColor: 'white',
-                    borderRadius: '12px',
-                    padding: '16px',
-                    boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
-                    border: '1px solid #E2E8F0'
-                  }}>
-                    <div style={{ 
-                      display: 'flex', 
-                      gap: '16px',
-                      alignItems: 'flex-start'
-                    }}>
-                      <div style={{
-                        backgroundColor: '#1A6CBF',
-                        color: 'white',
-                        width: '40px',
-                        height: '40px',
-                        borderRadius: '50%',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        flexShrink: 0
-                      }}>
-                        {strength.icon}
-                      </div>
-                      <div>
-                        <h5 style={{ 
-                          fontSize: '16px', 
-                          fontWeight: '600', 
-                          color: '#1A6CBF',
-                          marginBottom: '6px' 
-                        }}>
-                          {strength.title}
-                        </h5>
-                        <p style={{ 
-                          fontSize: '14px', 
-                          color: '#4A5568', 
-                          lineHeight: '1.6',
-                          margin: 0
-                        }}>
-                          {strength.description}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {/* サービスの特徴セクション - 追加情報 */}
-              <div style={{
-                backgroundColor: '#F7FAFC',
-                borderRadius: '12px',
-                padding: '20px',
-                marginBottom: '24px'
-              }}>
-                <h4 style={{ 
-                  fontSize: '17px', 
-                  fontWeight: '600', 
-                  color: '#2D3748',
-                  marginBottom: '16px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px'
-                }}>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M2 20h20"></path>
-                    <path d="M5 20v-8a3 3 0 0 1 3-3h8a3 3 0 0 1 3 3v8"></path>
-                    <path d="M12 7V2"></path>
-                    <path d="M13 5h-2"></path>
-                  </svg>
-                  私たちのサービスの特徴
-                </h4>
-                <ul style={{ 
-                  paddingLeft: '20px',
-                  marginBottom: '0',
-                  fontSize: '14px',
-                  lineHeight: '1.7',
-                  color: '#2D3748'
-                }}>
-                  <li style={{ marginBottom: '10px' }}>
-                    <strong>「行きたい」医療機関への逆指名型アプローチ</strong>：従来のように求人ありきではなく、あなたの希望を最優先します
-                  </li>
-                  <li style={{ marginBottom: '10px' }}>
-                    <strong>独自の医療機関評価</strong>：経営状態、組織体制、将来計画など詳細な情報を医業経営コンサルタントの視点から分析
-                  </li>
-                  <li style={{ marginBottom: '10px' }}>
-                    <strong>プライベートエージェント制</strong>：少数精鋭のエージェントが担当者制で一人ひとりと丁寧に向き合います
-                  </li>
-                  <li style={{ marginBottom: '10px' }}>
-                    <strong>転職後のフォローアップ</strong>：入職後も定期的なフォローを行い、長期的な成功と成長をサポート
-                  </li>
-                  <li>
-                    <strong>完全無料のサービス</strong>：医療機関からいただく紹介手数料によって運営されているため、求職者の方々は無料でご利用いただけます
-                  </li>
-                </ul>
-              </div>
-
-              {/* サービスの流れ */}
-              <div style={{
-                backgroundColor: '#F0F7FF',
-                borderRadius: '12px',
-                padding: '20px',
-                marginBottom: '24px',
-                border: '1px solid #C3DAFE'
-              }}>
-                <h4 style={{ 
-                  fontSize: '17px', 
-                  fontWeight: '600', 
-                  color: '#3182CE',
-                  marginBottom: '16px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px'
-                }}>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M20.42 4.58a5.4 5.4 0 0 0-7.65 0l-.77.78-.77-.78a5.4 5.4 0 0 0-7.65 0C1.46 6.7 1.33 10.28 4 13l8 8 8-8c2.67-2.72 2.54-6.3.42-8.42z"></path>
-                  </svg>
-                  転職支援の流れ
-                </h4>
-                <ol style={{ 
-                  paddingLeft: '25px',
-                  marginBottom: '0',
-                  fontSize: '14px',
-                  color: '#2D3748'
-                }}>
-                  <li style={{ marginBottom: '8px' }}>
-                    <strong>初回面談</strong>：あなたの希望条件や価値観について丁寧にヒアリングします
-                  </li>
-                  <li style={{ marginBottom: '8px' }}>
-                    <strong>キャリアカウンセリング</strong>：これまでのキャリアを振り返りながら、今後のビジョンを一緒に考えます
-                  </li>
-                  <li style={{ marginBottom: '8px' }}>
-                    <strong>医療機関の選定・提案</strong>：あなたの希望に合った職場を提案。希望する医療機関に対して逆指名でアプローチします
-                  </li>
-                  <li style={{ marginBottom: '8px' }}>
-                    <strong>医療機関情報の詳細提供</strong>：決算情報、経営状況、組織体制など詳細な情報を提供します
-                  </li>
-                  <li style={{ marginBottom: '8px' }}>
-                    <strong>面接サポート</strong>：面接対策からアレンジまで全面的にサポートします
-                  </li>
-                  <li>
-                    <strong>入職後フォロー</strong>：入職後も定期的にフォローアップを行い、新しい環境での活躍をサポートします
-                  </li>
-                </ol>
-              </div>
-
-              {/* フォームに戻るボタン */}
-              <div style={{ textAlign: 'center', marginTop: '24px' }}>
-                <button
-                  type="button"
-                  onClick={() => handleTabChange('form')}
-                  style={{
-                    backgroundColor: '#1A6CBF',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '50px',
-                    padding: '12px 24px',
-                    fontSize: '16px',
-                    fontWeight: '600',
-                    cursor: 'pointer',
-                    boxShadow: '0 4px 10px rgba(0, 108, 191, 0.2)'
-                  }}
-                >
-                  相談フォームに戻る
-                </button>
-              </div>
-            </motion.div>
-          )}
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </motion.div>
       

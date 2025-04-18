@@ -1,7 +1,8 @@
-// src/utils/slackNotifier.js - Optimized Implementation
+// src/utils/slackNotifier.js - CORS回避用のプロキシサーバーを使用するように最適化
 
 /**
  * Enhanced Slack notification system with optimizations for:
+ * - CORS対応：プロキシサーバー経由の通信
  * - Batch processing
  * - Rate limiting
  * - Message formatting
@@ -195,36 +196,52 @@ const sendNotificationToSlack = async (formData, diagnosticInfo, resolve, reject
   // Format the message
   const messageData = formatSlackMessage(formData, diagnosticInfo);
   
-  // ①ビルド時 / 実行時どちらでも読めるよう fallback を用意
-  const webhookUrl = 
-    process.env.REACT_APP_SLACK_WEBHOOK_URL || 
-    window.env?.REACT_APP_SLACK_WEBHOOK_URL ||
+  // プロキシサーバーURLの取得
+  const proxyUrl = 
+    process.env.REACT_APP_SLACK_PROXY_URL || 
+    window.env?.REACT_APP_SLACK_PROXY_URL ||
     '';
 
-  console.log(`🌐 Slack Webhook URL status: ${webhookUrl ? 'configured' : 'missing'}`);
+  console.log(`🌐 Slack Proxy URL status: ${proxyUrl ? 'configured' : 'missing'}`);
 
-  // Webhook URLが設定されていない場合はモック関数を使用
-  if (!webhookUrl) {
-    console.log('⚠️ No webhook URL configured, using mock implementation');
-    return mockSendToSlack(formData, diagnosticInfo);
+  // プロキシURLが設定されていない場合はモック関数を使用
+  if (!proxyUrl) {
+    console.log('⚠️ No proxy URL configured, using mock implementation');
+    const mockResult = await mockSendToSlack(formData, diagnosticInfo);
+    resolve(mockResult);
+    return;
   }
   
   try {
-    // Attempt to send directly to Slack
-    const response = await fetch(webhookUrl, {
+    // プロキシサーバー経由でSlackに送信
+    console.log('🌐 Sending through Slack proxy...');
+    
+    const response = await fetch(proxyUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(messageData)
+      body: JSON.stringify({ payload: messageData })
     });
     
+    // レスポンスをJSONとして解析
+    let result;
+    try {
+      result = await response.json();
+    } catch (e) {
+      // JSONでない場合はテキストとして扱う
+      const text = await response.text();
+      result = { success: response.ok, message: text };
+    }
+    
+    console.log(`📊 Proxy response:`, result);
+    
     if (response.ok) {
-      console.log('✅ Slack webhook successful!');
+      console.log('✅ Message successfully sent to Slack!');
       resolve({ success: true });
     } else {
-      throw new Error(`HTTP error ${response.status}`);
+      throw new Error(`Proxy server error: ${result?.message || response.status}`);
     }
   } catch (error) {
-    console.warn(`⚠️ Slack webhook error (attempt ${attempt}/${MAX_RETRY_ATTEMPTS}):`, error.message);
+    console.warn(`⚠️ Slack proxy error (attempt ${attempt}/${MAX_RETRY_ATTEMPTS}):`, error.message);
     
     // If we have attempts left, retry after delay
     if (attempt < MAX_RETRY_ATTEMPTS) {
