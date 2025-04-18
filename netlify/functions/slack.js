@@ -1,5 +1,6 @@
 // netlify/functions/slack.js
 
+// node-fetch バージョン2を使用（バージョン3はCommonJS形式で直接importできません）
 const fetch = require('node-fetch');
 
 // 環境変数からSlack WebhookのURLを取得
