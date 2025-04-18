@@ -913,6 +913,7 @@ const EnhancedResultScreen = ({ results, profession, postalCode, answers, onRest
         <QuickConsultationForm 
           resultType={results.title || typeCode}
           profession={profession}
+          postalCode={postalCode}
           onClose={handleCloseContactForm}
         />
       )}

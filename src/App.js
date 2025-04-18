@@ -489,6 +489,7 @@ function AppContent() {
         <QuickConsultationForm
           resultType={quizResult ? normalizeResultData(quizResult).title : ''}
           profession={profession}
+          postalCode={postalCode}
           onClose={() => toggleContactForm(false)}
         />
       )}
