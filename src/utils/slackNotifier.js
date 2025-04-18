@@ -2,13 +2,13 @@
 
 /**
  * シンプル化されたSlack通知システム
- * - CORSエラー対策（プロキシサーバー経由のみ）
+ * - CORSエラー対策（Netlify Functions経由）
  * - エラーハンドリングの強化
  * - ローカルストレージへのフォールバック機能
  */
 
 /**
- * Slack通知をプロキシサーバー経由で送信
+ * Slack通知をNetlify Functions経由で送信
  * @param {Object} formData - ユーザー提出フォームデータ
  * @param {Object} diagnosticInfo - 追加診断情報
  * @returns {Promise<{success: boolean, message?: string}>}
@@ -17,21 +17,19 @@ export const sendToSlack = async (formData, diagnosticInfo) => {
   console.log('🔔 sendToSlack called with:', { formData, diagnosticInfo });
 
   try {
-    // プロキシサーバー経由で送信（直接Webhook呼び出しは削除）
-    const proxyUrl = 
-      process.env.REACT_APP_SLACK_PROXY_URL || 
-      '/api/slack';  // 相対URLに変更
+    // Netlify Functions経由で送信
+    const functionUrl = '/.netlify/functions/slack';
     
-    console.log('🌐 プロキシ経由で送信を試みます:', proxyUrl);
+    console.log('🌐 Netlify Function経由で送信を試みます:', functionUrl);
     
-    const response = await fetch(proxyUrl, {
+    const response = await fetch(functionUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ formData, diagnosticInfo })
     });
 
     if (!response.ok) {
-      throw new Error(`プロキシサーバーエラー: ${response.status}`);
+      throw new Error(`Function呼び出しエラー: ${response.status}`);
     }
 
     // レスポンス解析

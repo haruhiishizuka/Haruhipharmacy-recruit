@@ -1,128 +1,114 @@
 // netlify/functions/slack.js
-
-// node-fetch バージョン2を使用（バージョン3はCommonJS形式で直接importできません）
 const fetch = require('node-fetch');
 
-// 環境変数からSlack WebhookのURLを取得
-const SLACK_WEBHOOK_URL = process.env.SLACK_WEBHOOK_URL;
-
-// メインハンドラー関数
-exports.handler = async (event, context) => {
-  // CORS対応のヘッダー
+exports.handler = async function(event, context) {
+  // CORS対応
   const headers = {
-    'Access-Control-Allow-Origin': '*', // 本番環境では適切なオリジンに制限すべき
+    'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type',
     'Access-Control-Allow-Methods': 'POST, OPTIONS'
   };
 
-  // OPTIONSリクエスト（プリフライトリクエスト）への対応
+  // プリフライトリクエスト(OPTIONS)への対応
   if (event.httpMethod === 'OPTIONS') {
     return {
       statusCode: 200,
       headers,
-      body: JSON.stringify({ message: 'CORS preflight successful' })
+      body: ''
     };
   }
 
-  // POSTメソッド以外は受け付けない
+  // POSTメソッド以外は拒否
   if (event.httpMethod !== 'POST') {
     return {
       statusCode: 405,
       headers,
-      body: JSON.stringify({ message: 'Method not allowed' })
+      body: JSON.stringify({ success: false, message: 'Method Not Allowed' })
     };
   }
 
-  console.log('Slack通知関数が呼び出されました');
-
   try {
-    // Webhook URLが設定されているか確認
-    if (!SLACK_WEBHOOK_URL) {
-      console.error('SLACK_WEBHOOK_URLが設定されていません');
-      return {
-        statusCode: 500,
-        headers,
-        body: JSON.stringify({ 
-          success: false, 
-          message: 'Slack Webhook URL is not configured' 
-        })
-      };
+    // リクエストボディを解析
+    const payload = JSON.parse(event.body);
+    const { formData, diagnosticInfo } = payload;
+
+    // Webhook URL - 環境変数から取得
+    const webhookUrl = process.env.SLACK_WEBHOOK_URL;
+    
+    if (!webhookUrl) {
+      throw new Error('Webhook URL not configured');
     }
 
-    // リクエストボディの解析
-    let payload;
-    try {
-      payload = JSON.parse(event.body);
-    } catch (e) {
-      console.error('リクエストボディの解析に失敗:', e);
-      return {
-        statusCode: 400,
-        headers,
-        body: JSON.stringify({ 
-          success: false, 
-          message: 'Invalid request body' 
-        })
-      };
+    // Slackメッセージのフォーマット
+    const message = {
+      text: `新規お問い合わせ - ${diagnosticInfo?.resultType || '未診断'}タイプ`,
+      blocks: [
+        {
+          type: 'header',
+          text: {
+            type: 'plain_text',
+            text: `新規お問い合わせ - ${diagnosticInfo?.resultType || '未診断'}タイプ`,
+            emoji: true
+          }
+        },
+        {
+          type: 'section',
+          fields: [
+            { type: 'mrkdwn', text: `*名前:*\n${formData.name || '未入力'}` },
+            { type: 'mrkdwn', text: `*メール:*\n${formData.email || '未入力'}` }
+          ]
+        },
+        {
+          type: 'section',
+          fields: [
+            { type: 'mrkdwn', text: `*電話番号:*\n${formData.phone || '未入力'}` },
+            { type: 'mrkdwn', text: `*希望連絡方法:*\n${formData.contactMethod || '未指定'}` }
+          ]
+        },
+        {
+          type: 'section',
+          fields: [
+            { type: 'mrkdwn', text: `*職種:*\n${diagnosticInfo?.profession || '未指定'}` },
+            { type: 'mrkdwn', text: `*郵便番号:*\n${diagnosticInfo?.postalCode || '未指定'}` }
+          ]
+        }
+      ]
+    };
+
+    // メッセージがある場合は追加
+    if (formData.message) {
+      message.blocks.push({
+        type: 'section',
+        text: { type: 'mrkdwn', text: `*メッセージ:*\n${formData.message}` }
+      });
     }
 
-    // ペイロードの検証
-    if (!payload || !payload.payload) {
-      console.error('無効なペイロード形式:', payload);
-      return {
-        statusCode: 400,
-        headers,
-        body: JSON.stringify({ 
-          success: false, 
-          message: 'Invalid payload format' 
-        })
-      };
-    }
-
-    console.log('Slackに送信するペイロード:', JSON.stringify(payload.payload));
-
-    // Slackに送信
-    const response = await fetch(SLACK_WEBHOOK_URL, {
+    // Slack APIへ送信
+    const response = await fetch(webhookUrl, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(payload.payload)
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(message)
     });
 
     // レスポンスの確認
     if (!response.ok) {
-      const errorText = await response.text();
-      console.error(`Slack API エラー: ${response.status}`, errorText);
-      return {
-        statusCode: response.status,
-        headers,
-        body: JSON.stringify({ 
-          success: false, 
-          message: `Slack API error: ${response.status} - ${errorText}` 
-        })
-      };
+      throw new Error(`Slack responded with status ${response.status}`);
     }
 
-    // 成功レスポンス
-    console.log('Slackメッセージが正常に送信されました');
     return {
       statusCode: 200,
       headers,
-      body: JSON.stringify({ 
-        success: true, 
-        message: 'Message sent to Slack successfully' 
-      })
+      body: JSON.stringify({ success: true })
     };
-
   } catch (error) {
-    // 例外処理
-    console.error('Slack通知処理中のエラー:', error);
+    console.error('Slack通知エラー:', error);
+    
     return {
       statusCode: 500,
       headers,
       body: JSON.stringify({ 
         success: false, 
-        message: `Internal server error: ${error.message}` 
+        message: error.message 
       })
     };
   }
