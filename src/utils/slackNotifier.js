@@ -73,7 +73,7 @@ export const sendToSlack = async (formData, diagnosticInfo) => {
     const response = await fetch(proxyUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ payload: messageData })
+      body: JSON.stringify(messageData)
     });
 
     if (!response.ok) {
