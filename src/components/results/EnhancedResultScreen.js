@@ -8,6 +8,22 @@ import { Radar } from 'react-chartjs-2';
 // Chart.jsの設定
 ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend);
 
+// InfoIcon コンポーネントの追加
+const InfoIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="12" r="10"></circle>
+    <line x1="12" y1="16" x2="12" y2="12"></line>
+    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+  </svg>
+);
+
+// CheckIcon コンポーネントの追加
+const CheckIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="20 6 9 17 4 12"></polyline>
+  </svg>
+);
+
 // 動物アイコンコンポーネント
 const AnimalIcon = ({ typeCode }) => {
   // タイプコードに基づいて動物を決定
@@ -375,16 +391,358 @@ const ShareSection = ({ resultType, profession }) => {
   );
 };
 
+// 個人対応を強調したセクションコンポーネント
+const PersonalConsultationSection = ({ typeCode, handleConsultationClick, professionColor }) => {
+  return (
+    <div style={{
+      backgroundColor: 'white',
+      borderRadius: '16px',
+      padding: '24px',
+      marginBottom: '30px',
+      boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
+      border: '1px solid #E5E7EB'
+    }}>
+      <h3 style={{
+        fontSize: '22px',
+        fontWeight: '700',
+        color: '#1E3A8A',
+        marginBottom: '16px',
+      }}>診断結果を活かした個人対応のキャリア相談</h3>
+      
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '20px',
+        marginBottom: '20px',
+        '@media (min-width: 768px)': {
+          flexDirection: 'row',
+          alignItems: 'center'
+        }
+      }}>
+        <div style={{
+          flex: '0 0 100px',
+          width: '100px',
+          height: '100px',
+          borderRadius: '50%',
+          overflow: 'hidden',
+          margin: '0 auto',
+          '@media (min-width: 768px)': {
+            margin: '0'
+          }
+        }}>
+          <img 
+            src="/images/advisor.jpg" 
+            alt="専属アドバイザー" 
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover'
+            }}
+            onError={(e) => {
+              e.target.src = '/images/icons/MediMatchlogo.png';
+            }}
+          />
+        </div>
+        
+        <div style={{
+          flex: '1',
+        }}>
+          <h4 style={{
+            fontSize: '18px',
+            fontWeight: '600',
+            color: '#1A6CBF',
+            marginBottom: '8px',
+          }}>元急性期病院事務長 × 医療経営コンサルタント（30代）</h4>
+          <p style={{
+            fontSize: '15px',
+            lineHeight: '1.6',
+            color: '#4B5563',
+            margin: '0'
+          }}>
+            医療現場の最前線と経営の視点を併せ持つ専門家が、あなたのキャリアに
+            1対1で向き合います。大手エージェントのような多数対応ではなく、
+            一人ひとりの状況に合わせた丁寧なサポートを心がけています。
+          </p>
+        </div>
+      </div>
+      
+      <div style={{
+        backgroundColor: '#F0F7FF',
+        borderRadius: '12px',
+        padding: '16px',
+        display: 'flex',
+        alignItems: 'flex-start',
+        gap: '12px',
+        marginBottom: '24px'
+      }}>
+        <div style={{ 
+          color: '#1A6CBF',
+          marginTop: '2px',
+          flexShrink: '0'
+        }}>
+          <InfoIcon />
+        </div>
+        <p style={{
+          fontSize: '14px',
+          lineHeight: '1.6',
+          color: '#2C5282',
+          margin: '0'
+        }}>
+          <strong>個人でエージェント業務を行っているため、対応できる方の数に限りがございます</strong><br />
+          質を大切にした等身大の相談を実現するため、同時に対応させていただく方の人数を制限しています。
+          ご理解いただけますと幸いです。
+        </p>
+      </div>
+      
+      <button
+        onClick={handleConsultationClick}
+        style={{
+          backgroundColor: professionColor,
+          color: 'white',
+          border: 'none',
+          borderRadius: '32px',
+          padding: '14px 36px',
+          fontSize: '16px',
+          fontWeight: '600',
+          cursor: 'pointer',
+          boxShadow: `0 4px 12px ${professionColor}40`,
+          transition: 'all 0.3s ease',
+          width: '100%',
+          textAlign: 'center',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '8px'
+        }}
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M5 12h14"></path>
+          <path d="m12 5 7 7-7 7"></path>
+        </svg>
+        診断結果をもとに無料相談を予約する
+      </button>
+    </div>
+  );
+};
+
+// 遷移用モーダルコンポーネント
+const PersonalConsultationModal = ({ resultType, onProceed, onClose }) => {
+  return (
+    <div style={{
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+      zIndex: 1000,
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: '20px',
+      overflow: 'auto'
+    }}>
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.9 }}
+        style={{
+          backgroundColor: 'white',
+          borderRadius: '20px',
+          maxWidth: '550px',
+          width: '100%',
+          boxShadow: '0 10px 30px rgba(0, 0, 0, 0.2)',
+          overflow: 'hidden',
+          position: 'relative',
+          maxHeight: '90vh',
+          display: 'flex',
+          flexDirection: 'column'
+        }}
+      >
+        <div style={{
+          padding: '20px',
+          borderBottom: '1px solid #E5E7EB',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center'
+        }}>
+          <h3 style={{ 
+            fontSize: '20px', 
+            fontWeight: '700',
+            color: '#1E3A8A',
+            margin: 0
+          }}>一人ひとりに寄り添うキャリア相談</h3>
+          <button 
+            onClick={onClose}
+            style={{
+              background: 'none',
+              border: 'none',
+              fontSize: '24px',
+              cursor: 'pointer',
+              color: '#6B7280'
+            }}
+          >
+            ×
+          </button>
+        </div>
+        
+        <div style={{
+          padding: '24px',
+          overflowY: 'auto'
+        }}>
+          <div style={{
+            marginBottom: '24px',
+            backgroundColor: '#F0F9FF',
+            padding: '16px',
+            borderRadius: '12px',
+            border: '1px solid #BFDBFE'
+          }}>
+            <h4 style={{
+              fontSize: '16px',
+              fontWeight: '600',
+              color: '#1E40AF',
+              marginBottom: '8px'
+            }}>あなたの診断結果: {resultType}タイプ</h4>
+            <p style={{
+              fontSize: '15px',
+              color: '#3B82F6',
+              margin: 0
+            }}>
+              この診断結果をもとに、あなたの強みを最大限に活かせる
+              環境について、より具体的に考えていきましょう。
+            </p>
+          </div>
+          
+          <div style={{ marginBottom: '24px' }}>
+            <h4 style={{
+              fontSize: '16px',
+              fontWeight: '600',
+              color: '#1F2937',
+              marginBottom: '10px'
+            }}>少数精鋭のキャリアサポート</h4>
+            <p style={{
+              fontSize: '15px',
+              lineHeight: '1.6',
+              color: '#4B5563',
+              margin: 0
+            }}>
+              MediMatchでは、大手エージェントのように多くの方を同時に担当するのではなく、
+              限られた人数の方に丁寧に向き合うことを大切にしています。
+              個人でエージェント業務を行っているため、対応できる方の数に限りはありますが、
+              その分、一人ひとりの状況や希望を深く理解し、真摯に向き合います。
+            </p>
+          </div>
+          
+          <div style={{ marginBottom: '24px' }}>
+            <h4 style={{
+              fontSize: '16px',
+              fontWeight: '600',
+              color: '#1F2937',
+              marginBottom: '10px'
+            }}>経営とキャリア、両方の視点から</h4>
+            <div style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '10px'
+            }}>
+              {[
+                '採用側と求職者側、両方の立場を理解',
+                '医療機関の経営状態を見極める視点',
+                'キャリアの長期的な成長を重視'
+              ].map((point, index) => (
+                <div key={index} style={{
+                  display: 'flex',
+                  alignItems: 'flex-start',
+                  gap: '10px',
+                  backgroundColor: '#F9FAFB',
+                  padding: '12px',
+                  borderRadius: '8px'
+                }}>
+                  <div style={{ 
+                    color: '#1A6CBF',
+                    flexShrink: '0',
+                    marginTop: '2px'
+                  }}>
+                    <CheckIcon />
+                  </div>
+                  <span style={{
+                    fontSize: '15px',
+                    color: '#4B5563'
+                  }}>{point}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+        
+        <div style={{
+          padding: '20px',
+          borderTop: '1px solid #E5E7EB',
+          backgroundColor: '#F9FAFB'
+        }}>
+          <button
+            onClick={onProceed}
+            style={{
+              backgroundColor: '#1A6CBF',
+              color: 'white',
+              border: 'none',
+              borderRadius: '50px',
+              padding: '14px 24px',
+              fontSize: '16px',
+              fontWeight: '600',
+              cursor: 'pointer',
+              width: '100%',
+              boxShadow: '0 4px 10px rgba(26, 108, 191, 0.2)'
+            }}
+          >
+            30分の無料相談を予約する
+          </button>
+          <p style={{
+            textAlign: 'center',
+            fontSize: '14px',
+            color: '#6B7280',
+            margin: '8px 0 0'
+          }}>
+            ※相談だけでOK・オンライン面談可能・完全無料
+          </p>
+        </div>
+      </motion.div>
+    </div>
+  );
+};
+
 // メインの結果画面コンポーネント
 const EnhancedResultScreen = ({ results, profession, postalCode, answers, onRestart }) => {
   const [activeTab, setActiveTab] = useState('summary');
   const [showContactForm, setShowContactForm] = useState(false);
+  
+  // 新しく追加するステート
+  const [consultationState, setConsultationState] = useState('initial'); // 'initial', 'transition', 'form'
   
   // コンポーネントマウント時の処理
   useEffect(() => {
     // ページトップへスクロール
     window.scrollTo({ top: 0, behavior: 'auto' });
   }, []);
+  
+  // 相談関連のハンドラー
+  const handleConsultationClick = () => {
+    // アニメーションのためにスクロール位置を調整
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+    // まずは遷移モーダルを表示
+    setConsultationState('transition');
+  };
+
+  const handleProceedToForm = () => {
+    // 相談フォームへ進む
+    setConsultationState('form');
+  };
+
+  const handleCloseConsultation = () => {
+    // 相談フローをリセット
+    setConsultationState('initial');
+  };
   
   // 結果データがない場合の処理
   if (!results) {
@@ -554,21 +912,36 @@ const EnhancedResultScreen = ({ results, profession, postalCode, answers, onRest
     setActiveTab(tabId);
   };
 
-  // 問い合わせフォームを開く
-  const handleOpenContactForm = () => {
-    setShowContactForm(true);
-  };
-
-  // 問い合わせフォームを閉じる
-  const handleCloseContactForm = () => {
-    setShowContactForm(false);
-  };
-
   // タブコンテンツのアニメーション設定
   const contentVariants = {
     initial: { opacity: 0 },
     animate: { opacity: 1, transition: { duration: 0.3 } },
     exit: { opacity: 0, transition: { duration: 0.2 } }
+  };
+  
+  // 表示するコンテンツを状態に応じて変更
+  const renderConsultationContent = () => {
+    switch(consultationState) {
+      case 'transition':
+        return (
+          <PersonalConsultationModal
+            resultType={results.title || typeCode}
+            onProceed={handleProceedToForm}
+            onClose={handleCloseConsultation}
+          />
+        );
+      case 'form':
+        return (
+          <QuickConsultationForm
+            resultType={results.title || typeCode}
+            profession={profession}
+            postalCode={postalCode}
+            onClose={handleCloseConsultation}
+          />
+        );
+      default:
+        return null;
+    }
   };
 
   return (
@@ -666,7 +1039,7 @@ const EnhancedResultScreen = ({ results, profession, postalCode, answers, onRest
           
           {/* CTAボタン - 相談ボタン */}
           <motion.button
-            onClick={handleOpenContactForm}
+            onClick={handleConsultationClick}
             whileHover={{ scale: 1.05, boxShadow: '0 10px 25px rgba(0, 0, 0, 0.2)' }}
             whileTap={{ scale: 0.98 }}
             style={{
@@ -685,9 +1058,10 @@ const EnhancedResultScreen = ({ results, profession, postalCode, answers, onRest
             }}
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+              <path d="M5 12h14"></path>
+              <path d="m12 5 7 7-7 7"></path>
             </svg>
-            無料キャリア相談をする
+            診断結果を活かした無料相談
           </motion.button>
         </motion.div>
       </div>
@@ -814,6 +1188,15 @@ const EnhancedResultScreen = ({ results, profession, postalCode, answers, onRest
           </AnimatePresence>
         </div>
 
+        {/* 個人対応セクションを追加 */}
+        {activeTab !== 'share' && (
+          <PersonalConsultationSection 
+            typeCode={typeCode}
+            handleConsultationClick={handleConsultationClick}
+            professionColor={professionColor}
+          />
+        )}
+
         {/* アクションボタン */}
         <div className="action-buttons" style={{
           marginTop: '50px',
@@ -826,7 +1209,7 @@ const EnhancedResultScreen = ({ results, profession, postalCode, answers, onRest
           margin: '50px auto 0'
         }}>
           <button
-            onClick={handleOpenContactForm}
+            onClick={handleConsultationClick}
             style={{
               backgroundColor: professionColor,
               color: 'white',
@@ -883,7 +1266,7 @@ const EnhancedResultScreen = ({ results, profession, postalCode, answers, onRest
         zIndex: 100
       }}>
         <motion.button
-          onClick={handleOpenContactForm}
+          onClick={handleConsultationClick}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           style={{
@@ -902,20 +1285,15 @@ const EnhancedResultScreen = ({ results, profession, postalCode, answers, onRest
           }}
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+            <path d="M5 12h14"></path>
+            <path d="m12 5 7 7-7 7"></path>
           </svg>
-          <span>相談する</span>
+          <span>次のステップへ進む</span>
         </motion.button>
       </div>
 
-      {/* 予約フォームモーダル */}
-      {showContactForm && (
-        <QuickConsultationForm 
-          resultType={results.title || typeCode}
-          profession={profession}
-          onClose={handleCloseContactForm}
-        />
-      )}
+      {/* コンサルテーションコンテンツのレンダリング */}
+      {renderConsultationContent()}
 
       {/* モバイル対応のためのスタイル */}
       <style jsx="true">{`
