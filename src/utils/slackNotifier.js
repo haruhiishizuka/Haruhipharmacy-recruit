@@ -1,14 +1,7 @@
-// src/utils/slackNotifier.js - シンプル化・最適化版
+// src/utils/slackNotifier.js - 修正最適化版
 
 /**
- * シンプル化されたSlack通知システム
- * - CORSエラー対策
- * - エラーハンドリングの強化
- * - ローカルストレージへのフォールバック機能
- */
-
-/**
- * Slack通知をプロキシサーバー経由で送信
+ * Slack通知をNetlify Functions経由で送信
  * @param {Object} formData - ユーザー提出フォームデータ
  * @param {Object} diagnosticInfo - 追加診断情報
  * @returns {Promise<{success: boolean, message?: string}>}
@@ -16,68 +9,20 @@
 export const sendToSlack = async (formData, diagnosticInfo) => {
   console.log('🔔 sendToSlack called with:', { formData, diagnosticInfo });
 
-  // フォーマットしたメッセージを作成
-  const messageData = {
-    blocks: [
-      {
-        type: 'header',
-        text: { 
-          type: 'plain_text', 
-          text: `新規お問い合わせ - ${diagnosticInfo?.resultType || '未診断'}タイプ`, 
-          emoji: true 
-        }
-      },
-      {
-        type: 'section',
-        fields: [
-          { type: 'mrkdwn', text: `*名前:*\n${formData.name || '未入力'}` },
-          { type: 'mrkdwn', text: `*メール:*\n${formData.email || '未入力'}` }
-        ]
-      },
-      {
-        type: 'section',
-        fields: [
-          { type: 'mrkdwn', text: `*電話番号:*\n${formData.phone || '未入力'}` },
-          { type: 'mrkdwn', text: `*希望連絡方法:*\n${formData.contactMethod || '未指定'}` }
-        ]
-      },
-      {
-        type: 'section',
-        fields: [
-          { type: 'mrkdwn', text: `*職種:*\n${diagnosticInfo?.profession || '未指定'}` },
-          { type: 'mrkdwn', text: `*郵便番号:*\n${diagnosticInfo?.postalCode || '未指定'}` }
-        ]
-      },
-      ...(formData.message ? [{
-        type: 'section',
-        text: { type: 'mrkdwn', text: `*メッセージ:*\n${formData.message}` }
-      }] : []),
-      {
-        type: 'context',
-        elements: [
-          { 
-            type: 'mrkdwn', 
-            text: `送信日時: ${new Date().toLocaleString('ja-JP')}` 
-          }
-        ]
-      }
-    ]
-  };
-
   try {
-
-    // 2. プロキシサーバー経由で送信
-    const proxyUrl = '/.netlify/functions/slack';
-    console.log('🌐 プロキシ経由で送信を試みます:', proxyUrl);
+    // Netlify Functions経由で送信
+    const functionUrl = '/.netlify/functions/slack';
     
-    const response = await fetch(proxyUrl, {
+    console.log('🌐 Netlify Function経由で送信を試みます:', functionUrl);
+    
+    const response = await fetch(functionUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(messageData)
+      body: JSON.stringify({ formData, diagnosticInfo })
     });
 
     if (!response.ok) {
-      throw new Error(`プロキシサーバーエラー: ${response.status}`);
+      throw new Error(`Function呼び出しエラー: ${response.status}`);
     }
 
     // レスポンス解析
@@ -100,7 +45,7 @@ export const sendToSlack = async (formData, diagnosticInfo) => {
   } catch (error) {
     console.error('❌ Slack送信エラー:', error.message);
     
-    // 3. 失敗した場合はローカルストレージに保存（バックアップ）
+    // 失敗した場合はローカルストレージに保存（バックアップ）
     saveToLocalStorage(formData, diagnosticInfo);
     
     // モックレスポンスを返す（UIフロー継続のため）
