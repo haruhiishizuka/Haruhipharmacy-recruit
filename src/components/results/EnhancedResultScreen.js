@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useNavigate } from 'react-router-dom'; // useNavigateをインポート追加
 import ResultSummary from './ResultSummary';
 import QuickConsultationForm from './QuickConsultationForm';
 import { Chart as ChartJS, RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend } from 'chart.js';
@@ -380,6 +381,9 @@ const EnhancedResultScreen = ({ results, profession, postalCode, answers, onRest
   const [activeTab, setActiveTab] = useState('summary');
   const [showContactForm, setShowContactForm] = useState(false);
   
+  // useNavigateの使用
+  const navigate = useNavigate();
+  
   // コンポーネントマウント時の処理
   useEffect(() => {
     // ページトップへスクロール
@@ -442,30 +446,6 @@ const EnhancedResultScreen = ({ results, profession, postalCode, answers, onRest
       </div>
     );
   }
-
-  // タイプコードから詳細なタイプ名を取得する関数を追加
-  const getDetailedTypeName = (typeCode) => {
-    const detailedNames = {
-      'SIHA': '専門分析型人間中心イノベーター',
-      'SIHP': '実践的人間中心専門家',
-      'SITA': '技術分析型専門イノベーター',
-      'SITP': '技術実践型専門イノベーター',
-      'SCHA': '人間分析型専門継続者',
-      'SCHP': '人間実践型専門継続者',
-      'SCTA': '技術分析型専門継続者',
-      'SCTP': '技術実践型専門継続者',
-      'GIHA': '人間分析型総合イノベーター',
-      'GIHP': '人間実践型総合イノベーター',
-      'GITA': '技術分析型総合イノベーター',
-      'GITP': '技術実践型総合イノベーター',
-      'GCHA': '人間分析型総合継続者',
-      'GCHP': '人間実践型総合継続者',
-      'GCTA': '技術分析型総合継続者',
-      'GCTP': 'オペレーション管理型総合実践者' // 犬タイプの詳細名
-    };
-    
-    return detailedNames[typeCode] || 'バランス型医療プロフェッショナル';
-  };
 
   // タイプコードから動物名を取得
   const getAnimalName = (typeCode) => {
@@ -544,7 +524,6 @@ const EnhancedResultScreen = ({ results, profession, postalCode, answers, onRest
   const animalName = getAnimalName(typeCode);
   const catchPhrase = getCatchPhrase(typeCode);
   const oneLiner = getOneLiner(typeCode);
-  const detailedTypeName = getDetailedTypeName(typeCode);
   
   // 職種ごとの色設定
   const getProfessionColor = () => {
@@ -667,26 +646,15 @@ const EnhancedResultScreen = ({ results, profession, postalCode, answers, onRest
           <h2 className="result-title" style={{ 
             fontSize: '28px', 
             fontWeight: '700', 
-            marginBottom: '10px', // 余白を少し減らす
+            marginBottom: '20px',
             color: 'white',
             maxWidth: '800px',
-            margin: '0 auto 10px',
+            margin: '0 auto 20px',
             lineHeight: '1.3',
             padding: '0 10px'
           }}>
             あなたは<span style={{ color: '#FFD700' }}>『{animalName}型』</span>：{catchPhrase}
           </h2>
-
-          {/* 詳細なタイプ名を追加 */}
-          <p style={{
-            fontSize: '16px',
-            fontWeight: '500',
-            color: 'rgba(255, 255, 255, 0.95)',
-            marginBottom: '20px',
-            fontStyle: 'italic'
-          }}>
-            ({detailedTypeName}タイプ)
-          </p>
           
           <p className="result-description" style={{ 
             fontSize: '18px', 
@@ -850,16 +818,19 @@ const EnhancedResultScreen = ({ results, profession, postalCode, answers, onRest
           </AnimatePresence>
         </div>
 
-        {/* アクションボタン */}
+        {/* アクションボタン - 位置調整済み */}
         <div className="action-buttons" style={{
-          marginTop: '50px',
+          marginTop: '80px',
           textAlign: 'center',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           gap: '16px',
           maxWidth: '900px',
-          margin: '50px auto 0'
+          margin: '80px auto 0',
+          paddingTop: '30px',
+          position: 'relative',
+          zIndex: 5
         }}>
           <button
             onClick={handleOpenContactForm}
@@ -902,11 +873,19 @@ const EnhancedResultScreen = ({ results, profession, postalCode, answers, onRest
         </div>
       </motion.div>
 
-      {/* フッター */}
+      {/* フッター - 修正済みリンク */}
       <footer style={{ textAlign: 'center', marginTop: '40px', color: 'white', fontSize: '13px', paddingBottom: '40px', lineHeight: '1.8' }}>
         <p>MediMatchは看護師・薬剤師・リハビリ系（PT/OT/ST）などのためのキャリア診断</p>
         <p>© 2025 株式会社はるひメディカルサービス. All rights reserved.</p>
-        <a href="/privacy" style={{ color: 'white', textDecoration: 'underline' }}>
+        <a 
+          href="#" 
+          onClick={(e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            navigate('/policy');
+          }}
+          style={{ color: 'white', textDecoration: 'underline', cursor: 'pointer' }}
+        >
           プライバシーポリシー・利用規約・お問い合わせ
         </a>
       </footer>
@@ -964,7 +943,7 @@ const EnhancedResultScreen = ({ results, profession, postalCode, answers, onRest
           
           .result-title {
             font-size: 24px !important;
-            margin-bottom: 8px !important;
+            margin-bottom: 12px !important;
           }
           
           .result-description {

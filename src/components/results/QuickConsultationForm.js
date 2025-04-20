@@ -150,6 +150,14 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
     setErrorMessage('');
+    
+    // タブ切り替え時にスクロール
+    setTimeout(() => {
+      const tabContent = document.getElementById('tab-content');
+      if (tabContent) {
+        tabContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 100);
   };
 
   const handleClose = (e) => {
@@ -166,27 +174,42 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
     exit: { opacity: 0, x: 20, transition: { duration: 0.2 } }
   };
 
-  // MediMatch 強みカード（アイコンを削除した版）
+  // MediMatch 強みカード（6 枚目を追加済み）
   const strengths = [
     {
       title: '逆指名型転職システム',
-      description: 'あなたの「行きたい」医療機関を選び、その希望に沿って私たちが求人を開拓します。従来の転職サービスでは実現できなかった可能性を切り開きます。'
+      description: 'あなたの「行きたい」医療機関を選び、その希望に沿って私たちが求人を開拓します。従来の転職サービスでは実現できなかった可能性を切り開きます。',
+      icon: (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>)
     },
     {
       title: '医療機関の質的評価',
-      description: '経営基盤、理念、将来性などを独自の視点で評価・分析し、透明性の高い情報を提供します。良質な医療と健全な経営を両立する医療機関との連携を重視します。'
+      description: '経営基盤、理念、将来性などを独自の視点で評価・分析し、透明性の高い情報を提供します。良質な医療と健全な経営を両立する医療機関との連携を重視します。',
+      icon: (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 20h20"/><path d="M5 20V8.2a1 1 0 0 1 .4-.8l4.2-3.4a1 1 0 0 1 1.2 0l4.2 3.4a1 1 0 0 1 .4.8V20"/><path d="M12 15v5"/><path d="M8 9h8"/><path d="M8 13h8"/></svg>)
     },
     {
       title: '丁寧さの追求',
-      description: '多くの求職者を扱うのではなく、限られた方々に深く寄り添うことで、量ではなく質を重視し、短期的な成果よりも長期的な満足と成長を大切にします。'
+      description: '多くの求職者を扱うのではなく、限られた方々に深く寄り添うことで、量ではなく質を重視し、短期的な成果よりも長期的な満足と成長を大切にします。',
+      icon: (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>)
     },
     {
       title: '主体性の尊重',
-      description: '医療従事者がキャリアを自らの手で切り開く権利を尊重し、「行きたい」という意志を最も尊い動機として受け止め、その実現に全力を尽くします。'
+      description: '医療従事者がキャリアを自らの手で切り開く権利を尊重し、「行きたい」という意志を最も尊い動機として受け止め、その実現に全力を尽くします。',
+      icon: (
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="m16 12-4 4-4-4"/>
+          <path d="M12 8v8"/>
+        </svg>
+      )
     },
     {
       title: "成長への伴走",
-      description: "単なる転職の瞬間だけでなく、医療従事者の長期的なキャリア形成とその人らしい成長の過程に寄り添います。「コナトゥス」を尊重し、自己実現へと至る道のりを共に歩みます。"
+      description: "単なる転職の瞬間だけでなく、医療従事者の長期的なキャリア形成とその人らしい成長の過程に寄り添います。「コナトゥス」を尊重し、自己実現へと至る道のりを共に歩みます。",
+      icon: (
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="m6 9 6 6 6-6"/>
+        </svg>
+      )
     }
   ];
   
@@ -376,7 +399,7 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
         </div>
 
         {/* コンテンツエリア - スクロール可能 */}
-        <div style={{ overflowY: 'auto', flex: 1 }}>
+        <div id="tab-content" style={{ overflowY: 'auto', flex: 1 }}>
           <AnimatePresence mode="wait">
             {/* フォームタブのコンテンツ */}
             {activeTab === 'form' && (
@@ -828,7 +851,6 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                               <strong>LINEで相談</strong>をご希望の方は、公式アカウントを友だち追加してください。
                             </p>
                             
-                            
                             <a href="https://lin.ee/xolKvUO"
                               target="_blank"
                               rel="noopener noreferrer"
@@ -846,7 +868,9 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                                 transition: 'all 0.2s ease'
                               }}
                             >
-                              <img src="/images/icons/line.svg" alt="LINE" width="24" height="24" />
+                              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M24 10.304c0-5.369-5.383-9.738-12-9.738-6.616 0-12 4.369-12 9.738 0 4.819 4.588 8.857 10.778 9.623.421.091.999.28 1.145.641.132.331.089.848.044 1.182-.132.611-.611 2.38-.611 2.38-.033.16-.066.26.088.33.154.07.275-.05.421-.111 1.893-.798 9.488-5.494 12.954-9.412 2.354-2.581 2.851-5.239 2.181-7.593z"></path>
+                              </svg>
                               <span>友だち追加して相談</span>
                             </a>
                           </motion.div>
@@ -967,20 +991,6 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                 id="about-tab"
                 aria-labelledby="about-tab-button"
               >
-                {/* ナビゲーター画像 */}
-                <div style={{ textAlign: 'center', marginBottom: '24px' }}>
-                  <img 
-                    src="/images/navigator_clean.png" 
-                    alt="診断結果を活かした個人対応のキャリア相談" 
-                    style={{
-                      maxWidth: '100%',
-                      height: 'auto',
-                      borderRadius: '12px',
-                      boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
-                    }}
-                  />
-                </div>
-
                 {/* MediMatchの理念 */}
                 <div style={{
                   backgroundColor: '#EBF8FF',
@@ -1006,6 +1016,38 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                   </p>
                 </div>
 
+                {/* 新規追加：医療専門家による1対1のサポートセクション */}
+                <div style={{
+                  backgroundColor: '#EBF8FF',
+                  borderRadius: '12px',
+                  padding: '20px',
+                  marginBottom: '24px',
+                  border: '1px solid #BEE3F8'
+                }}>
+                  <h4 style={{ 
+                    fontSize: '18px', 
+                    fontWeight: '700', 
+                    color: '#1A6CBF',
+                    marginBottom: '16px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px'
+                  }}>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                      <path d="M2 17l10 5 10-5"></path>
+                      <path d="M2 12l10 5 10-5"></path>
+                    </svg>
+                    医療現場を知り尽くした専門家の支援
+                  </h4>
+                  <p style={{ fontSize: '15px', lineHeight: '1.6', marginBottom: '14px' }}>
+                    <strong>経験豊富な医療専門家による1対1の伴走：</strong> 元急性期病院の事務長（30歳で就任）、医療経営コンサルタントが転職支援を担当。面接実績1000件以上の専門知識で、あなたのキャリアを本気でサポートします。
+                  </p>
+                  <p style={{ fontSize: '15px', lineHeight: '1.6' }}>
+                    <strong>「転職ありき」ではない本質的なキャリア支援：</strong> 少人数制で一人ひとりとじっくり向き合うことで、短期的な転職だけでなく長期的なキャリア形成に寄り添います。
+                  </p>
+                </div>
+
                 {/* 5つの強み */}
                 <h4 style={{ 
                   fontSize: '17px', 
@@ -1016,9 +1058,7 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                   MediMatchの5つの強み
                 </h4>
 
-                {/* アイコンを削除した強みカード */}
                 <div style={{
-                  marginTop: '32px',
                   display: 'flex',
                   flexDirection: 'column',
                   gap: '16px',
@@ -1032,23 +1072,44 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                       boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
                       border: '1px solid #E2E8F0'
                     }}>
-                      <div>
-                        <h5 style={{ 
-                          fontSize: '16px', 
-                          fontWeight: '600', 
-                          color: '#1A6CBF',
-                          marginBottom: '6px' 
-                        }}>
-                          {strength.title}
-                        </h5>
-                        <p style={{ 
-                          fontSize: '14px', 
-                          color: '#4A5568', 
-                          lineHeight: '1.6',
-                          margin: 0
-                        }}>
-                          {strength.description}
-                        </p>
+                      <div style={{ 
+                        display: 'flex', 
+                        gap: '16px',
+                        alignItems: 'flex-start'
+                      }}>
+                        <div style={{
+                          backgroundColor: '#1A6CBF',
+                          color: 'white',
+                          width: '40px',
+                          height: '40px',
+                          borderRadius: '50%',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          flexShrink: 0
+                        }}
+                          aria-hidden="true"
+                        >
+                          {strength.icon}
+                        </div>
+                        <div>
+                          <h5 style={{ 
+                            fontSize: '16px', 
+                            fontWeight: '600', 
+                            color: '#1A6CBF',
+                            marginBottom: '6px' 
+                          }}>
+                            {strength.title}
+                          </h5>
+                          <p style={{ 
+                            fontSize: '14px', 
+                            color: '#4A5568', 
+                            lineHeight: '1.6',
+                            margin: 0
+                          }}>
+                            {strength.description}
+                          </p>
+                        </div>
                       </div>
                     </div>
                   ))}
