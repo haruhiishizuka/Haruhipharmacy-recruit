@@ -8,7 +8,8 @@ const QuizScreen = ({ questions, onComplete }) => {
   const [isNextEnabled, setIsNextEnabled] = useState(false);
   const [direction, setDirection] = useState(1); // 1:前進, -1:後退
   
-  // スクロール位置管理用のref
+  // 明示的なヘッダー参照を追加
+  const headerRef = useRef(null);
   const containerRef = useRef(null);
   
   const totalPages = Math.ceil(questions.length / QUESTIONS_PER_PAGE);
@@ -17,17 +18,35 @@ const QuizScreen = ({ questions, onComplete }) => {
     (currentPage + 1) * QUESTIONS_PER_PAGE
   );
 
-  // ページ変更後のスクロール処理
+  // ページが変わった後のスクロール処理を強化
   useEffect(() => {
-    // ページが変わったらスクロール実行
-    if (containerRef.current) {
-      // 画面の一番上にスクロール
-      window.scrollTo({
-        top: 0,
-        behavior: 'auto' // smoothではなくautoにして確実に即時反映
-      });
-    }
-  }, [currentPage]); // currentPageが変更されたときに実行
+    const scrollToTop = () => {
+      // 複数のスクロール方法を試みる
+      
+      // 方法1: ネイティブ最上部スクロール
+      window.scrollTo(0, 0);
+      
+      // 方法2: より強制的なスクロール 
+      if (headerRef.current) {
+        headerRef.current.scrollIntoView({ 
+          behavior: 'auto',
+          block: 'start'
+        });
+      }
+      
+      // 方法3: 最後の手段 - JavaScript-only の強制スクロール
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0; // Safari対応
+    };
+
+    // アニメーション完了後のスクロール (遅延実行)
+    const timeoutId = setTimeout(() => {
+      scrollToTop();
+    }, 100);
+    
+    // クリーンアップ
+    return () => clearTimeout(timeoutId);
+  }, [currentPage]);
 
   // 質問ごとのラベル定義
   const getQuestionLabels = (questionId) => {
@@ -75,22 +94,26 @@ const QuizScreen = ({ questions, onComplete }) => {
     // 回答時にはスクロールしない
   };
 
-  // 修正されたhandleNext関数
   const handleNext = () => {
     if (!isNextEnabled) return;
     setDirection(1);
     
+    // スクロールと状態変更を分離する
     if (currentPage < totalPages - 1) {
-      // 即時スクロール処理を追加
+      // まずスクロール
       window.scrollTo(0, 0);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
       
-      // setTimeoutを使ってスクロールを確実に実行してからページ遷移
+      // 遅延してからページ変更
       setTimeout(() => {
         setCurrentPage((prev) => prev + 1);
-      }, 50);
+      }, 100);
     } else {
-      // 即時スクロール処理を追加
+      // 結果画面への遷移
       window.scrollTo(0, 0);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
       
       setTimeout(() => {
         const answerArray = questions.map((q) => answers[q.id]);
@@ -101,17 +124,18 @@ const QuizScreen = ({ questions, onComplete }) => {
     }
   };
   
-  // 修正されたhandlePrevious関数
   const handlePrevious = () => {
     if (currentPage > 0) {
       setDirection(-1);
       
-      // 即時スクロール処理を追加
+      // 先にスクロール
       window.scrollTo(0, 0);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
       
       setTimeout(() => {
         setCurrentPage((prev) => prev - 1);
-      }, 50);
+      }, 100);
     }
   };
 
@@ -141,7 +165,7 @@ const QuizScreen = ({ questions, onComplete }) => {
 
   return (
     <div
-      ref={containerRef} // refを追加
+      ref={containerRef}
       style={{
         minHeight: '100vh',
         width: '100%',
@@ -156,6 +180,7 @@ const QuizScreen = ({ questions, onComplete }) => {
       }}
     >
       <header
+        ref={headerRef} // ヘッダーへの明示的な参照を追加
         style={{
           position: 'sticky',
           top: 0,
@@ -351,6 +376,16 @@ const QuizScreen = ({ questions, onComplete }) => {
           width: 100%;
           min-height: 100vh;
           overflow-x: hidden;
+          scroll-behavior: auto !important; /* スムーススクロールを無効化 */
+        }
+        
+        /* 固定ヘッダー対応 */
+        @supports (-webkit-touch-callout: none) {
+          /* iOS Safari 特有の問題対策 */
+          header {
+            position: -webkit-sticky;
+            top: 0;
+          }
         }
         
         /* モバイル対応 */
