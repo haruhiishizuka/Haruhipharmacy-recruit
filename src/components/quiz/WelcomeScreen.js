@@ -82,17 +82,42 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
   };
 
   return (
-    <div className="welcome-screen" style={{ 
+    <div style={{ 
       minHeight: '100vh',
+      position: 'relative',
       fontFamily: "'Inter', 'Noto Sans JP', sans-serif",
       display: 'flex',
       flexDirection: 'column',
-      backgroundColor: '#EDF2F7', // 背景色を#EDF2F7に変更
-      position: 'relative',
       overflow: 'hidden'
     }}>
-      {/* ヘッダーセクション */}
-      <div className="header-section" style={{
+      {/* 改善された背景スタイル - 固定背景と覆い効果 */}
+      <div className="background-wrapper" style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        zIndex: -1,
+        backgroundImage: `url('/images/patterns/medical_pattern_light.png')`,
+        backgroundSize: '800px', /* パターンの適切なサイズ */
+        backgroundPosition: 'center',
+        backgroundAttachment: 'fixed',
+        backgroundColor: '#65A9E5',
+      }}></div>
+      
+      {/* オーバーレイグラデーション */}
+      <div className="overlay-gradient" style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        zIndex: -1,
+        background: 'linear-gradient(135deg, rgba(26,108,191,0.7) 0%, rgba(101,169,229,0.5) 100%)',
+      }}></div>
+      
+      {/* ヒーローセクション */}
+      <div style={{
         padding: '60px 20px 120px',
         display: 'flex',
         flexDirection: 'column',
@@ -101,26 +126,10 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
         position: 'relative',
         color: 'white',
         textAlign: 'center',
-        background: 'linear-gradient(to bottom, rgba(26, 108, 191, 0.8), rgba(101, 169, 229, 0.7))',
-        boxShadow: 'inset 0 -4px 6px rgba(0, 0, 0, 0.1)',
-        overflow: 'hidden',
-        zIndex: 1
+        backdropFilter: 'blur(2px)',
+        boxShadow: 'inset 0 -4px 6px rgba(0, 0, 0, 0.1)'
       }}>
-        {/* 背景パターン - 単一の大きなSVG背景パターン */}
-        <div className="background-pattern" style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          opacity: 0.2,
-          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cpolygon fill='%23FFFFFF' points='120 0 120 60 90 30 60 0 0 0 0 0 60 60 0 120 60 120 90 90 120 60 120 0'%3E%3C/polygon%3E%3C/svg%3E")`,
-          backgroundSize: '120px 120px',
-          backgroundRepeat: 'repeat',
-          zIndex: -1
-        }}></div>
-        
-        {/* MediMatchロゴ */}
+        {/* MediMatchロゴ - 新しいロゴを使用 */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -138,8 +147,7 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
             style={{
               width: '100%',
               maxWidth: '280px',
-              height: 'auto',
-              filter: 'drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1))'
+              height: 'auto'
             }}
           />
           <div style={{
@@ -148,14 +156,13 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
             opacity: 0.9,
             letterSpacing: '2px',
             textTransform: 'uppercase',
-            marginTop: '10px',
-            textShadow: '0 2px 4px rgba(0, 0, 0, 0.2)'
+            marginTop: '10px'
           }}>
             医療キャリア診断ツール
           </div>
         </motion.div>
         
-        {/* 説明文 */}
+        {/* サブタイトルを削除し、説明文のみに */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -167,8 +174,7 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
             lineHeight: 1.7,
             maxWidth: '600px',
             margin: '0 auto 40px',
-            color: 'rgba(255, 255, 255, 0.9)',
-            textShadow: '0 1px 2px rgba(0, 0, 0, 0.1)'
+            color: 'rgba(255, 255, 255, 0.9)'
           }}>
             あなたの価値観と強みを分析し、適性に合った職場環境や成長のヒントを提案します。
             たった5分の診断で、あなたの医療キャリアの道しるべを見つけましょう。
@@ -207,7 +213,7 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
         </motion.button>
       </div>
 
-      {/* 特徴紹介セクション */}
+      {/* 特徴紹介セクション - モバイルでの2列表示に最適化 */}
       <motion.div
         variants={containerVariants}
         initial="hidden"
@@ -217,15 +223,17 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
           margin: '0 auto',
           marginTop: '-60px',
           padding: '40px 20px 60px',
-          backgroundColor: 'rgba(255, 255, 255, 0.95)',
+          backgroundColor: 'rgba(255, 255, 255, 0.85)',
+          backdropFilter: 'blur(10px)',
+          WebkitBackdropFilter: 'blur(10px)',
           borderRadius: '24px',
-          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
+          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.15)',
           position: 'relative',
           zIndex: 2,
           flex: 1
         }}
       >
-        {/* タイトル */}
+        {/* タイトルを「MediMatchの特徴」のみに */}
         <h2 style={{
           fontSize: '28px',
           fontWeight: '700',
@@ -237,7 +245,7 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
           MediMatchの特徴
         </h2>
 
-        {/* 特徴カードのグリッド */}
+        {/* 特徴カードのグリッド - モバイル対応を強化 */}
         <div className="features-grid" style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
@@ -253,13 +261,11 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
                 backgroundColor: 'white',
                 borderRadius: '20px',
                 padding: '20px',
-                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
-                border: '1px solid rgba(226, 232, 240, 0.8)',
+                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                textAlign: 'center',
-                transition: 'transform 0.3s ease, box-shadow 0.3s ease'
+                textAlign: 'center'
               }}
             >
               <div style={{
@@ -367,9 +373,8 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
         color: 'white',
         padding: '20px',
         fontSize: '14px',
-        backgroundColor: 'rgba(26, 108, 191, 0.8)',
-        position: 'relative',
-        zIndex: 1
+        backgroundColor: 'rgba(26, 108, 191, 0.1)',
+        backdropFilter: 'blur(5px)'
       }}>
         <p style={{ marginBottom: '8px' }}>
           MediMatchは看護師・薬剤師・リハビリ系（PT/OT/ST）などのためのキャリア診断
@@ -400,17 +405,10 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
 
       {/* モバイル対応用スタイル */}
       <style jsx="true">{`
-        /* 全体のスタイル */
-        html, body {
-          margin: 0;
-          padding: 0;
-          background-color: #EDF2F7;
-        }
-        
-        /* 特徴カードのホバーエフェクト */
-        .feature-card:hover {
-          transform: translateY(-5px);
-          box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        @keyframes pulse {
+          0% { box-shadow: 0 0 0 0 rgba(26, 108, 191, 0.3); }
+          70% { box-shadow: 0 0 0 10px rgba(26, 108, 191, 0); }
+          100% { box-shadow: 0 0 0 0 rgba(26, 108, 191, 0); }
         }
         
         /* デスクトップ向けスタイル */
@@ -447,49 +445,40 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
           .feature-card {
             padding: 24px !important;
           }
-          
-          .header-section {
-            padding: 40px 20px 100px !important;
-          }
         }
         
         /* モバイル向けスタイル */
         @media (max-width: 480px) {
           .features-grid {
-            grid-template-columns: 1fr !important;
-            gap: 16px !important;
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 12px !important;
           }
           
           .feature-card {
-            padding: 20px !important;
+            padding: 16px !important;
           }
           
           .feature-card img {
-            width: 80px !important;
-            height: 80px !important;
+            width: 70px !important;
+            height: 70px !important;
+            margin-bottom: 10px !important;
           }
           
           .feature-card h3 {
-            font-size: 18px !important;
+            font-size: 16px !important;
+            margin-bottom: 8px !important;
           }
           
           .feature-card p {
-            font-size: 14px !important;
-          }
-          
-          .header-section {
-            padding: 30px 16px 80px !important;
-          }
-          
-          h2 {
-            font-size: 24px !important;
+            font-size: 12px !important;
+            line-height: 1.4 !important;
           }
         }
-        
-        /* Safari向けの修正 */
-        @supports (-webkit-overflow-scrolling: touch) {
-          .welcome-screen {
-            -webkit-overflow-scrolling: touch;
+
+        /* iOS向けのバックドロップフィルター対応 */
+        @supports (-webkit-backdrop-filter: blur(10px)) {
+          .background-wrapper {
+            -webkit-backdrop-filter: blur(0px);
           }
         }
       `}</style>
