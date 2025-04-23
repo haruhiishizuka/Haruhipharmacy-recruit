@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom'; // useNavigateをインポート追加
 import ResultSummary from './ResultSummary';
 import QuickConsultationForm from './QuickConsultationForm';
+import { trackContactStart, trackRestart, trackShare } from '../../utils/analytics';
 import { Chart as ChartJS, RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend } from 'chart.js';
 import { Radar } from 'react-chartjs-2';
 
@@ -39,18 +40,49 @@ const AnimalIcon = ({ typeCode }) => {
 
   const animal = getAnimalType(typeCode);
   
-  // SVGアイコンの代わりに実際の画像を表示
-  return (
-    <img
-      src={`/images/animals/${animal}.png`}
-      alt={`${animal} icon`}
-      style={{
-        width: '100%',
-        height: '100%',
-        objectFit: 'contain'
-      }}
-    />
-  );
+  // 簡易的なSVGプレースホルダー（実際の実装では適切なアイコンを用意）
+  const animalIcons = {
+    'owl': (
+      <svg width="128" height="128" viewBox="0 0 24 24" fill="none" stroke="#1A6CBF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="8" r="5" />
+        <circle cx="9" cy="6" r="1" fill="#1A6CBF" />
+        <circle cx="15" cy="6" r="1" fill="#1A6CBF" />
+        <path d="M12 13v3" />
+        <path d="M9 16l3 3 3-3" />
+        <path d="M7 4c-1 0-2 1-2 2" />
+        <path d="M17 4c1 0 2 1 2 2" />
+      </svg>
+    ),
+    'fox': (
+      <svg width="128" height="128" viewBox="0 0 24 24" fill="none" stroke="#DD6B20" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M5 8l2-3 2 3" />
+        <path d="M17 8l2-3 2 3" />
+        <path d="M12 2a9 9 0 0 0-9 9v7c0 2 1 3 3 3v-5h12v5c2 0 3-1 3-3v-7a9 9 0 0 0-9-9z" />
+        <circle cx="9" cy="9" r="1" fill="#DD6B20" />
+        <circle cx="15" cy="9" r="1" fill="#DD6B20" />
+        <path d="M12 16l-3-3 3 3 3-3-3 3z" />
+      </svg>
+    ),
+    'eagle': (
+      <svg width="128" height="128" viewBox="0 0 24 24" fill="none" stroke="#805AD5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M7 7l.01.01" />
+        <path d="M17 7l.01.01" />
+        <path d="M12 1c-5 0-9 2-9 6v9c0 1 1 2 2 2h1v1c0 1 1 2 2 2h8c1 0 2-1 2-2v-1h1c1 0 2-1 2-2v-9c0-4-4-6-9-6z" />
+        <path d="M10 12v3" />
+        <path d="M14 12v3" />
+      </svg>
+    ),
+    'default': (
+      <svg width="128" height="128" viewBox="0 0 24 24" fill="none" stroke="#1A6CBF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="10" />
+        <path d="M8 14s1.5 2 4 2 4-2 4-2" />
+        <line x1="9" y1="9" x2="9.01" y2="9" />
+        <line x1="15" y1="9" x2="15.01" y2="9" />
+      </svg>
+    )
+  };
+
+  return animalIcons[animal] || animalIcons['default'];
 };
 
 // レーダーチャートコンポーネント
@@ -160,13 +192,18 @@ const ShareSection = ({ resultType, profession }) => {
     navigator.clipboard.writeText(`${shareData.text} ${shareData.url}`)
       .then(() => {
         setCopied(true);
+        // シェアイベントのトラッキング
+        trackShare(resultType, 'copy');
         setTimeout(() => setCopied(false), 2000);
       })
       .catch(() => alert('リンクのコピーに失敗しました'));
   };
   
-  const handleShare = () => {
-    if (navigator.share) {
+  const handleShare = (method) => {
+    // シェアイベントのトラッキング
+    trackShare(resultType, method);
+    
+    if (navigator.share && method === 'native') {
       navigator.share(shareData).catch(console.error);
     } else {
       handleCopyLink();
@@ -192,7 +229,7 @@ const ShareSection = ({ resultType, profession }) => {
         
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
           <button
-            onClick={handleShare}
+            onClick={() => handleShare('native')}
             style={{
               backgroundColor: '#4299E1',
               color: 'white',
@@ -256,6 +293,7 @@ const ShareSection = ({ resultType, profession }) => {
         )}&url=${encodeURIComponent(window.location.href)}`}
           target="_blank"
           rel="noopener noreferrer"
+          onClick={() => trackShare(resultType, 'twitter')}
           style={{
             backgroundColor: '#1DA1F2',
             color: 'white',
@@ -277,6 +315,7 @@ const ShareSection = ({ resultType, profession }) => {
         <a href={`https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(window.location.href)}`}
           target="_blank"
           rel="noopener noreferrer"
+          onClick={() => trackShare(resultType, 'line')}
           style={{
             backgroundColor: '#06C755',
             color: 'white',
@@ -298,6 +337,7 @@ const ShareSection = ({ resultType, profession }) => {
         <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`}
           target="_blank"
           rel="noopener noreferrer"
+          onClick={() => trackShare(resultType, 'facebook')}
           style={{
             backgroundColor: '#1877F2',
             color: 'white',
@@ -529,12 +569,24 @@ const EnhancedResultScreen = ({ results, profession, postalCode, answers, onRest
 
   // 問い合わせフォームを開く
   const handleOpenContactForm = () => {
+    // コンタクト開始イベントのトラッキング
+    trackContactStart(results.title || typeCode, profession);
     setShowContactForm(true);
   };
 
   // 問い合わせフォームを閉じる
   const handleCloseContactForm = () => {
     setShowContactForm(false);
+  };
+
+  // 診断やり直し処理
+  const handleRestartClick = () => {
+    // 診断やり直しイベントのトラッキング
+    trackRestart(results.title || typeCode);
+    
+    if (typeof onRestart === 'function') {
+      onRestart();
+    }
   };
 
   // タブコンテンツのアニメーション設定
@@ -798,7 +850,6 @@ const EnhancedResultScreen = ({ results, profession, postalCode, answers, onRest
           maxWidth: '900px',
           margin: '80px auto 0',
           paddingTop: '30px',
-          paddingBottom: '80px', // 下部パディングを追加
           position: 'relative',
           zIndex: 5
         }}>
@@ -823,7 +874,7 @@ const EnhancedResultScreen = ({ results, profession, postalCode, answers, onRest
           </button>
           
           <button
-            onClick={onRestart}
+            onClick={handleRestartClick}
             style={{
               backgroundColor: 'transparent',
               color: professionColor,
@@ -937,10 +988,7 @@ const EnhancedResultScreen = ({ results, profession, postalCode, answers, onRest
           }
           
           .action-buttons {
-
-            margin-top: 50px !important;
-            margin-bottom: 60px !important; /* 下部マージンを増加 */
-            padding-bottom: 40px !important; /* 下部パディングも増加 */
+            margin-top: 30px !important;
           }
           
           .action-buttons button {

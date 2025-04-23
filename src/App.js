@@ -545,6 +545,7 @@ function AppContent() {
 function App() {
   return (
     <Router>
+      <TagManager /> {/* Google Tag Manager コンポーネントを追加 */}
       <Routes>
         <Route path="/*" element={<AppContent />} />
       </Routes>

@@ -75,6 +75,7 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
     e.preventDefault();
     if (typeof onStartQuiz === 'function') {
       console.log("診断を開始します...");
+      trackQuizStart('welcome');
       onStartQuiz();
     } else {
       console.error("onStartQuiz is not a function");

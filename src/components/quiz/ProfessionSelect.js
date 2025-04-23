@@ -33,6 +33,9 @@ const ProfessionSelect = ({ onSelect }) => {
   // 職種選択時に自動的に次へ進む処理
   const handleSelect = (id) => {
     setSelectedProfession(id);
+
+    // アナリティクスイベントの送信
+    trackProfessionSelect(id);
     
     // 選択後、少し遅延させてから次へ進む（選択したことが視覚的に分かるように）
     setTimeout(() => {

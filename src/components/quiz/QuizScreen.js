@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { trackQuestionAnswer, trackQuizComplete } from '../utils/analytics';
 
 const QuizScreen = ({ questions, onComplete }) => {
   const QUESTIONS_PER_PAGE = 3;
@@ -7,10 +8,7 @@ const QuizScreen = ({ questions, onComplete }) => {
   const [answers, setAnswers] = useState({});
   const [isNextEnabled, setIsNextEnabled] = useState(false);
   const [direction, setDirection] = useState(1); // 1:前進, -1:後退
-  
-  // 明示的なヘッダー参照を追加
-  const headerRef = useRef(null);
-  const containerRef = useRef(null);
+  const [startTime, setStartTime] = useState(Date.now()); // 診断開始時間
   
   const totalPages = Math.ceil(questions.length / QUESTIONS_PER_PAGE);
   const currentQuestions = questions.slice(
@@ -18,35 +16,10 @@ const QuizScreen = ({ questions, onComplete }) => {
     (currentPage + 1) * QUESTIONS_PER_PAGE
   );
 
-  // ページが変わった後のスクロール処理を強化
+  // コンポーネントマウント時に開始時間を設定
   useEffect(() => {
-    const scrollToTop = () => {
-      // 複数のスクロール方法を試みる
-      
-      // 方法1: ネイティブ最上部スクロール
-      window.scrollTo(0, 0);
-      
-      // 方法2: より強制的なスクロール 
-      if (headerRef.current) {
-        headerRef.current.scrollIntoView({ 
-          behavior: 'auto',
-          block: 'start'
-        });
-      }
-      
-      // 方法3: 最後の手段 - JavaScript-only の強制スクロール
-      document.documentElement.scrollTop = 0;
-      document.body.scrollTop = 0; // Safari対応
-    };
-
-    // アニメーション完了後のスクロール (遅延実行)
-    const timeoutId = setTimeout(() => {
-      scrollToTop();
-    }, 100);
-    
-    // クリーンアップ
-    return () => clearTimeout(timeoutId);
-  }, [currentPage]);
+    setStartTime(Date.now());
+  }, []);
 
   // 質問ごとのラベル定義
   const getQuestionLabels = (questionId) => {
@@ -91,31 +64,40 @@ const QuizScreen = ({ questions, onComplete }) => {
       ...prev,
       [questionId]: value,
     }));
+    
+    // 回答イベントのトラッキング
+    const questionIndex = questions.findIndex(q => q.id === questionId);
+    trackQuestionAnswer(questionIndex, questionId, value);
+    
     // 回答時にはスクロールしない
   };
 
+  // 明示的にスクロール処理を含むページ遷移関数
   const handleNext = () => {
     if (!isNextEnabled) return;
     setDirection(1);
     
-    // スクロールと状態変更を分離する
     if (currentPage < totalPages - 1) {
-      // まずスクロール
-      window.scrollTo(0, 0);
-      document.documentElement.scrollTop = 0;
-      document.body.scrollTop = 0;
+      // ページ遷移前にスクロール処理を実行
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       
-      // 遅延してからページ変更
+      // スクロール後にページを変更
       setTimeout(() => {
         setCurrentPage((prev) => prev + 1);
-      }, 100);
+      }, 100); // スクロールのアニメーションが開始されるのを少し待つ
     } else {
-      // 結果画面への遷移
-      window.scrollTo(0, 0);
-      document.documentElement.scrollTop = 0;
-      document.body.scrollTop = 0;
+      // 結果画面へ遷移する前にスクロール
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       
+      // スクロール開始後に結果画面に遷移
       setTimeout(() => {
+        // 回答時間を計算（秒単位）
+        const timeSpent = Math.floor((Date.now() - startTime) / 1000);
+        
+        // 診断完了イベントのトラッキング
+        trackQuizComplete('completed', timeSpent);
+        
+        // 重要な修正部分: イベントオブジェクトを返さないようにする
         const answerArray = questions.map((q) => answers[q.id]);
         if (typeof onComplete === 'function') {
           onComplete(answerArray);
@@ -128,11 +110,10 @@ const QuizScreen = ({ questions, onComplete }) => {
     if (currentPage > 0) {
       setDirection(-1);
       
-      // 先にスクロール
-      window.scrollTo(0, 0);
-      document.documentElement.scrollTop = 0;
-      document.body.scrollTop = 0;
+      // ページ遷移前にスクロール処理を実行
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       
+      // スクロール後にページを変更
       setTimeout(() => {
         setCurrentPage((prev) => prev - 1);
       }, 100);
@@ -164,8 +145,8 @@ const QuizScreen = ({ questions, onComplete }) => {
   };
 
   return (
+
     <div
-      ref={containerRef}
       style={{
         minHeight: '100vh',
         width: '100%',
@@ -180,7 +161,6 @@ const QuizScreen = ({ questions, onComplete }) => {
       }}
     >
       <header
-        ref={headerRef} // ヘッダーへの明示的な参照を追加
         style={{
           position: 'sticky',
           top: 0,
@@ -376,16 +356,6 @@ const QuizScreen = ({ questions, onComplete }) => {
           width: 100%;
           min-height: 100vh;
           overflow-x: hidden;
-          scroll-behavior: auto !important; /* スムーススクロールを無効化 */
-        }
-        
-        /* 固定ヘッダー対応 */
-        @supports (-webkit-touch-callout: none) {
-          /* iOS Safari 特有の問題対策 */
-          header {
-            position: -webkit-sticky;
-            top: 0;
-          }
         }
         
         /* モバイル対応 */

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { sendToSlack } from '../../utils/slackNotifier';
+import { trackContactSubmit } from '../../utils/analytics';
 
 /**
  * QuickConsultationForm
@@ -10,6 +11,7 @@ import { sendToSlack } from '../../utils/slackNotifier';
  * - LINE 相談を選択すると友だち追加ボタンが展開
  * - 成功時は 24h 以内連絡メッセージ、LINE 選択時は自動で友だち追加ページを開く
  * - UI / 配色 / アニメーションは WelcomeScreen に合わせた一貫デザイン
+ * - アナリティクスとタグマネージャーに対応
  * -------------------------------------------------------------
  */
 const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) => {
@@ -126,15 +128,23 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    if (e) {
+      e.preventDefault();
+    }
+    
+    // 入力チェック
     if (!validateForm()) return;
-
+    
+    // 送信中表示
     setIsSubmitting(true);
-
     const diagnosticInfo = { resultType, profession, postalCode: formData.postalCode };
     try {
       const res = await sendToSlack(formData, diagnosticInfo);
       if (!res.success) throw new Error(res.message || 'Slack 送信失敗');
+      
+      // コンバージョンイベントのトラッキング
+      trackContactSubmit(resultType, profession, formData.contactMethod);
+      
       setIsSubmitted(true);
       // LINE 自動誘導
       if (formData.contactMethod === 'line') {
