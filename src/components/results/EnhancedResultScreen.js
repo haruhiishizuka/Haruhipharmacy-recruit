@@ -39,49 +39,18 @@ const AnimalIcon = ({ typeCode }) => {
 
   const animal = getAnimalType(typeCode);
   
-  // 簡易的なSVGプレースホルダー（実際の実装では適切なアイコンを用意）
-  const animalIcons = {
-    'owl': (
-      <svg width="128" height="128" viewBox="0 0 24 24" fill="none" stroke="#1A6CBF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="8" r="5" />
-        <circle cx="9" cy="6" r="1" fill="#1A6CBF" />
-        <circle cx="15" cy="6" r="1" fill="#1A6CBF" />
-        <path d="M12 13v3" />
-        <path d="M9 16l3 3 3-3" />
-        <path d="M7 4c-1 0-2 1-2 2" />
-        <path d="M17 4c1 0 2 1 2 2" />
-      </svg>
-    ),
-    'fox': (
-      <svg width="128" height="128" viewBox="0 0 24 24" fill="none" stroke="#DD6B20" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M5 8l2-3 2 3" />
-        <path d="M17 8l2-3 2 3" />
-        <path d="M12 2a9 9 0 0 0-9 9v7c0 2 1 3 3 3v-5h12v5c2 0 3-1 3-3v-7a9 9 0 0 0-9-9z" />
-        <circle cx="9" cy="9" r="1" fill="#DD6B20" />
-        <circle cx="15" cy="9" r="1" fill="#DD6B20" />
-        <path d="M12 16l-3-3 3 3 3-3-3 3z" />
-      </svg>
-    ),
-    'eagle': (
-      <svg width="128" height="128" viewBox="0 0 24 24" fill="none" stroke="#805AD5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M7 7l.01.01" />
-        <path d="M17 7l.01.01" />
-        <path d="M12 1c-5 0-9 2-9 6v9c0 1 1 2 2 2h1v1c0 1 1 2 2 2h8c1 0 2-1 2-2v-1h1c1 0 2-1 2-2v-9c0-4-4-6-9-6z" />
-        <path d="M10 12v3" />
-        <path d="M14 12v3" />
-      </svg>
-    ),
-    'default': (
-      <svg width="128" height="128" viewBox="0 0 24 24" fill="none" stroke="#1A6CBF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="12" r="10" />
-        <path d="M8 14s1.5 2 4 2 4-2 4-2" />
-        <line x1="9" y1="9" x2="9.01" y2="9" />
-        <line x1="15" y1="9" x2="15.01" y2="9" />
-      </svg>
-    )
-  };
-
-  return animalIcons[animal] || animalIcons['default'];
+  // SVGアイコンの代わりに実際の画像を表示
+  return (
+    <img
+      src={`/images/animals/${animal}.png`}
+      alt={`${animal} icon`}
+      style={{
+        width: '100%',
+        height: '100%',
+        objectFit: 'contain'
+      }}
+    />
+  );
 };
 
 // レーダーチャートコンポーネント
@@ -829,6 +798,7 @@ const EnhancedResultScreen = ({ results, profession, postalCode, answers, onRest
           maxWidth: '900px',
           margin: '80px auto 0',
           paddingTop: '30px',
+          paddingBottom: '30px', // 下部パディングを追加
           position: 'relative',
           zIndex: 5
         }}>
@@ -967,7 +937,10 @@ const EnhancedResultScreen = ({ results, profession, postalCode, answers, onRest
           }
           
           .action-buttons {
-            margin-top: 30px !important;
+
+            margin-top: 50px !important;
+            margin-bottom: 60px !important; /* 下部マージンを増加 */
+            padding-bottom: 40px !important; /* 下部パディングも増加 */
           }
           
           .action-buttons button {

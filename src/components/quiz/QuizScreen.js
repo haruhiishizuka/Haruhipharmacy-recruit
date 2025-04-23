@@ -60,26 +60,26 @@ const QuizScreen = ({ questions, onComplete }) => {
     // 回答時にはスクロールしない
   };
 
-  // 明示的にスクロール処理を含むページ遷移関数
+  // handleNext関数を修正
   const handleNext = () => {
     if (!isNextEnabled) return;
     setDirection(1);
-    
+  
     if (currentPage < totalPages - 1) {
-      // ページ遷移前にスクロール処理を実行
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      
-      // スクロール後にページを変更
+      // より信頼性の高いスクロール処理
+      window.scrollTo(0, 0); // 即時スクロール
+    
+      // ダブルスクロール処理（モバイルデバイスでの問題対策）
       setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: 'auto' });
         setCurrentPage((prev) => prev + 1);
-      }, 100); // スクロールのアニメーションが開始されるのを少し待つ
+      }, 50);
     } else {
-      // 結果画面へ遷移する前にスクロール
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      
-      // スクロール開始後に結果画面に遷移
+      // 結果画面へ遷移
+      window.scrollTo(0, 0);
+    
+      // 少し待ってから遷移開始
       setTimeout(() => {
-        // 重要な修正部分: イベントオブジェクトを返さないようにする
         const answerArray = questions.map((q) => answers[q.id]);
         if (typeof onComplete === 'function') {
           onComplete(answerArray);
@@ -87,21 +87,22 @@ const QuizScreen = ({ questions, onComplete }) => {
       }, 100);
     }
   };
-  
+
+  // handlePrevious関数も同様に修正
   const handlePrevious = () => {
     if (currentPage > 0) {
       setDirection(-1);
-      
-      // ページ遷移前にスクロール処理を実行
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      
-      // スクロール後にページを変更
+    
+      // より信頼性の高いスクロール処理
+      window.scrollTo(0, 0); // 即時スクロール
+    
       setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: 'auto' });
         setCurrentPage((prev) => prev - 1);
-      }, 100);
+      }, 50);
     }
   };
-
+  
   // ページ遷移アニメーションのバリアント
   const pageVariants = {
     initial: (direction) => ({
