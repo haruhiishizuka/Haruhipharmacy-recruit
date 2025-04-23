@@ -84,10 +84,18 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
   return (
     <div style={{ 
       minHeight: '100vh',
-      backgroundImage: `url('/images/patterns/medical_pattern_light.png')`,
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-      backgroundRepeat: 'no-repeat',
+      // 背景画像とグラデーションを組み合わせて、模様が見やすくなるよう調整
+      backgroundImage: `
+        linear-gradient(
+          to bottom, 
+          rgba(237, 246, 255, 0.8) 0%, 
+          rgba(255, 255, 255, 0.6) 100%
+        ),
+        url('/images/patterns/medical_pattern_light.png')
+      `,
+      backgroundSize: 'cover, 400px',
+      backgroundPosition: 'center, center',
+      backgroundRepeat: 'no-repeat, repeat',
       backgroundColor: '#EDF2F7',
       fontFamily: "'Inter', 'Noto Sans JP', sans-serif",
       display: 'flex',
@@ -103,7 +111,7 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
         position: 'relative',
         color: '#2D3748',
         textAlign: 'center',
-        backgroundImage: 'linear-gradient(to bottom, rgba(26, 108, 191, 0.1), rgba(237, 242, 247, 0.1))',
+        backgroundImage: 'linear-gradient(to bottom, rgba(237, 246, 255, 0.4), rgba(237, 242, 247, 0.1))',
         backdropFilter: 'blur(2px)',
         boxShadow: 'inset 0 -4px 6px rgba(0, 0, 0, 0.05)'
       }}>
@@ -349,7 +357,7 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
       <footer style={{
         textAlign: 'center',
         marginTop: '40px',
-        color: '#2D3748',
+        color: '#4A5568',
         padding: '20px',
         fontSize: '14px',
         backgroundColor: 'rgba(26, 108, 191, 0.1)',
