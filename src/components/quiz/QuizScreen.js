@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const QuizScreen = ({ questions, onComplete }) => {
@@ -8,11 +8,26 @@ const QuizScreen = ({ questions, onComplete }) => {
   const [isNextEnabled, setIsNextEnabled] = useState(false);
   const [direction, setDirection] = useState(1); // 1:前進, -1:後退
   
+  // スクロール位置管理用のref
+  const containerRef = useRef(null);
+  
   const totalPages = Math.ceil(questions.length / QUESTIONS_PER_PAGE);
   const currentQuestions = questions.slice(
     currentPage * QUESTIONS_PER_PAGE,
     (currentPage + 1) * QUESTIONS_PER_PAGE
   );
+
+  // ページ変更後のスクロール処理
+  useEffect(() => {
+    // ページが変わったらスクロール実行
+    if (containerRef.current) {
+      // 画面の一番上にスクロール
+      window.scrollTo({
+        top: 0,
+        behavior: 'auto' // smoothではなくautoにして確実に即時反映
+      });
+    }
+  }, [currentPage]); // currentPageが変更されたときに実行
 
   // 質問ごとのラベル定義
   const getQuestionLabels = (questionId) => {
@@ -60,25 +75,23 @@ const QuizScreen = ({ questions, onComplete }) => {
     // 回答時にはスクロールしない
   };
 
-  // handleNext関数を修正
+  // 修正されたhandleNext関数
   const handleNext = () => {
     if (!isNextEnabled) return;
     setDirection(1);
-  
-    if (currentPage < totalPages - 1) {
-      // より信頼性の高いスクロール処理
-      window.scrollTo(0, 0); // 即時スクロール
     
-      // ダブルスクロール処理（モバイルデバイスでの問題対策）
+    if (currentPage < totalPages - 1) {
+      // 即時スクロール処理を追加
+      window.scrollTo(0, 0);
+      
+      // setTimeoutを使ってスクロールを確実に実行してからページ遷移
       setTimeout(() => {
-        window.scrollTo({ top: 0, behavior: 'auto' });
         setCurrentPage((prev) => prev + 1);
       }, 50);
     } else {
-      // 結果画面へ遷移
+      // 即時スクロール処理を追加
       window.scrollTo(0, 0);
-    
-      // 少し待ってから遷移開始
+      
       setTimeout(() => {
         const answerArray = questions.map((q) => answers[q.id]);
         if (typeof onComplete === 'function') {
@@ -87,22 +100,21 @@ const QuizScreen = ({ questions, onComplete }) => {
       }, 100);
     }
   };
-
-  // handlePrevious関数も同様に修正
+  
+  // 修正されたhandlePrevious関数
   const handlePrevious = () => {
     if (currentPage > 0) {
       setDirection(-1);
-    
-      // より信頼性の高いスクロール処理
-      window.scrollTo(0, 0); // 即時スクロール
-    
+      
+      // 即時スクロール処理を追加
+      window.scrollTo(0, 0);
+      
       setTimeout(() => {
-        window.scrollTo({ top: 0, behavior: 'auto' });
         setCurrentPage((prev) => prev - 1);
       }, 50);
     }
   };
-  
+
   // ページ遷移アニメーションのバリアント
   const pageVariants = {
     initial: (direction) => ({
@@ -128,8 +140,8 @@ const QuizScreen = ({ questions, onComplete }) => {
   };
 
   return (
-
     <div
+      ref={containerRef} // refを追加
       style={{
         minHeight: '100vh',
         width: '100%',

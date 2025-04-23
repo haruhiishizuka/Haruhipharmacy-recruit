@@ -798,7 +798,7 @@ const EnhancedResultScreen = ({ results, profession, postalCode, answers, onRest
           maxWidth: '900px',
           margin: '80px auto 0',
           paddingTop: '30px',
-          paddingBottom: '30px', // 下部パディングを追加
+          paddingBottom: '80px', // 下部パディングを追加
           position: 'relative',
           zIndex: 5
         }}>
