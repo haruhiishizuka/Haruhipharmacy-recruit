@@ -127,17 +127,18 @@ const QuizScreen = ({ questions, onComplete }) => {
   };
 
   return (
+
     <div
       style={{
         minHeight: '100vh',
         width: '100%',
         maxWidth: '100%',
-        overflowX: 'hidden', // オーバーフロー処理を追加
+        overflowX: 'hidden',
         backgroundImage: `url(${process.env.PUBLIC_URL}/images/patterns/medical_pattern_light.png)`,
-        backgroundSize: '400px',
+        backgroundSize: 'cover',
         backgroundPosition: 'center',
-        backgroundRepeat: 'repeat',
-        backgroundColor: '#65A9E5',
+        backgroundRepeat: 'no-repeat',
+        backgroundColor: '#EDF2F7',
         fontFamily: `'Inter', 'Noto Sans JP', sans-serif`,
       }}
     >

@@ -93,32 +93,6 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
       display: 'flex',
       flexDirection: 'column'
     }}>
-      {/* 改善された背景スタイル - 固定背景と覆い効果 */}
-      <div className="background-wrapper" style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        zIndex: -1,
-        backgroundImage: `url('/images/patterns/medical_pattern_light.png')`,
-        backgroundSize: '800px', /* パターンの適切なサイズ */
-        backgroundPosition: 'center',
-        backgroundAttachment: 'fixed',
-        backgroundColor: '#EDF2F7',
-      }}></div>
-      
-      {/* オーバーレイグラデーション */}
-      <div className="overlay-gradient" style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        zIndex: -1,
-        background: 'linear-gradient(135deg, rgba(26,108,191,0.7) 0%, rgba(101,169,229,0.5) 100%)',
-      }}></div>
-      
       {/* ヒーローセクション */}
       <div style={{
         padding: '60px 20px 120px',
@@ -127,10 +101,11 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
         alignItems: 'center',
         justifyContent: 'center',
         position: 'relative',
-        color: 'white',
+        color: '#2D3748',
         textAlign: 'center',
+        backgroundImage: 'linear-gradient(to bottom, rgba(26, 108, 191, 0.1), rgba(237, 242, 247, 0.1))',
         backdropFilter: 'blur(2px)',
-        boxShadow: 'inset 0 -4px 6px rgba(0, 0, 0, 0.1)'
+        boxShadow: 'inset 0 -4px 6px rgba(0, 0, 0, 0.05)'
       }}>
         {/* MediMatchロゴ - 新しいロゴを使用 */}
         <motion.div
@@ -159,7 +134,8 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
             opacity: 0.9,
             letterSpacing: '2px',
             textTransform: 'uppercase',
-            marginTop: '10px'
+            marginTop: '10px',
+            color: '#2D3748'
           }}>
             医療キャリア診断ツール
           </div>
@@ -177,9 +153,8 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
             lineHeight: 1.7,
             maxWidth: '600px',
             margin: '0 auto 40px',
-            color: 'rgba(45, 55, 72, 0.9)'
+            color: '#2D3748'
           }}>
-          
             あなたの価値観と強みを分析し、適性に合った職場環境や成長のヒントを提案します。
             たった5分の診断で、あなたの医療キャリアの道しるべを見つけましょう。
           </p>
@@ -194,8 +169,8 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
           whileTap="tap"
           onClick={handleStartQuizClick}
           style={{
-            backgroundColor: 'white',
-            color: '#1A6CBF',
+            backgroundColor: '#1A6CBF',
+            color: 'white',
             border: 'none',
             borderRadius: '50px',
             padding: '18px 36px',
@@ -374,7 +349,7 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
       <footer style={{
         textAlign: 'center',
         marginTop: '40px',
-        color: 'white',
+        color: '#2D3748',
         padding: '20px',
         fontSize: '14px',
         backgroundColor: 'rgba(26, 108, 191, 0.1)',
@@ -395,7 +370,7 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
             }
           }}
           style={{ 
-            color: 'white', 
+            color: '#1A6CBF', 
             textDecoration: 'underline',
             opacity: 0.9,
             transition: 'opacity 0.2s'
@@ -476,13 +451,6 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
           .feature-card p {
             font-size: 12px !important;
             line-height: 1.4 !important;
-          }
-        }
-
-        /* iOS向けのバックドロップフィルター対応 */
-        @supports (-webkit-backdrop-filter: blur(10px)) {
-          .background-wrapper {
-            -webkit-backdrop-filter: blur(0px);
           }
         }
       `}</style>

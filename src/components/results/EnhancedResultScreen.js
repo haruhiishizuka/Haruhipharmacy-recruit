@@ -579,10 +579,10 @@ const EnhancedResultScreen = ({ results, profession, postalCode, answers, onRest
     <div style={{ 
       fontFamily: `'Inter', 'Noto Sans JP', sans-serif`, 
       backgroundImage: `url(${process.env.PUBLIC_URL}/images/patterns/medical_pattern_light.png)`,
-      backgroundSize: '400px',
+      backgroundSize: 'cover',
       backgroundPosition: 'center',
-      backgroundRepeat: 'repeat',
-      backgroundColor: '#65A9E5',
+      backgroundRepeat: 'no-repeat',
+      backgroundColor: '#EDF2F7',
       minHeight: '100vh',
       paddingBottom: '60px'
     }}>
@@ -590,9 +590,9 @@ const EnhancedResultScreen = ({ results, profession, postalCode, answers, onRest
       <div className="header-section" style={{
         padding: '40px 20px 80px',
         textAlign: 'center',
-        color: 'white',
+        color: '#2D3748',
         position: 'relative',
-        backgroundColor: 'rgba(101, 169, 229, 0.3)',
+        backgroundColor: 'rgba(237, 242, 247, 0.7)',
         backdropFilter: 'blur(2px)',
       }}>
         {/* 動物アイコン */}

@@ -62,10 +62,10 @@ const PolicyPage = ({ onReturnHome }) => {
     <div style={{ 
       fontFamily: `'Inter', 'Noto Sans JP', sans-serif`, 
       backgroundImage: `url('/images/patterns/medical_pattern_light.png')`,
-      backgroundSize: '400px',
+      backgroundSize: 'cover',
       backgroundPosition: 'center',
-      backgroundRepeat: 'repeat',
-      backgroundColor: '#65A9E5',
+      backgroundRepeat: 'no-repeat',
+      backgroundColor: '#EDF2F7',
       minHeight: '100vh',
       paddingBottom: '60px'
     }}>

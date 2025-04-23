@@ -77,10 +77,10 @@ const ProfessionSelect = ({ onSelect }) => {
       justifyContent: 'center',
       padding: '40px 0 20px',
       backgroundImage: `url('/images/patterns/medical_pattern_light.png')`,
-      backgroundSize: '400px',
+      backgroundSize: 'cover',
       backgroundPosition: 'center',
-      backgroundRepeat: 'repeat',
-      backgroundColor: '#65A9E5',
+      backgroundRepeat: 'no-repeat',
+      backgroundColor: '#EDF2F7',
       fontFamily: "'Inter', 'Noto Sans JP', sans-serif"
     }}>
       <div className="profession-select-content" style={{

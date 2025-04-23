@@ -391,25 +391,25 @@ function AppContent() {
   }
 
   // URLに基づいて適切なコンポーネントをレンダリング
-  const renderRouteContent = () => {
+  function renderRouteContent() {
     // 初期化前はローディング表示
     if (!initialized) {
       return null;
     }
-    
+
     // 特定のURLで特定の状態が必要な場合のチェック
     // 例：/resultアクセス時に結果がない場合はリダイレクト
     if (location.pathname === '/result' && !quizResult) {
       console.log('結果なしで/resultにアクセスしました - リダイレクトします');
       return <Navigate to="/" replace />;
     }
-    
+
     // 同様に他のパスもチェック
     if (location.pathname === '/quiz' && !profession) {
       // ルート復元時はホームに戻す 
       return <Navigate to="/" replace />;
     }
-    
+
     // URLパスに応じたコンポーネントをレンダリング
     switch (location.pathname) {
       case '/':
@@ -420,26 +420,24 @@ function AppContent() {
         // 職種に基づいた質問セットを取得
         const questionSet = getQuestionsByProfession();
         console.log(`🧩 職種「${profession}」に対する質問セット:`, questionSet.length, '問');
-        
+
         return (
-          <QuizScreen 
-            questions={questionSet} 
-            profession={profession} 
-            onComplete={handleQuizComplete} 
-          />
+          <QuizScreen
+            questions={questionSet}
+            profession={profession}
+            onComplete={handleQuizComplete} />
         );
       case '/result':
         const normalizedResult = normalizeResultData(quizResult);
         console.log('📊 正規化された結果データ:', normalizedResult);
-        
+
         return (
-          <EnhancedResultScreen 
-            results={normalizedResult} 
+          <EnhancedResultScreen
+            results={normalizedResult}
             profession={profession}
             postalCode={postalCode}
             answers={answers}
-            onRestart={handleRestart}
-          />
+            onRestart={handleRestart} />
         );
       case '/policy':
         return <PolicyPage onReturnHome={handleReturnHome} />;
@@ -448,7 +446,7 @@ function AppContent() {
         console.log('未定義のURLパス:', location.pathname);
         return <Navigate to="/" replace />;
     }
-  };
+  }
 
   return (
     <div className="app-container" style={{
