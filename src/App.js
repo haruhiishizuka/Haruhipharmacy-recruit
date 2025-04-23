@@ -376,14 +376,14 @@ function AppContent() {
         width: '100vw',
         margin: 0,
         padding: 0,
-        backgroundColor: '#65A9E5'
+        backgroundColor: '#EDF2F7'
       }}>
         <div className="loading-spinner" style={{
           width: '50px',
           height: '50px',
-          border: '5px solid rgba(255, 255, 255, 0.3)',
+          border: '5px solid rgba(26, 108, 191, 0.3)',
           borderRadius: '50%',
-          borderTop: '5px solid white',
+          borderTop: '5px solid #1A6CBF',
           animation: 'spin 1s linear infinite'
         }}></div>
       </div>

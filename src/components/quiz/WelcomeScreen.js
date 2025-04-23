@@ -84,11 +84,14 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
   return (
     <div style={{ 
       minHeight: '100vh',
-      position: 'relative',
+      backgroundImage: `url('/images/patterns/medical_pattern_light.png')`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
+      backgroundColor: '#EDF2F7',
       fontFamily: "'Inter', 'Noto Sans JP', sans-serif",
       display: 'flex',
-      flexDirection: 'column',
-      overflow: 'hidden'
+      flexDirection: 'column'
     }}>
       {/* 改善された背景スタイル - 固定背景と覆い効果 */}
       <div className="background-wrapper" style={{
@@ -102,7 +105,7 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
         backgroundSize: '800px', /* パターンの適切なサイズ */
         backgroundPosition: 'center',
         backgroundAttachment: 'fixed',
-        backgroundColor: '#65A9E5',
+        backgroundColor: '#EDF2F7',
       }}></div>
       
       {/* オーバーレイグラデーション */}
@@ -174,8 +177,9 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
             lineHeight: 1.7,
             maxWidth: '600px',
             margin: '0 auto 40px',
-            color: 'rgba(255, 255, 255, 0.9)'
+            color: 'rgba(45, 55, 72, 0.9)'
           }}>
+          
             あなたの価値観と強みを分析し、適性に合った職場環境や成長のヒントを提案します。
             たった5分の診断で、あなたの医療キャリアの道しるべを見つけましょう。
           </p>
