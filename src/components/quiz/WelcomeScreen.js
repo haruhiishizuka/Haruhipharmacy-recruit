@@ -89,7 +89,7 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
       backgroundSize: '400px',
       backgroundPosition: 'center',
       backgroundRepeat: 'repeat',
-      backgroundColor: '#65A9E5',
+      backgroundColor: '#EDF2F7',
       fontFamily: "'Inter', 'Noto Sans JP', sans-serif",
       display: 'flex',
       flexDirection: 'column',
