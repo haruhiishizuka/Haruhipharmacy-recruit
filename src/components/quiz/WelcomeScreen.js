@@ -84,19 +84,11 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
   return (
     <div style={{ 
       minHeight: '100vh',
-      // 背景画像とグラデーションを組み合わせて、模様が見やすくなるよう調整
-      backgroundImage: `
-        linear-gradient(
-          to bottom, 
-          rgba(237, 246, 255, 0.8) 0%, 
-          rgba(255, 255, 255, 0.6) 100%
-        ),
-        url('/images/patterns/medical_pattern_light.png')
-      `,
-      backgroundSize: 'cover, 400px',
-      backgroundPosition: 'center, center',
-      backgroundRepeat: 'no-repeat, repeat',
-      backgroundColor: '#EDF2F7',
+      backgroundImage: `url('/images/patterns/medical_pattern_light.png')`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
+      backgroundColor: '#EDF8FF', // より淡い青を基調に
       fontFamily: "'Inter', 'Noto Sans JP', sans-serif",
       display: 'flex',
       flexDirection: 'column'
@@ -111,9 +103,9 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
         position: 'relative',
         color: '#2D3748',
         textAlign: 'center',
-        backgroundImage: 'linear-gradient(to bottom, rgba(237, 246, 255, 0.4), rgba(237, 242, 247, 0.1))',
-        backdropFilter: 'blur(2px)',
-        boxShadow: 'inset 0 -4px 6px rgba(0, 0, 0, 0.05)'
+        backgroundImage: 'linear-gradient(to bottom, rgba(245, 250, 255, 0.8), rgba(245, 250, 255, 0.5))',
+        backdropFilter: 'blur(1px)',
+        boxShadow: 'inset 0 -4px 6px rgba(0, 0, 0, 0.03)'
       }}>
         {/* MediMatchロゴ - 新しいロゴを使用 */}
         <motion.div
@@ -360,7 +352,7 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
         color: '#4A5568',
         padding: '20px',
         fontSize: '14px',
-        backgroundColor: 'rgba(26, 108, 191, 0.1)',
+        backgroundColor: 'rgba(245, 250, 255, 0.4)',
         backdropFilter: 'blur(5px)'
       }}>
         <p style={{ marginBottom: '8px' }}>
@@ -378,13 +370,13 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
             }
           }}
           style={{ 
-            color: '#1A6CBF', 
+            color: '#3182CE', 
             textDecoration: 'underline',
-            opacity: 0.9,
+            opacity: 0.8,
             transition: 'opacity 0.2s'
           }}
           onMouseEnter={(e) => e.target.style.opacity = '1'}
-          onMouseLeave={(e) => e.target.style.opacity = '0.9'}
+          onMouseLeave={(e) => e.target.style.opacity = '0.8'}
         >
           プライバシーポリシー・利用規約・お問い合わせ
         </a>
