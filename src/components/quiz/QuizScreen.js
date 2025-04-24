@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { trackQuestionAnswer, trackQuizComplete } from '../utils/analytics';
 
 const QuizScreen = ({ questions, onComplete }) => {
   const QUESTIONS_PER_PAGE = 3;
@@ -8,18 +7,16 @@ const QuizScreen = ({ questions, onComplete }) => {
   const [answers, setAnswers] = useState({});
   const [isNextEnabled, setIsNextEnabled] = useState(false);
   const [direction, setDirection] = useState(1); // 1:前進, -1:後退
-  const [startTime, setStartTime] = useState(Date.now()); // 診断開始時間
+  
+  // スクロール用のref追加
+  const quizContentRef = useRef(null);
+  const headerRef = useRef(null);
   
   const totalPages = Math.ceil(questions.length / QUESTIONS_PER_PAGE);
   const currentQuestions = questions.slice(
     currentPage * QUESTIONS_PER_PAGE,
     (currentPage + 1) * QUESTIONS_PER_PAGE
   );
-
-  // コンポーネントマウント時に開始時間を設定
-  useEffect(() => {
-    setStartTime(Date.now());
-  }, []);
 
   // 質問ごとのラベル定義
   const getQuestionLabels = (questionId) => {
@@ -64,12 +61,24 @@ const QuizScreen = ({ questions, onComplete }) => {
       ...prev,
       [questionId]: value,
     }));
-    
-    // 回答イベントのトラッキング
-    const questionIndex = questions.findIndex(q => q.id === questionId);
-    trackQuestionAnswer(questionIndex, questionId, value);
-    
     // 回答時にはスクロールしない
+  };
+
+  // 改善したスクロール処理関数
+  const scrollToQuizTop = () => {
+    // 特定の要素へのスクロール - headerRef の下部にスクロール
+    if (headerRef.current) {
+      const headerHeight = headerRef.current.offsetHeight;
+      window.scrollTo({
+        top: 0,
+        behavior: 'auto' // smooth より auto の方が確実
+      });
+    } else {
+      // フォールバックとして複数のスクロール方法を組み合わせる
+      window.scrollTo(0, 0);
+      document.body.scrollTop = 0; // Safari用
+      document.documentElement.scrollTop = 0; // Chrome, Firefox, IE, Opera用
+    }
   };
 
   // 明示的にスクロール処理を含むページ遷移関数
@@ -77,48 +86,56 @@ const QuizScreen = ({ questions, onComplete }) => {
     if (!isNextEnabled) return;
     setDirection(1);
     
-    if (currentPage < totalPages - 1) {
-      // ページ遷移前にスクロール処理を実行
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+    // アニメーションフレームを使ってスクロール処理をブラウザの描画サイクルと同期
+    requestAnimationFrame(() => {
+      // 先にスクロール処理を実行
+      scrollToQuizTop();
       
-      // スクロール後にページを変更
+      // 少し待ってからページ遷移処理
       setTimeout(() => {
-        setCurrentPage((prev) => prev + 1);
-      }, 100); // スクロールのアニメーションが開始されるのを少し待つ
-    } else {
-      // 結果画面へ遷移する前にスクロール
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      
-      // スクロール開始後に結果画面に遷移
-      setTimeout(() => {
-        // 回答時間を計算（秒単位）
-        const timeSpent = Math.floor((Date.now() - startTime) / 1000);
-        
-        // 診断完了イベントのトラッキング
-        trackQuizComplete('completed', timeSpent);
-        
-        // 重要な修正部分: イベントオブジェクトを返さないようにする
-        const answerArray = questions.map((q) => answers[q.id]);
-        if (typeof onComplete === 'function') {
-          onComplete(answerArray);
+        if (currentPage < totalPages - 1) {
+          setCurrentPage((prev) => prev + 1);
+          // ページ変更後、念のため再度スクロール
+          requestAnimationFrame(scrollToQuizTop);
+        } else {
+          // 結果画面へ遷移
+          const answerArray = questions.map((q) => answers[q.id]);
+          if (typeof onComplete === 'function') {
+            onComplete(answerArray);
+          }
         }
-      }, 100);
-    }
+      }, 100); // ページ遷移までの時間
+    });
   };
   
   const handlePrevious = () => {
     if (currentPage > 0) {
       setDirection(-1);
       
-      // ページ遷移前にスクロール処理を実行
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      
-      // スクロール後にページを変更
-      setTimeout(() => {
-        setCurrentPage((prev) => prev - 1);
-      }, 100);
+      // アニメーションフレームを使ってスクロール処理
+      requestAnimationFrame(() => {
+        // 先にスクロール処理を実行
+        scrollToQuizTop();
+        
+        // 少し待ってからページ遷移処理
+        setTimeout(() => {
+          setCurrentPage((prev) => prev - 1);
+          // ページ変更後、念のため再度スクロール
+          requestAnimationFrame(scrollToQuizTop);
+        }, 100);
+      });
     }
   };
+
+  // コンポーネントマウント時に一度スクロール
+  useEffect(() => {
+    scrollToQuizTop();
+  }, []);
+
+  // ページ変更時にもスクロール
+  useEffect(() => {
+    scrollToQuizTop();
+  }, [currentPage]);
 
   // ページ遷移アニメーションのバリアント
   const pageVariants = {
@@ -145,7 +162,6 @@ const QuizScreen = ({ questions, onComplete }) => {
   };
 
   return (
-
     <div
       style={{
         minHeight: '100vh',
@@ -161,6 +177,7 @@ const QuizScreen = ({ questions, onComplete }) => {
       }}
     >
       <header
+        ref={headerRef}
         style={{
           position: 'sticky',
           top: 0,
@@ -181,6 +198,7 @@ const QuizScreen = ({ questions, onComplete }) => {
       </header>
 
       <div
+        ref={quizContentRef}
         style={{
           maxWidth: '960px',
           margin: '0 auto',

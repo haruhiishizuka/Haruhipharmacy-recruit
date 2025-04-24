@@ -988,7 +988,8 @@ const EnhancedResultScreen = ({ results, profession, postalCode, answers, onRest
           }
           
           .action-buttons {
-            margin-top: 30px !important;
+            margin-top: 60px !important;
+            padding-bottom: 80px !important;
           }
           
           .action-buttons button {
