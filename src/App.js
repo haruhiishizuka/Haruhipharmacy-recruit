@@ -9,6 +9,8 @@ import QuizScreen from './components/quiz/QuizScreen';
 import QuickConsultationForm from './components/results/QuickConsultationForm';
 import PolicyPage from './components/PolicyPage';
 import EnhancedResultScreen from './components/results/EnhancedResultScreen';
+import TagManager from './components/TagManager';
+
 
 // AppコンテンツコンポーネントはRouteから渡されるパラメータを使用
 function AppContent() {

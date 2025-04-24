@@ -2,6 +2,8 @@
 // 改善されたProfessionSelect.js
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { trackProfessionSelect } from '../../utils/analytics';
+
 
 const ProfessionSelect = ({ onSelect }) => {
   const [selectedProfession, setSelectedProfession] = useState('');

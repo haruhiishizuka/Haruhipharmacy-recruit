@@ -1,5 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { trackQuizStart } from '../../utils/analytics';
+
 
 const WelcomeScreen = ({ onStartQuiz, onOpenPolicy }) => {
   // 特徴セクションのデータ
