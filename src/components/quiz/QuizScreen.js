@@ -82,31 +82,33 @@ const QuizScreen = ({ questions, onComplete }) => {
   };
 
   // 明示的にスクロール処理を含むページ遷移関数
+  // QuizScreen.js - handleNext関数
   const handleNext = () => {
     if (!isNextEnabled) return;
     setDirection(1);
+  
+    if (currentPage < totalPages - 1) {
+      // ページ遷移前にスクロール処理を実行 - behavior: 'smooth'に変更
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     
-    // アニメーションフレームを使ってスクロール処理をブラウザの描画サイクルと同期
-    requestAnimationFrame(() => {
-      // 先にスクロール処理を実行
-      scrollToQuizTop();
-      
-      // 少し待ってからページ遷移処理
+      // スクロール後にページを変更 - 遅延時間を調整
       setTimeout(() => {
-        if (currentPage < totalPages - 1) {
-          setCurrentPage((prev) => prev + 1);
-          // ページ変更後、念のため再度スクロール
-          requestAnimationFrame(scrollToQuizTop);
-        } else {
-          // 結果画面へ遷移
-          const answerArray = questions.map((q) => answers[q.id]);
-          if (typeof onComplete === 'function') {
-            onComplete(answerArray);
-          }
+        setCurrentPage((prev) => prev + 1);
+      }, 300); // より確実にスクロールが完了する時間に延長
+    } else {
+      // 結果画面へ遷移する前にスクロール - behavior: 'smooth'に変更
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+      // スクロール開始後に結果画面に遷移 - 遅延時間を調整
+      setTimeout(() => {
+        const answerArray = questions.map((q) => answers[q.id]);
+        if (typeof onComplete === 'function') {
+          onComplete(answerArray);
         }
-      }, 100); // ページ遷移までの時間
-    });
+      }, 300); // より確実にスクロールが完了する時間に延長
+    }
   };
+  
   
   const handlePrevious = () => {
     if (currentPage > 0) {

@@ -702,6 +702,7 @@ const EnhancedResultScreen = ({ results, profession, postalCode, answers, onRest
               padding: '16px 32px',
               fontSize: '18px',
               fontWeight: '700',
+              marginBottom: '80px',
               cursor: 'pointer',
               boxShadow: '0 8px 20px rgba(0, 0, 0, 0.15)',
               display: 'inline-flex',
@@ -930,6 +931,8 @@ const EnhancedResultScreen = ({ results, profession, postalCode, answers, onRest
             padding: '14px 24px',
             fontSize: '16px',
             fontWeight: '600',
+            marginTop: '32px',        // 上にしっかり余白
+            marginBottom: '80px',     // 下に大きくスペースを取る
             cursor: 'pointer',
             boxShadow: '0 6px 16px rgba(0, 0, 0, 0.2)',
             display: 'flex',
@@ -989,6 +992,7 @@ const EnhancedResultScreen = ({ results, profession, postalCode, answers, onRest
           
           .action-buttons {
             margin-top: 60px !important;
+            marginBottom: '80px',
             padding-bottom: 80px !important;
           }
           
