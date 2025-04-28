@@ -8,7 +8,7 @@ import { Radar } from 'react-chartjs-2';
 // Chart.jsの設定
 ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend);
 
-// 動物アイコンコンポーネント
+// 動物アイコンコンポーネント - フォールバックロジック改善版
 const AnimalIcon = ({ typeCode }) => {
   // タイプコードに基づいて動物を決定
   const getAnimalType = (code) => {
@@ -38,7 +38,7 @@ const AnimalIcon = ({ typeCode }) => {
 
   const animal = getAnimalType(typeCode);
   
-  // 簡易的なSVGプレースホルダー（実際の実装では適切なアイコンを用意）
+  // 定義済みのSVGアイコン
   const animalIcons = {
     'owl': (
       <svg width="128" height="128" viewBox="0 0 24 24" fill="none" stroke="#1A6CBF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -80,7 +80,26 @@ const AnimalIcon = ({ typeCode }) => {
     )
   };
 
-  return animalIcons[animal] || animalIcons['default'];
+  // SVGが存在しない場合は、PNG画像を使用するフォールバック
+  if (!animalIcons[animal]) {
+    // 画像のパスを構築（例：/images/animals/dolphin.png）
+    const imagePath = `/images/animals/${animal}.png`;
+    
+    // フォールバック用のスタイル
+    const imgStyle = {
+      width: '128px',
+      height: '128px',
+      objectFit: 'contain',
+      borderRadius: '50%',
+      backgroundColor: 'white',
+      padding: '10px'
+    };
+    
+    return <img src={imagePath} alt={`${animal} icon`} style={imgStyle} />;
+  }
+
+  // SVGがある場合はそれを返す
+  return animalIcons[animal];
 };
 
 // レーダーチャートコンポーネント
