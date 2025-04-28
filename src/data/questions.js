@@ -1653,7 +1653,8 @@ export function determineType(scores) {
   return typeCode;
 }
 
-// getDetailedContent関数を追加
+// 重複している宣言を削除して、1つにまとめます
+// 元の関数定義
 export const getDetailedContent = (resultType) => {
   // 16タイプコードの場合
   if (resultType.length === 4 && /^[SG][IC][HT][AP]$/.test(resultType)) {
@@ -1662,30 +1663,17 @@ export const getDetailedContent = (resultType) => {
   }
 }
 
-// 関数を正しくエクスポート
-export const getResultDescription = (type) => {
-  const detail = getDetailedContent(type);
+// 一つにまとめた getResultDescription 関数
+export const getResultDescription = (code) => {
+  // 互換性のため
+  if (typeof code === 'string' && code.length === 4) {
+    return careerTypes[code]?.description ?? '';
+  }
+  // 元のロジック用
+  const detail = getDetailedContent(code);
   return detail ? detail.description || '' : '';
 };
 
-// 旧バージョンとの互換性のために必要な関数を追加
-export const getResultDescription = (code) => careerTypes[code]?.description ?? '';
+// 他の互換性関数
 export const getResultTitle = (code) => careerTypes[code]?.title ?? '';
 export const getResultTagline = (code) => careerTypes[code]?.tagline ?? '';
-
-// 旧バージョンのcalculateResult関数を新バージョンの関数で再実装
-export const calculateResult = (answers) => {
-  const axisScores = calculateAxisScores(answers);
-  const typeCode = determineType(axisScores);
-  
-  return {
-    typeCode: typeCode,
-    axisScores: axisScores
-  };
-};
-
-// 医療機関情報取得関数（必要に応じて）
-export const getMedicalInstitutions = (code) => {
-  // 簡易版の実装
-  return [];
-};
