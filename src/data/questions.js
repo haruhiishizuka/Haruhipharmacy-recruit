@@ -1652,3 +1652,25 @@ export function determineType(scores) {
   
   return typeCode;
 }
+// getDetailedContent関数を追加
+export const getDetailedContent = (resultType) => {
+  // 16タイプコードの場合
+  if (resultType.length === 4 && /^[SG][IC][HT][AP]$/.test(resultType)) {
+    // 直接16タイプから詳細情報を取得
+    return careerTypes[resultType] || careerTypes["SIHA"];
+  }
+
+  // 従来の8タイプの場合、対応する詳細情報を返す
+  const detailedContent = {
+    "専門家型": careerTypes["SIHA"],
+    "ケアスペシャリスト型": careerTypes["SCHP"],
+    "リーダー型": careerTypes["GCHA"],
+    "イノベーター型": careerTypes["SIHA"],
+    "改革者型": careerTypes["GITA"],
+    "独立志向型": careerTypes["SIHP"],
+    "フロンティア型": careerTypes["GITP"],
+    "コンサルタント型": careerTypes["SCTA"]
+  };
+
+  return detailedContent[resultType] || detailedContent["専門家型"];
+};
