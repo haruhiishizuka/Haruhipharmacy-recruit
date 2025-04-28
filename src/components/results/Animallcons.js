@@ -2,14 +2,40 @@ import React from 'react';
 
 /**
  * 16種類の動物アイコンを提供するコンポーネント
+ * 医療キャリア診断タイプに対応した動物キャラクターを表示
+ * 
  * @param {Object} props
- * @param {string} props.type - 動物タイプ (owl, fox, eagle, etc.)
+ * @param {string} props.type - 動物タイプ (owl, fox, eagle, etc.) またはタイプコード (SIHA, SIHP, etc.)
  * @param {string} props.color - 色指定 (デフォルトは #1A6CBF)
  * @param {number} props.size - サイズ (デフォルトは 128px)
  * @param {string} props.className - 追加のクラス名
  */
 const AnimalIcon = ({ type, color = '#1A6CBF', size = 128, className = '' }) => {
-  const animalMap = {
+  // タイプコードから動物タイプへの変換マッピング
+  const typeToAnimal = {
+    'SIHA': 'owl',     // 専門的・革新的・人間中心・分析的タイプ
+    'SIHP': 'fox',     // 専門的・革新的・人間中心・実践的タイプ
+    'SITA': 'eagle',   // 専門的・革新的・技術中心・分析的タイプ
+    'SITP': 'dolphin', // 専門的・革新的・技術中心・実践的タイプ
+    'SCHA': 'turtle',  // 専門的・継続的・人間中心・分析的タイプ
+    'SCHP': 'bear',    // 専門的・継続的・人間中心・実践的タイプ
+    'SCTA': 'beaver',  // 専門的・継続的・技術中心・分析的タイプ
+    'SCTP': 'elephant', // 専門的・継続的・技術中心・実践的タイプ
+    'GIHA': 'monkey',  // 総合的・革新的・人間中心・分析的タイプ
+    'GIHP': 'cat',     // 総合的・革新的・人間中心・実践的タイプ
+    'GITA': 'wolf',    // 総合的・革新的・技術中心・分析的タイプ
+    'GITP': 'horse',   // 総合的・革新的・技術中心・実践的タイプ
+    'GCHA': 'koala',   // 総合的・継続的・人間中心・分析的タイプ
+    'GCHP': 'rabbit',  // 総合的・継続的・人間中心・実践的タイプ
+    'GCTA': 'deer',    // 総合的・継続的・技術中心・分析的タイプ
+    'GCTP': 'dog'      // 総合的・継続的・技術中心・実践的タイプ
+  };
+  
+  // 入力がタイプコードの場合は動物タイプに変換、それ以外はそのまま使用
+  const animalType = typeToAnimal[type] || type;
+  
+  // 各動物タイプのSVGアイコン定義
+  const animalIcons = {
     // フクロウ - 専門的・革新的・人間中心・分析的タイプ (SIHA)
     'owl': (
       <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={className}>
@@ -229,7 +255,79 @@ const AnimalIcon = ({ type, color = '#1A6CBF', size = 128, className = '' }) => 
   };
 
   // リクエストされたタイプのアイコンを返す (見つからない場合はデフォルト)
-  return animalMap[type] || animalMap['default'];
+  return animalIcons[animalType] || animalIcons['default'];
+};
+
+/**
+ * 動物名の日本語名を返す関数
+ * @param {string} typeCode - 動物タイプまたはタイプコード
+ * @returns {string} - 動物の日本語名
+ */
+export const getAnimalName = (typeCode) => {
+  const animalNameMap = {
+    'owl': 'フクロウ',
+    'fox': 'キツネ',
+    'eagle': 'ワシ',
+    'dolphin': 'イルカ',
+    'turtle': 'カメ',
+    'bear': 'クマ',
+    'beaver': 'ビーバー',
+    'elephant': 'ゾウ',
+    'monkey': 'サル',
+    'cat': 'ネコ',
+    'wolf': 'オオカミ',
+    'horse': 'ウマ',
+    'koala': 'コアラ',
+    'rabbit': 'ウサギ',
+    'deer': 'シカ',
+    'dog': 'イヌ',
+    'SIHA': 'フクロウ',
+    'SIHP': 'キツネ',
+    'SITA': 'ワシ',
+    'SITP': 'イルカ',
+    'SCHA': 'カメ',
+    'SCHP': 'クマ',
+    'SCTA': 'ビーバー',
+    'SCTP': 'ゾウ',
+    'GIHA': 'サル',
+    'GIHP': 'ネコ',
+    'GITA': 'オオカミ',
+    'GITP': 'ウマ',
+    'GCHA': 'コアラ',
+    'GCHP': 'ウサギ',
+    'GCTA': 'シカ',
+    'GCTP': 'イヌ'
+  };
+  
+  return animalNameMap[typeCode] || 'フクロウ';
+};
+
+/**
+ * タイプコードから動物タイプを返す関数
+ * @param {string} typeCode - タイプコード
+ * @returns {string} - 動物タイプ
+ */
+export const getAnimalType = (typeCode) => {
+  const typeToAnimal = {
+    'SIHA': 'owl',
+    'SIHP': 'fox',
+    'SITA': 'eagle',
+    'SITP': 'dolphin',
+    'SCHA': 'turtle',
+    'SCHP': 'bear',
+    'SCTA': 'beaver',
+    'SCTP': 'elephant',
+    'GIHA': 'monkey',
+    'GIHP': 'cat',
+    'GITA': 'wolf',
+    'GITP': 'horse',
+    'GCHA': 'koala',
+    'GCHP': 'rabbit',
+    'GCTA': 'deer',
+    'GCTP': 'dog'
+  };
+  
+  return typeToAnimal[typeCode] || 'owl';
 };
 
 export default AnimalIcon;
