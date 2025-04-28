@@ -1674,3 +1674,256 @@ export const getDetailedContent = (resultType) => {
 
   return detailedContent[resultType] || detailedContent["専門家型"];
 };
+
+JavaScriptの// getMedicalInstitutions関数を追加
+export const getMedicalInstitutions = (resultType) => {
+  // 16タイプコードの場合
+  if (resultType.length === 4 && /^[SG][IC][HT][AP]$/.test(resultType)) {
+    // 各タイプに対応する医療機関を返す
+    // 例: SIHAタイプには研究志向専門家型に合った機関を提案
+    const typeMapping = {
+      'SIHA': 'SIHA', // 研究志向専門家型
+      'SIHP': 'SIHP', // 実践志向専門家型
+      'SITA': 'SITA', // 技術革新型スペシャリスト
+      'SITP': 'SITP', // 技術実践型イノベーター
+      'SCHA': 'SCHA', // 伝統重視専門分析型
+      'SCHP': 'SCHP', // 伝統型ケアスペシャリスト
+      'SCTA': 'SCTA', // 技術分析専門型
+      'SCTP': 'SCTP', // 技術実装専門型
+      'GIHA': 'GIHA', // 人間中心革新型ゼネラリスト
+      'GIHP': 'GIHP', // 実践志向革新型ゼネラリスト
+      'GITA': 'GITA', // 革新型総合分析者
+      'GITP': 'GITP', // 革新型総合実践者
+      'GCHA': 'GCHA', // リーダーシップ型総合管理者
+      'GCHP': 'GCHP', // 地域密着型総合型
+      'GCTA': 'GCTA', // システム分析型総合管理者
+      'GCTP': 'GCTP'  // オペレーション管理型総合実践者
+    };
+    
+    // マッピングから適切なタイプの医療機関情報を取得
+    const mappedType = typeMapping[resultType] || 'SIHA';
+    
+    // この時点では8タイプの病院情報を流用
+    // 実際の実装では16タイプ別の医療機関情報を設定する
+    return getHospitalsByLegacyType(mappedTypeToLegacy(mappedType));
+  }
+
+  // 従来の8タイプ名の場合は直接対応する医療機関を返す
+  return getHospitalsByLegacyType(resultType);
+};
+
+// 16タイプから8タイプへのマッピング（臨時的な対応）
+function mappedTypeToLegacy(typeCode) {
+  const mapping = {
+    'SIHA': '専門家型',
+    'SIHP': '専門家型',
+    'SITA': '専門家型',
+    'SITP': '専門家型',
+    'SCHA': 'ケアスペシャリスト型',
+    'SCHP': 'ケアスペシャリスト型',
+    'SCTA': '専門家型',
+    'SCTP': '専門家型',
+    'GIHA': 'イノベーター型',
+    'GIHP': 'フロンティア型',
+    'GITA': 'イノベーター型',
+    'GITP': 'フロンティア型',
+    'GCHA': 'リーダー型',
+    'GCHP': 'ケアスペシャリスト型',
+    'GCTA': '改革者型',
+    'GCTP': 'コンサルタント型'
+  };
+
+  return mapping[typeCode] || '専門家型';
+}
+
+// レガシータイプ（8タイプ）に基づく医療機関情報取得
+function getHospitalsByLegacyType(legacyType) {
+  const institutionsByType = {
+    "専門家型": [
+      {
+        name: "名古屋大学医学部附属病院",
+        type: "特定機能病院",
+        location: "愛知県名古屋市",
+        matchPercentage: 94,
+        reason: "高度専門医療の提供と研究活動が盛んで、専門性を追求できる環境です。"
+      },
+      {
+        name: "愛知県がんセンター",
+        type: "専門特化型病院",
+        location: "愛知県名古屋市",
+        matchPercentage: 92,
+        reason: "がん専門医療に特化し、最新の治療技術と専門知識を習得できます。"
+      },
+      {
+        name: "藤田医科大学病院",
+        type: "特定機能病院",
+        location: "愛知県豊明市",
+        matchPercentage: 88,
+        reason: "専門医療の提供と学術的な環境で、専門分野のスキルアップが可能です。"
+      }
+    ],
+    "リーダー型": [
+      {
+        name: "愛知医科大学病院",
+        type: "特定機能病院",
+        location: "愛知県長久手市",
+        matchPercentage: 95,
+        reason: "チームリーダーとしての能力を発揮できる組織体制と管理職ポジションが充実しています。"
+      },
+      {
+        name: "名古屋市立大学病院",
+        type: "特定機能病院",
+        location: "愛知県名古屋市",
+        matchPercentage: 93,
+        reason: "各診療科やプロジェクトチームでのリーダーシップを発揮できる機会が豊富です。"
+      },
+      {
+        name: "愛知県厚生農業協同組合連合会 安城更生病院",
+        type: "地域医療支援病院",
+        location: "愛知県安城市",
+        matchPercentage: 87,
+        reason: "地域の中核病院としてマネジメント能力を活かせる環境があります。"
+      }
+    ],
+    "イノベーター型": [
+      {
+        name: "国立長寿医療研究センター",
+        type: "国立研究開発法人",
+        location: "愛知県大府市",
+        matchPercentage: 96,
+        reason: "長寿医療に関する研究開発が盛んで、革新的なアイデアを形にできる環境です。"
+      },
+      {
+        name: "名古屋大学医学部附属病院 先端医療開発部",
+        type: "研究開発部門",
+        location: "愛知県名古屋市",
+        matchPercentage: 93,
+        reason: "最新の医療技術開発に携わり、創造性を発揮できる専門部門です。"
+      },
+      {
+        name: "藤田医科大学 先端診断システム研究開発センター",
+        type: "研究機関",
+        location: "愛知県豊明市",
+        matchPercentage: 90,
+        reason: "医療診断システムの革新に取り組む環境で、技術革新に貢献できます。"
+      }
+    ],
+    "改革者型": [
+      {
+        name: "トヨタ記念病院",
+        type: "企業立病院",
+        location: "愛知県豊田市",
+        matchPercentage: 97,
+        reason: "トヨタ生産方式の考え方を医療に応用し、業務改善や効率化に積極的に取り組んでいます。"
+      },
+      {
+        name: "愛知県厚生農業協同組合連合会 江南厚生病院",
+        type: "総合病院",
+        location: "愛知県江南市",
+        matchPercentage: 89,
+        reason: "医療の質向上と効率化に取り組む体制があり、改革志向を活かせる環境です。"
+      },
+      {
+        name: "名古屋記念病院",
+        type: "総合病院",
+        location: "愛知県名古屋市",
+        matchPercentage: 85,
+        reason: "医療プロセス改善に力を入れており、システム化と効率化を推進しています。"
+      }
+    ],
+    "ケアスペシャリスト型": [
+      {
+        name: "愛知県医療療育総合センター",
+        type: "療育施設",
+        location: "愛知県春日井市",
+        matchPercentage: 98,
+        reason: "長期的な患者ケアと包括的な支援を提供する環境で、患者との深い関わりを重視できます。"
+      },
+      {
+        name: "南医療生協 総合病院 南生協病院",
+        type: "地域密着型病院",
+        location: "愛知県名古屋市",
+        matchPercentage: 95,
+        reason: "患者中心のケア哲学を持ち、地域との繋がりを大切にした医療を提供しています。"
+      },
+      {
+        name: "青山病院",
+        type: "リハビリテーション病院",
+        location: "愛知県一宮市",
+        matchPercentage: 91,
+        reason: "患者さんの回復過程に寄り添い、長期的な関係性を構築できる環境です。"
+      }
+    ],
+    "独立志向型": [
+      {
+        name: "おやま在宅クリニック",
+        type: "在宅医療クリニック",
+        location: "愛知県名古屋市",
+        matchPercentage: 96,
+        reason: "自律的に判断し、患者さんの自宅での医療を提供する環境で裁量権が大きいです。"
+      },
+      {
+        name: "小林記念病院 訪問看護ステーション",
+        type: "訪問看護ステーション",
+        location: "愛知県半田市",
+        matchPercentage: 94,
+        reason: "自分のペースで訪問看護を行い、独自の判断で患者ケアを提供できます。"
+      },
+      {
+        name: "つつじが丘クリニック",
+        type: "クリニック",
+        location: "愛知県春日井市",
+        matchPercentage: 88,
+        reason: "小規模な医療機関で、自分のスタイルを活かした医療提供が可能です。"
+      }
+    ],
+    "フロンティア型": [
+      {
+        name: "愛知医科大学病院 救命救急センター",
+        type: "救急医療",
+        location: "愛知県長久手市",
+        matchPercentage: 97,
+        reason: "日々変化する緊急事態に対応し、臨機応変な医療提供が求められる環境です。"
+      },
+      {
+        name: "日本赤十字社 愛知医療センター名古屋第二病院 災害医療部",
+        type: "災害医療",
+        location: "愛知県名古屋市",
+        matchPercentage: 94,
+        reason: "災害医療の最前線で活躍でき、様々な状況での対応力を発揮できます。"
+      },
+      {
+        name: "国際医療機器開発センター",
+        type: "医療機器開発",
+        location: "愛知県名古屋市",
+        matchPercentage: 89,
+        reason: "国際的な医療機器開発に携わり、革新的な環境で活躍できます。"
+      }
+    ],
+    "コンサルタント型": [
+      {
+        name: "愛知医科大学 医学教育センター",
+        type: "教育機関",
+        location: "愛知県長久手市",
+        matchPercentage: 98,
+        reason: "医学教育に携わり、知識と経験を次世代に伝える役割を担えます。"
+      },
+      {
+        name: "名古屋市立大学 看護実践研究センター",
+        type: "研究教育機関",
+        location: "愛知県名古屋市",
+        matchPercentage: 93,
+        reason: "看護実践の向上と教育に貢献できる環境で指導力を発揮できます。"
+      },
+      {
+        name: "藤田医科大学病院 臨床研修センター",
+        type: "臨床教育施設",
+        location: "愛知県豊明市",
+        matchPercentage: 90,
+        reason: "研修医指導やスタッフ教育に携わり、コンサルティング能力を活かせます。"
+      }
+    ]
+  };
+
+  return institutionsByType[legacyType] || institutionsByType["専門家型"];
+}
