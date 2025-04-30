@@ -60,6 +60,23 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
     return '';
   };
 
+    // コンポーネントマウント時（フォーム表示時）のトラッキング
+  useEffect(() => {
+    // フォーム表示イベントのトラッキング
+    trackContactStart(resultType, profession);
+    
+    // Google広告リマーケティングタグ
+    if (window.gtag) {
+      window.gtag('event', 'page_view', {
+        'send_to': 'AW-17044188297',
+        'value': 0.0,
+        'user_data': {
+          'type': resultType
+        }
+      });
+    }
+  }, []);
+
   // フォーム全体バリデーション
   const validateForm = () => {
     const fields = Object.keys(formData);
@@ -1256,22 +1273,7 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
   );
 };
 
-// コンポーネントマウント時（フォーム表示時）のトラッキング
-useEffect(() => {
-  // フォーム表示イベントのトラッキング
-  trackContactStart(resultType, profession);
-  
-  // Google広告リマーケティングタグ
-  if (window.gtag) {
-    window.gtag('event', 'page_view', {
-      'send_to': 'AW-17044188297',
-      'value': 0.0,
-      'user_data': {
-        'type': resultType
-      }
-    });
-  }
-}, []);
+
 
 
 export default QuickConsultationForm;
