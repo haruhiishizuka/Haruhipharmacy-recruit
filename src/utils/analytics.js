@@ -6,15 +6,65 @@
 // GA4測定ID
 const GA4_ID = 'G-NMHD56M04S';
 
+// デバッグモード - 開発環境では true に設定
+const DEBUG_MODE = process.env.NODE_ENV === 'development';
+
+/**
+ * アナリティクスシステムを初期化する
+ * アプリケーション開始時に呼ばれる
+ */
+export const initializeAnalytics = () => {
+  if (typeof window !== 'undefined') {
+    // Google Tag Manager の初期化
+    if (!window.dataLayer) {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        'gtm.start': new Date().getTime(),
+        event: 'gtm.js'
+      });
+      
+      if (DEBUG_MODE) {
+        console.log('📊 Analytics system initialized');
+      }
+    }
+  }
+};
+
+/**
+ * ページビューを送信する
+ * @param {string} path - ページパス
+ * @param {string} title - ページタイトル
+ */
+export const trackPageView = (path, title) => {
+  if (typeof window === 'undefined' || !window.dataLayer) return;
+  
+  const pageInfo = {
+    event: 'page_view',
+    page: {
+      path: path,
+      title: title || document.title,
+      location: window.location.href
+    }
+  };
+  
+  window.dataLayer.push(pageInfo);
+  
+  if (DEBUG_MODE) {
+    console.log(`📊 Page view tracked: ${path}`, pageInfo);
+  }
+};
+
 /**
  * カスタムイベントをdataLayerに送信
  * @param {string} eventName - イベント名
  * @param {Object} eventParams - イベントパラメータ
  */
 export const trackEvent = (eventName, eventParams = {}) => {
-  if (!window.dataLayer) {
+  if (typeof window === 'undefined' || !window.dataLayer) {
     // dataLayerが存在しない場合はコンソールに出力するだけ
-    console.log(`📊 Analytics Event (Not Sent): ${eventName}`, eventParams);
+    if (DEBUG_MODE) {
+      console.log(`📊 Analytics Event (Not Sent): ${eventName}`, eventParams);
+    }
     return;
   }
   
@@ -24,7 +74,9 @@ export const trackEvent = (eventName, eventParams = {}) => {
     ...eventParams
   });
   
-  console.log(`📊 Analytics Event: ${eventName}`, eventParams);
+  if (DEBUG_MODE) {
+    console.log(`📊 Analytics Event: ${eventName}`, eventParams);
+  }
 };
 
 /**
