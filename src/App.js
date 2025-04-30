@@ -10,6 +10,18 @@ import QuickConsultationForm from './components/results/QuickConsultationForm';
 import PolicyPage from './components/PolicyPage';
 import EnhancedResultScreen from './components/results/EnhancedResultScreen';
 import TagManager from './components/TagManager';
+// 新しいアナリティクス関数をインポート
+import { 
+  initializeAnalytics, 
+  trackPageView, 
+  trackQuizStart, 
+  trackProfessionSelect, 
+  trackQuestionAnswer, 
+  trackQuizComplete, 
+  trackContactStart,
+  trackContactSubmit,
+  trackRestart 
+} from './utils/analytics';
 
 
 // AppコンテンツコンポーネントはRouteから渡されるパラメータを使用
@@ -22,35 +34,41 @@ function AppContent() {
   const [showContactForm, setShowContactForm] = useState(false);
   const [initialized, setInitialized] = useState(false);
   const [isLoading, setIsLoading] = useState(true); // ローディング状態を追加
+  // 診断開始時間を記録するための状態を追加
+  const [quizStartTime, setQuizStartTime] = useState(null);
   
   // React Routerのフック
   const navigate = useNavigate();
   const location = useLocation();
+
   
-  // アプリケーションの初期化とルートの確認
-  useEffect(() => {
-    console.log('App initializing...', location.pathname);
-    
-    // 無効なルートへのアクセスを修正
-    if (location.pathname !== '/' && 
-        location.pathname !== '/profession' && 
-        location.pathname !== '/quiz' && 
-        location.pathname !== '/result' && 
-        location.pathname !== '/policy') {
-      console.log('無効なルートへのアクセスを検出: ', location.pathname);
-      navigate('/', { replace: true });
-    }
-    
-    // 画面表示時に短いローディング状態を設ける (特にモバイル向け)
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-      setInitialized(true);
-    }, 300);
-    
-    return () => clearTimeout(timer);
-  }, []);
+// アプリケーションの初期化とルートの確認
+useEffect(() => {
+  console.log('App initializing...', location.pathname);
   
-  // 画面遷移のデバッグログ
+  // アナリティクスの初期化を追加
+  initializeAnalytics();
+  
+  // 無効なルートへのアクセスを修正
+  if (location.pathname !== '/' && 
+      location.pathname !== '/profession' && 
+      location.pathname !== '/quiz' && 
+      location.pathname !== '/result' && 
+      location.pathname !== '/policy') {
+    console.log('無効なルートへのアクセスを検出: ', location.pathname);
+    navigate('/', { replace: true });
+  }
+  
+  // 画面表示時に短いローディング状態を設ける (特にモバイル向け)
+  const timer = setTimeout(() => {
+    setIsLoading(false);
+    setInitialized(true);
+  }, 300);
+  
+  return () => clearTimeout(timer);
+}, []);
+
+  // 画面遷移時のページビュートラッキング
   useEffect(() => {
     if (initialized) {
       console.log(`📱 URL遷移: ${location.pathname}`, {
@@ -60,8 +78,11 @@ function AppContent() {
         userAgent: navigator.userAgent,
         isMobile: /Mobi|Android/i.test(navigator.userAgent)
       });
+      
+      // カスタムページビューをトラッキング（追加）
+      trackPageView(location.pathname, document.title);
     }
-  }, [location, profession, postalCode, quizResult, initialized]);
+  }, [location.pathname, initialized]);
 
   // アニメーション用のバリアント
   const pageVariants = {
@@ -69,6 +90,16 @@ function AppContent() {
     animate: { opacity: 1, y: 0 },
     exit: { opacity: 0, y: -20 }
   };
+
+// 診断開始時の処理
+const handleStartQuiz = () => {
+  console.log('🧩 診断を開始します');
+  // 診断開始時間を記録
+  setQuizStartTime(new Date());
+  // 診断開始イベントをトラッキング
+  trackQuizStart('welcome');
+  navigate('/profession');
+};  
 
   // 基本質問セット - 共通質問
   const baseQuestions = [
@@ -287,15 +318,25 @@ function AppContent() {
     'other': 'その他医療職'
   };
 
-  // 職種選択の処理 - URLも変更
-  const handleProfessionSelect = (selectedProfession) => {
-    console.log(`👩‍⚕️ 選択された職種: ${selectedProfession} (${professionMap[selectedProfession] || '不明'})`);
-    setProfession(professionMap[selectedProfession] || selectedProfession);
-    // セッションストレージに保存
-    sessionStorage.setItem('profession', professionMap[selectedProfession] || selectedProfession);
-    // 質問画面にナビゲート
-    navigate('/quiz');
-  };
+// 職種選択の処理 - 改善版
+const handleProfessionSelect = (selectedProfession) => {
+  console.log(`👩‍⚕️ 選択された職種: ${selectedProfession} (${professionMap[selectedProfession] || '不明'})`);
+  
+  const professionName = professionMap[selectedProfession] || selectedProfession;
+  
+  // 職種を状態に保存
+  setProfession(professionName);
+  
+  // セッションストレージに保存
+  sessionStorage.setItem('profession', professionName);
+  
+  // 職種選択のイベントをトラッキング（追加）
+  trackProfessionSelect(professionName);
+  
+  // 質問画面にナビゲート
+  navigate('/quiz');
+};
+
 
   // 郵便番号入力の処理
   const handlePostalCodeSubmit = (code) => {
@@ -304,7 +345,8 @@ function AppContent() {
     navigate('/quiz');
   };
 
-  // 質問回答完了時の処理
+
+    // 質問回答完了時の処理 - 改善版
   const handleQuizComplete = (answerArray) => {
     console.log('📝 質問への回答完了:', answerArray);
     
@@ -313,10 +355,23 @@ function AppContent() {
       // 回答データを保存
       setAnswers(answerArray);
       
+      // 診断完了時間を計算（追加）
+      let timeSpent = 0;
+      if (quizStartTime) {
+        const endTime = new Date();
+        timeSpent = Math.round((endTime - quizStartTime) / 1000); // 秒単位
+      }
+      
       // 診断結果を計算
       const result = processQuizResults(answerArray);
       console.log('🧠 診断結果:', result);
       setQuizResult(result);
+      
+      // 正規化された結果データを取得（追加）
+      const normalizedResult = normalizeResultData(result);
+      
+      // 診断完了イベントをトラッキング（追加）
+      trackQuizComplete(normalizedResult.title || normalizedResult.type, timeSpent);
       
       // 結果画面に遷移
       navigate('/result');
@@ -324,7 +379,7 @@ function AppContent() {
       console.error('❌ 無効な回答データ:', answerArray);
     }
   };
-  
+    
   // App.js内のhandleRestart関数
   const handleRestart = () => {
     console.log('🔄 診断をやり直します');
@@ -343,11 +398,19 @@ function AppContent() {
     }, 300); // スクロールが始まってから状態を変更
   };
 
-  // コンタクトフォームの表示/非表示を切り替える
+    // コンタクトフォームの表示/非表示を切り替える - 改善版
   const toggleContactForm = (isVisible) => {
     console.log(`📞 コンタクトフォーム表示: ${isVisible}`);
+    
+    // コンタクトフォーム表示時にイベントをトラッキング（追加）
+    if (isVisible && quizResult) {
+      const normalizedResult = normalizeResultData(quizResult);
+      trackContactStart(normalizedResult.title || normalizedResult.type, profession);
+    }
+    
     setShowContactForm(isVisible);
   };
+
 
   // プライバシーポリシーページを表示する関数
   const handleOpenPolicy = () => {

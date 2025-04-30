@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { sendToSlack } from '../../utils/slackNotifier';
-import { trackContactSubmit } from '../../utils/analytics';
+import { trackContactSubmit, trackContactStart } from '../../utils/analytics';
 
 /**
  * QuickConsultationForm
@@ -126,7 +126,6 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
     setFormData((p) => ({ ...p, [name]: value }));
     if (touched[name]) setErrorMessage(validateField(name, value));
   };
-
   const handleSubmit = async (e) => {
     if (e) {
       e.preventDefault();
@@ -144,6 +143,16 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
       
       // コンバージョンイベントのトラッキング
       trackContactSubmit(resultType, profession, formData.contactMethod);
+      
+      // Google広告コンバージョンイベントを直接呼び出し
+      if (window.gtag) {
+        window.gtag('event', 'conversion', {
+          'send_to': 'AW-17044188297/LPQpCLDIoJ8YEMuPiaoD',  // ダミーラベル（実際のラベルに置き換える）
+          'value': 1.0,
+          'currency': 'JPY'
+        });
+        console.log('📊 Google広告コンバージョントラッキング: フォーム送信完了');
+      }
       
       setIsSubmitted(true);
       // LINE 自動誘導
@@ -423,52 +432,40 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                 role="tabpanel"
                 id="form-tab"
                 aria-labelledby="form-tab-button"
-              >
+              > 
                 {isSubmitted ? (
                   <div style={{ textAlign: 'center', padding: '20px 0' }}>
-                    <div
-                      style={{
-                        width: '64px',
-                        height: '64px',
-                        borderRadius: '50%',
-                        backgroundColor: '#4CAF50',
-                        color: 'white',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        margin: '0 auto 16px'
-                      }}
-                    >
+                    <div style={{/* スタイル省略 */}}>
                       <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <polyline points="20 6 9 17 4 12"></polyline>
                       </svg>
                     </div>
-                    <h4 style={{ fontSize: '20px', fontWeight: '600', marginBottom: '12px', color: '#2D3748' }}>
+                    <h4 style={{/* スタイル省略 */}}>
                       予約を受け付けました
                     </h4>
-                    <p style={{ fontSize: '16px', color: '#4A5568', marginBottom: '24px' }}>
+                    <p style={{/* スタイル省略 */}}>
                       担当者から24時間以内にご連絡いたします
                     </p>
+                    
+                    {/* Google広告コンバージョンページ - 非表示フレーム */}
+                    <iframe
+                      src="https://www.googleadservices.com/pagead/conversion/17044188297/?value=1.0&currency_code=JPY&label=LPQpCLDIoJ8YEMuPiaoD&guid=ON&script=0"
+                      width="1"
+                      height="1"
+                      style={{ display: 'none' }}
+                    ></iframe>
+                    
                     <button
                       onClick={(e) => {
                         e.preventDefault();
                         handleClose();
                       }}
                       type="button"
-                      style={{
-                        backgroundColor: '#1A6CBF',
-                        color: 'white',
-                        border: 'none',
-                        borderRadius: '50px',
-                        padding: '12px 24px',
-                        fontSize: '16px',
-                        fontWeight: '600',
-                        cursor: 'pointer'
-                      }}
+                      style={{/* スタイル省略 */}}
                     >
                       閉じる
                     </button>
-                    
+
                     {/* シェア機能追加 */}
                     <button
                       type="button"
@@ -1258,5 +1255,23 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
     </div>
   );
 };
+
+// コンポーネントマウント時（フォーム表示時）のトラッキング
+useEffect(() => {
+  // フォーム表示イベントのトラッキング
+  trackContactStart(resultType, profession);
+  
+  // Google広告リマーケティングタグ
+  if (window.gtag) {
+    window.gtag('event', 'page_view', {
+      'send_to': 'AW-17044188297',
+      'value': 0.0,
+      'user_data': {
+        'type': resultType
+      }
+    });
+  }
+}, []);
+
 
 export default QuickConsultationForm;

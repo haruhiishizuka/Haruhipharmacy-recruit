@@ -1,0 +1,51 @@
+﻿medimatch-quiz/
+├── public/
+│   ├── images/
+│   │   ├── animals/
+│   │   ├── icons/
+│   │   │   ├── MediMatchlogo.png
+│   │   │   ├── profession_nurse.png
+│   │   │   ├── profession_pharmacist.png
+│   │   │   ├── profession_therapist.png
+│   │   │   ├── profession_other.png
+│   │   │   ├── self_analysis.png
+│   │   │   ├── analytics.png
+│   │   │   └── career_growth.png
+│   │   └── patterns/
+│   │       └── medical_pattern_light.png
+│   └── index.html
+├── src/
+│   ├── components/
+│   │   ├── quiz/
+│   │   │   ├── WelcomeScreen.js
+│   │   │   ├── ProfessionSelect.js
+│   │   │   ├── QuizScreen.js
+│   │   │   ├── QuestionCard.js
+│   │   │   └── PostalCodeInput.js
+│   │   ├── results/
+│   │   │   ├── ResultScreen.js
+│   │   │   ├── EnhancedResultScreen.js
+│   │   │   ├── ResultSummary.js
+│   │   │   ├── QuickConsultationForm.js
+│   │   │   ├── ContactForm.js
+│   │   │   └── TabNavigation.js
+│   │   ├── AnimalIcon.js
+│   │   ├── PolicyPage.js
+│   │   └── TagManager.js
+│   ├── utils/
+│   │   ├── analytics.js
+│   │   ├── quizUtils.js
+│   │   ├── imageUtils.js
+│   │   ├── slackNotifier.js
+│   │   └── analyticsDebug.js
+│   ├── data/
+│   │   └── questions.js
+│   ├── App.js
+│   ├── styles.css
+│   └── index.js
+├── netlify/
+│   └── functions/
+│       ├── slack.js
+│       ├── package.json
+│       └── .gitkeep
+└── package.json
