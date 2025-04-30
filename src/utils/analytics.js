@@ -1,13 +1,16 @@
 // src/utils/analytics.js
+
 /**
  * MediMatchアナリティクス - GTMを通じてイベントを送信するユーティリティ
  */
 
 // GA4測定ID
 const GA4_ID = 'G-NMHD56M04S';
+// Google広告コンバージョンID
+const ADS_CONVERSION_ID = 'AW-17044188297';
 
 /**
- * カスタムイベントをdataLayerに送信
+ * 共通イベント送信関数
  * @param {string} eventName - イベント名
  * @param {Object} eventParams - イベントパラメータ
  */
@@ -25,6 +28,27 @@ export const trackEvent = (eventName, eventParams = {}) => {
   });
   
   console.log(`📊 Analytics Event: ${eventName}`, eventParams);
+};
+
+/**
+ * Google広告コンバージョンをトラッキングする
+ * @param {string} conversionLabel - Google広告コンバージョンラベル
+ * @param {Object} params - 追加パラメータ（例: value, currency など）
+ */
+export const trackAdConversion = (conversionLabel, params = {}) => {
+  // window.gtagの存在チェック
+  if (typeof window.gtag !== 'function') {
+    console.warn('Google広告タグが初期化されていません');
+    return;
+  }
+  
+  // コンバージョンイベントを送信
+  window.gtag('event', 'conversion', {
+    'send_to': `${ADS_CONVERSION_ID}/${conversionLabel}`,
+    ...params
+  });
+  
+  console.log(`🔄 Google広告コンバージョントラッキング: ${conversionLabel}`, params);
 };
 
 /**
@@ -67,6 +91,12 @@ export const trackQuizComplete = (resultType, timeSpent) => {
     result_type: resultType,
     time_spent: timeSpent
   });
+  
+  // 診断完了をコンバージョンとして記録（必要に応じて）
+  trackAdConversion('JhbCOLvAoa8YEMuPiaoD', {  // 実際のコンバージョンラベルに置き換えてください
+    value: 0,
+    currency: 'JPY'
+  });
 };
 
 /**
@@ -88,10 +118,17 @@ export const trackContactStart = (resultType, profession) => {
  * @param {string} contactMethod - 連絡方法
  */
 export const trackContactSubmit = (resultType, profession, contactMethod) => {
+  // GAイベント
   trackEvent('contact_submit', {
     result_type: resultType,
     profession,
     contact_method: contactMethod
+  });
+  
+  // Google広告コンバージョン - 問い合わせフォーム送信
+  trackAdConversion('LPQpCLDIoJ8YEMuPiaoD', {  // 実際のコンバージョンラベルに置き換えてください
+    value: 1,
+    currency: 'JPY'
   });
 };
 
@@ -105,6 +142,13 @@ export const trackShare = (resultType, shareMethod) => {
     result_type: resultType,
     share_method: shareMethod
   });
+  
+  // シェアをコンバージョンとして記録（必要に応じて）
+  if (shareMethod !== 'copy') {
+    trackAdConversion('M80KCJrCoJ8YEMuPiaoD', {  // 実際のコンバージョンラベルに置き換えてください
+      value: 0
+    });
+  }
 };
 
 /**
