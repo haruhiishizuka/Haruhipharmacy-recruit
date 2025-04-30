@@ -32,6 +32,22 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
   const [touched, setTouched] = useState({});
   const [activeTab, setActiveTab] = useState('form'); // 'form' | 'about'
 
+  useEffect(() => {
+    // フォーム表示イベントのトラッキング
+    trackContactStart(resultType, profession);
+    
+    // Google広告リマーケティングタグ
+    if (window.gtag) {
+      window.gtag('event', 'page_view', {
+        'send_to': 'AW-17044188297',
+        'value': 0.0,
+        'user_data': {
+          'type': resultType
+        }
+      });
+    }
+  }, [resultType, profession]); // 依存配列を正しく設定
+
   /* ------------------------------------------------------------------
    * helpers
    * ----------------------------------------------------------------*/
@@ -61,21 +77,6 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
   };
 
     // コンポーネントマウント時（フォーム表示時）のトラッキング
-  useEffect(() => {
-    // フォーム表示イベントのトラッキング
-    trackContactStart(resultType, profession);
-    
-    // Google広告リマーケティングタグ
-    if (window.gtag) {
-      window.gtag('event', 'page_view', {
-        'send_to': 'AW-17044188297',
-        'value': 0.0,
-        'user_data': {
-          'type': resultType
-        }
-      });
-    }
-  }, []);
 
   // フォーム全体バリデーション
   const validateForm = () => {
@@ -449,18 +450,40 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                 role="tabpanel"
                 id="form-tab"
                 aria-labelledby="form-tab-button"
-              > 
+              >
                 {isSubmitted ? (
                   <div style={{ textAlign: 'center', padding: '20px 0' }}>
-                    <div style={{/* スタイル省略 */}}>
+                    <div style={{ 
+                      width: '60px',
+                      height: '60px',
+                      borderRadius: '50%',
+                      backgroundColor: '#38A169',
+                      color: 'white',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      margin: '0 auto 20px'
+                    }}>
                       <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <polyline points="20 6 9 17 4 12"></polyline>
                       </svg>
                     </div>
-                    <h4 style={{/* スタイル省略 */}}>
+                    
+                    <h4 style={{ 
+                      fontSize: '22px', 
+                      fontWeight: '600', 
+                      color: '#2D3748', 
+                      marginBottom: '12px' 
+                    }}>
                       予約を受け付けました
                     </h4>
-                    <p style={{/* スタイル省略 */}}>
+                    
+                    <p style={{ 
+                      fontSize: '16px', 
+                      color: '#4A5568', 
+                      marginBottom: '24px', 
+                      lineHeight: '1.6' 
+                    }}>
                       担当者から24時間以内にご連絡いたします
                     </p>
                     
@@ -475,15 +498,27 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                     <button
                       onClick={(e) => {
                         e.preventDefault();
-                        handleClose();
+                        handleClose(e);  // 引数eを追加
                       }}
                       type="button"
-                      style={{/* スタイル省略 */}}
+                      style={{ 
+                        backgroundColor: '#1A6CBF',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '50px',
+                        padding: '14px 36px',
+                        fontSize: '16px',
+                        fontWeight: '600',
+                        cursor: 'pointer',
+                        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
+                        margin: '0 auto',
+                        display: 'block'
+                      }}
                     >
                       閉じる
                     </button>
 
-                    {/* シェア機能追加 */}
+                    {/* シェア機能 - 追加 */}
                     <button
                       type="button"
                       onClick={() => {
@@ -515,8 +550,7 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                       }}
                     >
                       結果をシェアする
-                    </button>
-                    
+                    </button>                  
                     {/* SNSシェアボタン */}
                     <div style={{ marginTop: '16px', display: 'flex', gap: '12px', justifyContent: 'center' }}>
                       
@@ -1262,7 +1296,6 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
           </AnimatePresence>
         </div>
       </motion.div>
-      
       <style jsx="true">{`
         @keyframes spin {
           0% { transform: rotate(0deg); }
@@ -1272,8 +1305,5 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
     </div>
   );
 };
-
-
-
 
 export default QuickConsultationForm;
