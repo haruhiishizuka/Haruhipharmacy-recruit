@@ -1,185 +1,118 @@
-// src/utils/analytics.js - 改善版
-
+// src/utils/analytics.js
 /**
- * MediMatchアナリティクス - GTMとGA4の連携を強化
- * 問題点：イベントが正しく発火していない
- * 解決策：初期化処理の改善とデバッグ機能の追加
+ * MediMatchアナリティクス - GTMを通じてイベントを送信するユーティリティ
  */
 
-// GTMコンテナID - 画面で確認された値
-const GTM_ID = 'GTM-NHNQQ82M';
-// GA4測定ID - 必要に応じて設定
+// GA4測定ID
 const GA4_ID = 'G-NMHD56M04S';
 
-// デバッグモード - 開発中はtrueに設定
-const DEBUG_MODE = true;
-
 /**
- * GTMの初期化
- * 問題：初期化タイミングが遅い可能性
- * 解決：ページ読み込み直後に確実に初期化
- */
-export const initializeGTM = () => {
-  if (typeof window === 'undefined') return false;
-  
-  try {
-    if (!window.dataLayer) {
-      window.dataLayer = [];
-      window.dataLayer.push({
-        'gtm.start': new Date().getTime(),
-        event: 'gtm.js'
-      });
-      
-      // GTMスクリプトのDOM挿入
-      const script = document.createElement('script');
-      script.async = true;
-      script.src = `https://www.googletagmanager.com/gtm.js?id=${GTM_ID}`;
-      document.head.appendChild(script);
-      
-      if (DEBUG_MODE) console.log('🔄 GTM初期化完了: ' + GTM_ID);
-      return true;
-    } else {
-      if (DEBUG_MODE) console.log('✓ GTMは既に初期化されています');
-      return true;
-    }
-  } catch (error) {
-    console.error('❌ GTM初期化エラー:', error);
-    return false;
-  }
-};
-
-/**
- * イベントトラッキング関数 - 改善版
- * 問題：イベントが発火していない、デバッグが困難
- * 解決：エラーハンドリング強化・デバッグ出力
+ * カスタムイベントをdataLayerに送信
+ * @param {string} eventName - イベント名
+ * @param {Object} eventParams - イベントパラメータ
  */
 export const trackEvent = (eventName, eventParams = {}) => {
-  if (typeof window === 'undefined') return false;
-  
-  try {
-    // 未初期化の場合は初期化を行う
-    if (!window.dataLayer) {
-      initializeGTM();
-    }
-    
-    // イベントデータの構築
-    const eventData = {
-      event: eventName,
-      event_time: new Date().toISOString(),
-      ...eventParams
-    };
-    
-    // イベント送信
-    window.dataLayer.push(eventData);
-    
-    if (DEBUG_MODE) {
-      console.log(`📊 アナリティクスイベント送信: ${eventName}`, eventParams);
-    }
-    
-    return true;
-  } catch (error) {
-    console.error(`❌ イベント送信エラー (${eventName}):`, error);
-    return false;
+  if (!window.dataLayer) {
+    // dataLayerが存在しない場合はコンソールに出力するだけ
+    console.log(`📊 Analytics Event (Not Sent): ${eventName}`, eventParams);
+    return;
   }
-};
-
-/**
- * ページビュートラッキング
- * ページ遷移時に自動的に呼び出す
- */
-export const trackPageView = (path, title) => {
-  const pageTitle = title || document.title;
-  const pagePath = path || window.location.pathname;
   
-  return trackEvent('page_view', {
-    page_title: pageTitle,
-    page_path: pagePath,
-    page_location: window.location.href
+  // dataLayerにイベントを送信
+  window.dataLayer.push({
+    event: eventName,
+    ...eventParams
   });
+  
+  console.log(`📊 Analytics Event: ${eventName}`, eventParams);
 };
 
 /**
- * 診断開始イベントの改善版
+ * 診断開始イベントを記録
+ * @param {string} source - 開始元（'welcome', 'result'など）
  */
 export const trackQuizStart = (source) => {
-  return trackEvent('quiz_start', { 
-    source,
-    timestamp: new Date().toISOString()
-  });
+  trackEvent('quiz_start', { source });
 };
 
 /**
- * 職種選択イベントの改善版
+ * 職種選択イベントを記録
+ * @param {string} profession - 選択された職種
  */
 export const trackProfessionSelect = (profession) => {
-  return trackEvent('profession_select', { 
-    profession,
-    timestamp: new Date().toISOString()
-  });
+  trackEvent('profession_select', { profession });
 };
 
 /**
- * 質問回答イベントの改善版
+ * 質問回答イベントを記録
+ * @param {number} questionIndex - 質問のインデックス
+ * @param {number} questionId - 質問ID
+ * @param {number} answerValue - 回答値
  */
 export const trackQuestionAnswer = (questionIndex, questionId, answerValue) => {
-  return trackEvent('question_answer', {
+  trackEvent('question_answer', {
     question_index: questionIndex,
     question_id: questionId,
-    answer_value: answerValue,
-    timestamp: new Date().toISOString()
+    answer_value: answerValue
   });
 };
 
 /**
- * 診断完了イベントの改善版
+ * 診断完了イベントを記録
+ * @param {string} resultType - 診断結果タイプ
+ * @param {number} timeSpent - 回答にかかった時間（秒）
  */
 export const trackQuizComplete = (resultType, timeSpent) => {
-  return trackEvent('quiz_complete', {
+  trackEvent('quiz_complete', {
     result_type: resultType,
-    time_spent: timeSpent,
-    timestamp: new Date().toISOString()
+    time_spent: timeSpent
   });
 };
 
 /**
- * 連絡フォーム表示イベントの改善版
+ * 連絡フォーム開始イベントを記録
+ * @param {string} resultType - 診断結果タイプ
+ * @param {string} profession - 職種
  */
 export const trackContactStart = (resultType, profession) => {
-  return trackEvent('contact_start', {
+  trackEvent('contact_start', {
     result_type: resultType,
-    profession,
-    timestamp: new Date().toISOString()
+    profession
   });
 };
 
 /**
- * 連絡フォーム送信イベントの改善版
+ * 連絡フォーム送信イベントを記録（コンバージョン）
+ * @param {string} resultType - 診断結果タイプ
+ * @param {string} profession - 職種
+ * @param {string} contactMethod - 連絡方法
  */
 export const trackContactSubmit = (resultType, profession, contactMethod) => {
-  return trackEvent('contact_submit', {
+  trackEvent('contact_submit', {
     result_type: resultType,
     profession,
-    contact_method: contactMethod,
-    timestamp: new Date().toISOString()
+    contact_method: contactMethod
   });
 };
 
-// アプリケーション初期化時に実行すべき関数
-export const initializeAnalytics = () => {
-  if (typeof window !== 'undefined') {
-    // GTM初期化
-    initializeGTM();
-    
-    // 初期ページビュー送信
-    trackPageView();
-    
-    if (DEBUG_MODE) {
-      console.log('📊 アナリティクス初期化完了');
-    }
-  }
+/**
+ * 共有イベントを記録
+ * @param {string} resultType - 診断結果タイプ
+ * @param {string} shareMethod - 共有方法（'twitter', 'line', 'facebook', 'copy'）
+ */
+export const trackShare = (resultType, shareMethod) => {
+  trackEvent('result_share', {
+    result_type: resultType,
+    share_method: shareMethod
+  });
 };
 
-// 自動的に初期化
-if (typeof window !== 'undefined') {
-  initializeAnalytics();
-}
+/**
+ * 診断やり直しイベントを記録
+ * @param {string} resultType - 診断結果タイプ
+ */
+export const trackRestart = (resultType) => {
+  trackEvent('quiz_restart', {
+    result_type: resultType
+  });
+};
