@@ -10,81 +10,6 @@ import { Radar } from 'react-chartjs-2';
 // Chart.jsの設定
 ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend);
 
-// 動物アイコンコンポーネント
-const AnimalIcon = ({ typeCode }) => {
-  // タイプコードに基づいて動物を決定
-  const getAnimalType = (code) => {
-    // タイプコードから動物マッピング
-    const animalMap = {
-      'SIHA': 'owl', // フクロウ
-      'SIHP': 'fox', // キツネ
-      'SITA': 'eagle', // ワシ
-      'SITP': 'dolphin', // イルカ
-      'SCHA': 'turtle', // カメ
-      'SCHP': 'bear', // クマ
-      'SCTA': 'beaver', // ビーバー
-      'SCTP': 'elephant', // ゾウ
-      'GIHA': 'monkey', // サル
-      'GIHP': 'cat', // ネコ
-      'GITA': 'wolf', // オオカミ
-      'GITP': 'horse', // ウマ
-      'GCHA': 'koala', // コアラ
-      'GCHP': 'rabbit', // ウサギ
-      'GCTA': 'deer', // シカ
-      'GCTP': 'dog' // イヌ
-    };
-    
-    // デフォルトはフクロウ
-    return animalMap[code] || 'owl';
-  };
-
-  const animal = getAnimalType(typeCode);
-  
-  // 簡易的なSVGプレースホルダー（実際の実装では適切なアイコンを用意）
-  const animalIcons = {
-    'owl': (
-      <svg width="128" height="128" viewBox="0 0 24 24" fill="none" stroke="#1A6CBF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="8" r="5" />
-        <circle cx="9" cy="6" r="1" fill="#1A6CBF" />
-        <circle cx="15" cy="6" r="1" fill="#1A6CBF" />
-        <path d="M12 13v3" />
-        <path d="M9 16l3 3 3-3" />
-        <path d="M7 4c-1 0-2 1-2 2" />
-        <path d="M17 4c1 0 2 1 2 2" />
-      </svg>
-    ),
-    'fox': (
-      <svg width="128" height="128" viewBox="0 0 24 24" fill="none" stroke="#DD6B20" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M5 8l2-3 2 3" />
-        <path d="M17 8l2-3 2 3" />
-        <path d="M12 2a9 9 0 0 0-9 9v7c0 2 1 3 3 3v-5h12v5c2 0 3-1 3-3v-7a9 9 0 0 0-9-9z" />
-        <circle cx="9" cy="9" r="1" fill="#DD6B20" />
-        <circle cx="15" cy="9" r="1" fill="#DD6B20" />
-        <path d="M12 16l-3-3 3 3 3-3-3 3z" />
-      </svg>
-    ),
-    'eagle': (
-      <svg width="128" height="128" viewBox="0 0 24 24" fill="none" stroke="#805AD5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M7 7l.01.01" />
-        <path d="M17 7l.01.01" />
-        <path d="M12 1c-5 0-9 2-9 6v9c0 1 1 2 2 2h1v1c0 1 1 2 2 2h8c1 0 2-1 2-2v-1h1c1 0 2-1 2-2v-9c0-4-4-6-9-6z" />
-        <path d="M10 12v3" />
-        <path d="M14 12v3" />
-      </svg>
-    ),
-    'default': (
-      <svg width="128" height="128" viewBox="0 0 24 24" fill="none" stroke="#1A6CBF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="12" r="10" />
-        <path d="M8 14s1.5 2 4 2 4-2 4-2" />
-        <line x1="9" y1="9" x2="9.01" y2="9" />
-        <line x1="15" y1="9" x2="15.01" y2="9" />
-      </svg>
-    )
-  };
-
-  return animalIcons[animal] || animalIcons['default'];
-};
-
 // レーダーチャートコンポーネント
 const TypeRadarChart = ({ axisScores }) => {
   // 安全なスコア値を取得（nullやundefinedの場合はデフォルト値を使用）
@@ -633,7 +558,7 @@ const EnhancedResultScreen = ({ results, profession, postalCode, answers, onRest
             boxShadow: '0 8px 20px rgba(0, 0, 0, 0.15)'
           }}
         >
-          <AnimalIcon typeCode={typeCode} />
+          <AnimalIcon type={typeCode} />
         </motion.div>
         
         <motion.div
