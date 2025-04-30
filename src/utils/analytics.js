@@ -133,6 +133,7 @@ export const trackContactStart = (resultType, profession) => {
   });
 };
 
+
 /**
  * 連絡フォーム送信イベントを記録（コンバージョン）
  * @param {string} resultType - 診断結果タイプ
@@ -140,11 +141,29 @@ export const trackContactStart = (resultType, profession) => {
  * @param {string} contactMethod - 連絡方法
  */
 export const trackContactSubmit = (resultType, profession, contactMethod) => {
+  // 標準イベント
   trackEvent('contact_submit', {
     result_type: resultType,
     profession,
     contact_method: contactMethod
   });
+  
+  // Google広告コンバージョン用にecommerce形式でもイベントを追加
+  if (window.dataLayer) {
+    window.dataLayer.push({
+      'event': 'conversion',
+      'conversionId': 'medimatch_contact',
+      'transaction_id': Date.now().toString(),
+      'value': 1.0,
+      'currency': 'JPY',
+      'items': [{
+        'id': resultType,
+        'name': 'キャリア相談',
+        'category': profession || '医療職',
+        'quantity': 1
+      }]
+    });
+  }
 };
 
 /**

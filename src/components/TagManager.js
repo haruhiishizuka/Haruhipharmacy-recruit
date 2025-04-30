@@ -6,8 +6,11 @@ import { useLocation } from 'react-router-dom';
 // GTMコンテナID - 画面で確認された正しいID
 const GTM_ID = 'GTM-NHNQQ82M';
 
+// Google広告コンバージョンID
+const GOOGLE_ADS_ID = 'AW-17044188297';
+
 // デバッグモード - 開発環境では true に設定
-const DEBUG_MODE = true;
+const DEBUG_MODE = process.env.NODE_ENV === 'development';
 
 /**
  * GTMスクリプトを初期化する関数
@@ -20,9 +23,15 @@ function initializeGTM() {
   // dataLayerが未定義の場合のみ初期化
   if (!window.dataLayer) {
     window.dataLayer = [];
+    
+    // Google広告のリマーケティングタグに必要なパラメータを追加
     window.dataLayer.push({
       'gtm.start': new Date().getTime(),
-      event: 'gtm.js'
+      event: 'gtm.js',
+      'ads_data_redaction': false, // データ修正をオフに
+      'allow_ad_personalization_signals': true, // パーソナライズ広告を許可
+      'allow_google_signals': true, // Google信号を許可
+      'allow_enhanced_conversions': true // 拡張コンバージョンを許可
     });
     
     if (DEBUG_MODE) {
@@ -47,6 +56,18 @@ function injectGTMScript() {
   // エラーハンドリングを追加
   script.onerror = () => {
     console.error('🏷️ GTMスクリプトの読み込みに失敗しました');
+    
+    // フォールバック: 直接Google広告のスクリプトを読み込む
+    const adsScript = document.createElement('script');
+    adsScript.async = true;
+    adsScript.src = `https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ADS_ID}`;
+    document.head.appendChild(adsScript);
+    
+    // Google広告の初期化コード
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { window.dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', GOOGLE_ADS_ID);
   };
   
   script.onload = () => {
@@ -97,17 +118,37 @@ function sendPageView(path, title) {
   
   const pageInfo = {
     event: 'page_view',
-    page: {
-      path: path,
-      title: title || document.title,
-      location: window.location.href
-    }
+    page_path: path,
+    page_title: title || document.title,
+    page_location: window.location.href,
+    send_to: GOOGLE_ADS_ID // 追加: Google広告IDを指定
   };
   
   window.dataLayer.push(pageInfo);
   
   if (DEBUG_MODE) {
     console.log(`📊 ページビュー送信: ${path}`, pageInfo);
+  }
+}
+
+/**
+ * 手動でGoogle広告のコンバージョントラッキングを送信する関数
+ */
+function sendConversion(conversionLabel, value = 0) {
+  if (typeof window === 'undefined' || !window.dataLayer) return;
+  
+  const conversionData = {
+    event: 'conversion',
+    send_to: `${GOOGLE_ADS_ID}/${conversionLabel}`,
+    value: value,
+    currency: 'JPY',
+    transaction_id: Date.now().toString()
+  };
+  
+  window.dataLayer.push(conversionData);
+  
+  if (DEBUG_MODE) {
+    console.log(`📊 コンバージョン送信: ${conversionLabel}`, conversionData);
   }
 }
 
@@ -131,6 +172,7 @@ const TagManager = () => {
       
       if (DEBUG_MODE) {
         console.log('🏷️ Google Tag Manager 初期化完了');
+        console.log('🏷️ Google Ads ID:', GOOGLE_ADS_ID);
       }
     } catch (error) {
       console.error('🏷️ TagManager初期化エラー:', error);
@@ -157,6 +199,14 @@ const TagManager = () => {
       console.error('🏷️ ページビュー送信エラー:', error);
     }
   }, [location]); // locationが変わるたびに実行
+  
+  // グローバルに関数を公開（他のコンポーネントから利用可能に）
+  if (typeof window !== 'undefined') {
+    window.medimatchAnalytics = {
+      sendPageView,
+      sendConversion
+    };
+  }
   
   // このコンポーネントはUIを表示しない
   return null;

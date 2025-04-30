@@ -158,18 +158,20 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
     try {
       const res = await sendToSlack(formData, diagnosticInfo);
       if (!res.success) throw new Error(res.message || 'Slack 送信失敗');
-      
+
       // コンバージョンイベントのトラッキング
       trackContactSubmit(resultType, profession, formData.contactMethod);
-      
-      // Google広告コンバージョンイベントを直接呼び出し
-      if (window.gtag) {
-        window.gtag('event', 'conversion', {
-          'send_to': 'AW-17044188297/LPQpCLDIoJ8YEMuPiaoD',  // ダミーラベル（実際のラベルに置き換える）
-          'value': 1.0,
-          'currency': 'JPY'
+
+      // 直接的なgtag呼び出しを削除し、代わりにdataLayerを使用
+      if (window.dataLayer) {
+        window.dataLayer.push({
+          'event': 'form_submission',
+          'form_type': 'contact',
+          'profession': profession || 'not_specified',
+          'result_type': resultType || 'not_specified',
+          'contact_method': formData.contactMethod
         });
-        console.log('📊 Google広告コンバージョントラッキング: フォーム送信完了');
+        console.log('📊 Conversion tracking via GTM dataLayer');
       }
       
       setIsSubmitted(true);
@@ -487,14 +489,7 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                       担当者から24時間以内にご連絡いたします
                     </p>
                     
-                    {/* Google広告コンバージョンページ - 非表示フレーム */}
-                    <iframe
-                      src="https://www.googleadservices.com/pagead/conversion/17044188297/?value=1.0&currency_code=JPY&label=LPQpCLDIoJ8YEMuPiaoD&guid=ON&script=0"
-                      width="1"
-                      height="1"
-                      style={{ display: 'none' }}
-                    ></iframe>
-                    
+
                     <button
                       onClick={(e) => {
                         e.preventDefault();

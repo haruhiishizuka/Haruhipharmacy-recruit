@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#1A6CBF" />
     <meta name="description" content="MediMatch - 医療従事者のためのキャリア診断ツール。あなたの価値観と強みを分析し、適性に合った職場環境を提案します。" />
+    <!-- Google Search Console 所有権確認用 -->
+    <meta name="google-site-verification" content="HHrtB8y4MNu0PEopb9nNzNrQqXsDSRTKF4t5kpIiRrw" />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
 
@@ -15,7 +17,10 @@
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'AW-17044188297');
+      gtag('config', 'AW-17044188297', {
+        'allow_enhanced_conversions': true,
+        'send_page_view': false  // GTMに任せる
+      });
     </script>
 
     <!-- ✅ フォント追加ここ！ -->
