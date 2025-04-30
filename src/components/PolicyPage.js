@@ -222,6 +222,7 @@ const PolicyPage = ({ onReturnHome }) => {
                 <li style={{ marginBottom: '8px' }}>診断ツールご利用時の入力情報</li>
                 <li style={{ marginBottom: '8px' }}>お電話やメールでのお問い合わせ</li>
                 <li style={{ marginBottom: '8px' }}>面談やカウンセリング時のヒアリング</li>
+                <li style={{ marginBottom: '8px' }}>Cookie等の技術を利用した自動取得</li>
               </ul>
             </div>
             
@@ -251,6 +252,8 @@ const PolicyPage = ({ onReturnHome }) => {
                 <li style={{ marginBottom: '8px' }}>職種、資格情報</li>
                 <li style={{ marginBottom: '8px' }}>診断ツールでの回答内容</li>
                 <li style={{ marginBottom: '8px' }}>キャリア相談内容</li>
+                <li style={{ marginBottom: '8px' }}>IPアドレス、Cookie情報、ブラウザ情報などの技術情報</li>
+                <li style={{ marginBottom: '8px' }}>当サイトでの行動履歴（閲覧ページ、クリック情報など）</li>
               </ul>
               <p style={{ marginBottom: '12px', fontSize: '16px', color: '#4B5563' }}>
                 なお、当社が取得する個人情報は、サービス提供に必要な最小限の情報に限定しています。
@@ -283,6 +286,8 @@ const PolicyPage = ({ onReturnHome }) => {
                 <li style={{ marginBottom: '8px' }}>サービスの改善や新サービスの開発</li>
                 <li style={{ marginBottom: '8px' }}>お問い合わせへの対応</li>
                 <li style={{ marginBottom: '8px' }}>各種情報のご案内（お客様の同意がある場合）</li>
+                <li style={{ marginBottom: '8px' }}>マーケティングおよび広告配信（Google広告などの第三者広告サービスを含む）</li>
+                <li style={{ marginBottom: '8px' }}>ウェブサイトの利用状況分析および改善</li>
               </ul>
             </div>
             
@@ -295,7 +300,44 @@ const PolicyPage = ({ onReturnHome }) => {
                 borderBottom: '2px solid #E5E7EB', 
                 paddingBottom: '10px' 
               }}>
-                4. 個人情報の第三者提供
+                4. Cookieと広告IDの使用について
+              </h2>
+              <p style={{ marginBottom: '12px', fontSize: '16px', color: '#4B5563' }}>
+                当社ウェブサイトでは、利用者のウェブサイト閲覧履歴や行動データを収集するためにCookieおよび類似技術を使用しています。これらのデータは以下の目的で利用されます。
+              </p>
+              <ul style={{ 
+                marginLeft: '20px', 
+                marginBottom: '15px',
+                color: '#4B5563',
+                fontSize: '16px'
+              }}>
+                <li style={{ marginBottom: '8px' }}>ウェブサイトの機能維持およびパフォーマンス向上</li>
+                <li style={{ marginBottom: '8px' }}>ユーザー体験の向上およびカスタマイズ</li>
+                <li style={{ marginBottom: '8px' }}>広告配信および効果測定</li>
+                <li style={{ marginBottom: '8px' }}>マーケティング分析およびサービス改善</li>
+              </ul>
+              <p style={{ marginBottom: '12px', fontSize: '16px', color: '#4B5563' }}>
+                当社は、Google広告やGoogle アナリティクスなどの第三者サービスを使用しており、これらのサービスもCookieを使用してデータを収集します。これらのデータは当社と当該第三者間で共有される場合があります。
+              </p>
+              <p style={{ marginBottom: '12px', fontSize: '16px', color: '#4B5563' }}>
+                ユーザーは、ブラウザの設定を変更することでCookieの使用を制限したり、拒否したりすることができます。また、以下のリンクからGoogle広告のパーソナライズをオプトアウトすることも可能です：
+                <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer" style={{ color: '#1A6CBF', textDecoration: 'underline', marginLeft: '5px' }}>Google広告設定</a>
+              </p>
+              <p style={{ marginBottom: '12px', fontSize: '16px', color: '#4B5563' }}>
+                なお、Cookieを無効にした場合、当サイトの一部の機能が正常に動作しなくなる可能性があります。
+              </p>
+            </div>
+            
+            <div style={{ marginBottom: '30px' }}>
+              <h2 style={{ 
+                fontSize: '24px', 
+                fontWeight: '700', 
+                color: '#1A6CBF', 
+                marginBottom: '20px',
+                borderBottom: '2px solid #E5E7EB', 
+                paddingBottom: '10px' 
+              }}>
+                5. 個人情報の第三者提供
               </h2>
               <p style={{ marginBottom: '12px', fontSize: '16px', color: '#4B5563' }}>
                 当社は、以下の場合を除き、お客様の同意なく個人情報を第三者に提供することはありません。
@@ -315,6 +357,9 @@ const PolicyPage = ({ onReturnHome }) => {
               <p style={{ marginBottom: '12px', fontSize: '16px', color: '#4B5563' }}>
                 転職支援サービスにおいて、お客様の情報を医療機関に提供する場合は、事前にお客様の同意を得た上で行います。
               </p>
+              <p style={{ marginBottom: '12px', fontSize: '16px', color: '#4B5563' }}>
+                当社は、広告配信およびウェブ解析のためにGoogle広告やGoogle アナリティクスなどの第三者サービスを利用しており、これらのサービスにお客様の情報（Cookie情報、IPアドレス、デバイス情報など）が提供される場合があります。ただし、これらの情報は統計的に処理され、個人を特定する目的では利用されません。
+              </p>
             </div>
             
             <div style={{ marginBottom: '30px' }}>
@@ -326,7 +371,7 @@ const PolicyPage = ({ onReturnHome }) => {
                 borderBottom: '2px solid #E5E7EB', 
                 paddingBottom: '10px' 
               }}>
-                5. 個人情報の安全管理
+                6. 個人情報の安全管理
               </h2>
               <p style={{ marginBottom: '12px', fontSize: '16px', color: '#4B5563' }}>
                 当社は、個人情報の漏洩、滅失、毀損の防止その他の個人情報の安全管理のために必要かつ適切な措置を講じます。
@@ -354,13 +399,13 @@ const PolicyPage = ({ onReturnHome }) => {
                 borderBottom: '2px solid #E5E7EB', 
                 paddingBottom: '10px' 
               }}>
-                6. 個人情報の開示・訂正・利用停止等
+                7. 個人情報の開示・訂正・利用停止等
               </h2>
               <p style={{ marginBottom: '12px', fontSize: '16px', color: '#4B5563' }}>
                 当社は、お客様ご本人から個人情報の開示・訂正・削除・利用停止等のご請求があった場合、本人確認を行った上で、適切に対応いたします。
               </p>
               <p style={{ marginBottom: '12px', fontSize: '16px', color: '#4B5563' }}>
-                ご請求につきましては、下記「8. お問い合わせ窓口」までご連絡ください。
+                ご請求につきましては、下記「9. お問い合わせ窓口」までご連絡ください。
               </p>
             </div>
             
@@ -373,7 +418,48 @@ const PolicyPage = ({ onReturnHome }) => {
                 borderBottom: '2px solid #E5E7EB', 
                 paddingBottom: '10px' 
               }}>
-                7. プライバシーポリシーの変更
+                8. ユーザーの選択肢
+              </h2>
+              <p style={{ marginBottom: '12px', fontSize: '16px', color: '#4B5563' }}>
+                当社は、ユーザーが自身の個人情報の取り扱いに関して選択肢を持てるよう、以下の方法を提供しています。
+              </p>
+              <ul style={{ 
+                marginLeft: '20px', 
+                marginBottom: '15px',
+                color: '#4B5563',
+                fontSize: '16px'
+              }}>
+                <li style={{ marginBottom: '8px' }}>
+                  <strong>Cookie設定：</strong> ほとんどのウェブブラウザでは、Cookieの受け入れを制限またはブロックすることができます。ブラウザの設定方法については、ブラウザのヘルプをご確認ください。
+                </li>
+                <li style={{ marginBottom: '8px' }}>
+                  <strong>広告のオプトアウト：</strong> Google広告では、ユーザーが興味・関心に基づく広告をオプトアウトすることができます。
+                  <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer" style={{ color: '#1A6CBF', textDecoration: 'underline', marginLeft: '5px' }}>Google広告設定</a>
+                </li>
+                <li style={{ marginBottom: '8px' }}>
+                  <strong>Google アナリティクスのオプトアウト：</strong> Google アナリティクスによるデータ収集を無効にするには、
+                  <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener noreferrer" style={{ color: '#1A6CBF', textDecoration: 'underline', marginLeft: '5px' }}>Google アナリティクス オプトアウト アドオン</a>
+                  をインストールしてください。
+                </li>
+                <li style={{ marginBottom: '8px' }}>
+                  <strong>メールマーケティング：</strong> 当社からのメールマガジンなどについては、各メール内に記載されているオプトアウト手順に従って配信停止を行うことができます。
+                </li>
+              </ul>
+              <p style={{ marginBottom: '12px', fontSize: '16px', color: '#4B5563' }}>
+                これらの設定を変更しても、引き続き当サイトを利用することは可能ですが、一部の機能が制限される場合があります。
+              </p>
+            </div>
+            
+            <div style={{ marginBottom: '30px' }}>
+              <h2 style={{ 
+                fontSize: '24px', 
+                fontWeight: '700', 
+                color: '#1A6CBF', 
+                marginBottom: '20px',
+                borderBottom: '2px solid #E5E7EB', 
+                paddingBottom: '10px' 
+              }}>
+                9. プライバシーポリシーの変更
               </h2>
               <p style={{ marginBottom: '12px', fontSize: '16px', color: '#4B5563' }}>
                 当社は、法令の変更や事業内容の変更等に伴い、本プライバシーポリシーを変更することがあります。変更にあたっては、変更後のプライバシーポリシーの施行時期及び内容を当社ウェブサイト上で掲示することにより、お客様に告知します。
@@ -389,7 +475,7 @@ const PolicyPage = ({ onReturnHome }) => {
                 borderBottom: '2px solid #E5E7EB', 
                 paddingBottom: '10px' 
               }}>
-                8. お問い合わせ窓口
+                10. お問い合わせ窓口
               </h2>
               <p style={{ marginBottom: '12px', fontSize: '16px', color: '#4B5563' }}>
                 個人情報の取扱いに関するお問い合わせは、下記までご連絡ください。
@@ -411,7 +497,7 @@ const PolicyPage = ({ onReturnHome }) => {
             
             <div style={{ textAlign: 'right', marginTop: '40px', fontSize: '14px', color: '#718096' }}>
               制定日：2023年9月1日<br />
-              最終改定日：2024年3月15日
+              最終改定日：2025年4月30日
             </div>
           </motion.div>
         )}
@@ -671,7 +757,7 @@ const PolicyPage = ({ onReturnHome }) => {
             
             <div style={{ textAlign: 'right', marginTop: '40px', fontSize: '14px', color: '#718096' }}>
               制定日：2023年9月1日<br />
-              最終改定日：2024年3月15日
+              最終改定日：2025年4月30日
             </div>
           </motion.div>
         )}
@@ -913,38 +999,6 @@ const PolicyPage = ({ onReturnHome }) => {
               }}>
                 <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                   <tbody>
-                    <tr style={{ borderBottom: '1px solid #E2E8F0' }}>
-                      <th style={{ padding: '12px 10px', textAlign: 'left', width: '30%', fontSize: '15px', color: '#1A6CBF', verticalAlign: 'top' }}>会社名</th>
-                      <td style={{ padding: '12px 10px', fontSize: '15px', color: '#4A5568' }}>株式会社はるひメディカルサービス</td>
-                    </tr>
-                    <tr style={{ borderBottom: '1px solid #E2E8F0' }}>
-                      <th style={{ padding: '12px 10px', textAlign: 'left', width: '30%', fontSize: '15px', color: '#1A6CBF', verticalAlign: 'top' }}>会社住所</th>
-                      <td style={{ padding: '12px 10px', fontSize: '15px', color: '#4A5568' }}>〒482-0025 愛知県岩倉市大地新町3丁目45番地2</td>
-                    </tr>
-                    <tr style={{ borderBottom: '1px solid #E2E8F0' }}>
-                      <th style={{ padding: '12px 10px', textAlign: 'left', width: '30%', fontSize: '15px', color: '#1A6CBF', verticalAlign: 'top' }}>会社電話番号</th>
-                      <td style={{ padding: '12px 10px', fontSize: '15px', color: '#4A5568' }}>0587-50-7535</td>
-                    </tr>
-                    <tr style={{ borderBottom: '1px solid #E2E8F0' }}>
-                      <th style={{ padding: '12px 10px', textAlign: 'left', width: '30%', fontSize: '15px', color: '#1A6CBF', verticalAlign: 'top' }}>FAX番号</th>
-                      <td style={{ padding: '12px 10px', fontSize: '15px', color: '#4A5568' }}>0587-50-7536</td>
-                    </tr>
-                    <tr style={{ borderBottom: '1px solid #E2E8F0' }}>
-                      <th style={{ padding: '12px 10px', textAlign: 'left', width: '30%', fontSize: '15px', color: '#1A6CBF', verticalAlign: 'top' }}>代表者</th>
-                      <td style={{ padding: '12px 10px', fontSize: '15px', color: '#4A5568' }}>代表取締役 平島 禎之（医業経営コンサルタント 8183号）</td>
-                    </tr>
-                    <tr style={{ borderBottom: '1px solid #E2E8F0' }}>
-                      <th style={{ padding: '12px 10px', textAlign: 'left', width: '30%', fontSize: '15px', color: '#1A6CBF', verticalAlign: 'top' }}>担当者メールアドレス</th>
-                      <td style={{ padding: '12px 10px', fontSize: '15px', color: '#4A5568' }}>yoshiyuki.hirashima@haruhi-medical.com</td>
-                    </tr>
-                    <tr style={{ borderBottom: '1px solid #E2E8F0' }}>
-                      <th style={{ padding: '12px 10px', textAlign: 'left', width: '30%', fontSize: '15px', color: '#1A6CBF', verticalAlign: 'top' }}>営業時間</th>
-                      <td style={{ padding: '12px 10px', fontSize: '15px', color: '#4A5568' }}>平日 9:00~18:00 / 土日祝 要予約</td>
-                    </tr>
-                    <tr style={{ borderBottom: '1px solid #E2E8F0' }}>
-                      <th style={{ padding: '12px 10px', textAlign: 'left', width: '30%', fontSize: '15px', color: '#1A6CBF', verticalAlign: 'top' }}>設立年月</th>
-                      <td style={{ padding: '12px 10px', fontSize: '15px', color: '#4A5568' }}>2021年9月</td>
-                    </tr>
                     <tr style={{ borderBottom: '1px solid #E2E8F0' }}>
                       <th style={{ padding: '12px 10px', textAlign: 'left', width: '30%', fontSize: '15px', color: '#1A6CBF', verticalAlign: 'top' }}>業務内容</th>
                       <td style={{ padding: '12px 10px', fontSize: '15px', color: '#4A5568' }}>
