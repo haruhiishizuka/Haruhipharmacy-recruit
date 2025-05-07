@@ -148,23 +148,16 @@ export const trackContactSubmit = (resultType, profession, contactMethod) => {
     contact_method: contactMethod
   });
   
-  // Google広告コンバージョン用にecommerce形式でもイベントを追加
+  // Google広告コンバージョン用にdataLayerにイベントを追加
   if (window.dataLayer) {
     window.dataLayer.push({
       'event': 'conversion',
-      'conversionId': 'medimatch_contact',
+      'send_to': 'AW-17044188297/ラベル値',  // ここに実際のコンバージョンラベルを設定
       'transaction_id': Date.now().toString(),
       'value': 1.0,
-      'currency': 'JPY',
-      'items': [{
-        'id': resultType,
-        'name': 'キャリア相談',
-        'category': profession || '医療職',
-        'quantity': 1
-      }]
+      'currency': 'JPY'
     });
   }
-};
 
 /**
  * 共有イベントを記録

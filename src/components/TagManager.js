@@ -74,7 +74,28 @@ function injectGTMScript() {
     if (DEBUG_MODE) {
       console.log('🏷️ GTMスクリプト読み込み完了');
     }
+    
+    // Google Ads設定
+    setupGoogleAdsConversion();
   };
+  
+  /**
+   * Google Ads コンバージョントラッキングのための設定
+   */
+  function setupGoogleAdsConversion() {
+    if (typeof window === 'undefined') return;
+    
+    // Googleタグの初期化
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { window.dataLayer.push(arguments); }
+    
+    // Google Adsのコンバージョンリンカー設定
+    gtag('config', GOOGLE_ADS_ID);
+    
+    if (DEBUG_MODE) {
+      console.log('🏷️ Google Ads コンバージョン設定完了');
+    }
+  }
   
   // DOMに追加
   document.head.appendChild(script);
@@ -118,10 +139,13 @@ function sendPageView(path, title) {
   
   const pageInfo = {
     event: 'page_view',
-    page_path: path,
-    page_title: title || document.title,
-    page_location: window.location.href,
-    send_to: GOOGLE_ADS_ID // 追加: Google広告IDを指定
+    // analytics.jsと同じ形式に統一
+    page: {
+      path: path,
+      title: title || document.title,
+      location: window.location.href
+    },
+    send_to: GOOGLE_ADS_ID
   };
   
   window.dataLayer.push(pageInfo);

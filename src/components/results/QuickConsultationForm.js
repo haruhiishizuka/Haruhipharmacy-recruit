@@ -162,8 +162,9 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
       // コンバージョンイベントのトラッキング
       trackContactSubmit(resultType, profession, formData.contactMethod);
 
-      // 直接的なgtag呼び出しを削除し、代わりにdataLayerを使用
+      // Google広告コンバージョン用のイベント送信
       if (window.dataLayer) {
+        // フォーム送信イベント（カスタムイベント）
         window.dataLayer.push({
           'event': 'form_submission',
           'form_type': 'contact',
@@ -171,7 +172,27 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
           'result_type': resultType || 'not_specified',
           'contact_method': formData.contactMethod
         });
+        
+        // Google広告コンバージョン用イベント
+        window.dataLayer.push({
+          'event': 'conversion',
+          'send_to': 'AW-17044188297/ラベル値',  // ここに実際のコンバージョンラベルを設定
+          'value': 1.0,
+          'currency': 'JPY',
+          'transaction_id': Date.now().toString()
+        });
+        
         console.log('📊 Conversion tracking via GTM dataLayer');
+      }
+
+      // バックアップとしてgtag直接呼び出しも実装
+      if (window.gtag) {
+        window.gtag('event', 'conversion', {
+          'send_to': 'AW-17044188297/ラベル値',  // ここに実際のコンバージョンラベルを設定
+          'value': 1.0,
+          'currency': 'JPY',
+          'transaction_id': Date.now().toString()
+        });
       }
       
       setIsSubmitted(true);
