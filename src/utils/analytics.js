@@ -158,6 +158,7 @@ export const trackContactSubmit = (resultType, profession, contactMethod) => {
       'currency': 'JPY'
     });
   }
+};
 
 /**
  * 共有イベントを記録
