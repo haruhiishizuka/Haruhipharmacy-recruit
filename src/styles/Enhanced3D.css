@@ -1,0 +1,84 @@
+/* 3D対応の追加スタイル */
+
+/* フォールバック背景 */
+.fallback-gradient {
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 40% 80%, rgba(236, 72, 153, 0.1) 0%, transparent 50%);
+  animation: gradientShift 10s ease-in-out infinite;
+  z-index: 1;
+}
+
+/* 携帯用グラデーション背景 */
+.mobile-gradient-background {
+  position: absolute;
+  inset: 0;
+  background: 
+    linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%),
+    radial-gradient(circle at 20% 50%, rgba(0, 229, 255, 0.3) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(255, 77, 255, 0.3) 0%, transparent 50%);
+  animation: gradientShift 8s ease-in-out infinite;
+  z-index: 1;
+}
+
+@keyframes gradientShift {
+  0%, 100% { 
+    filter: hue-rotate(0deg) brightness(1); 
+    opacity: 0.8;
+  }
+  50% { 
+    filter: hue-rotate(20deg) brightness(1.1); 
+    opacity: 1;
+  }
+}
+
+/* 3D Canvas の調整 */
+.enhanced-3d-canvas {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 0 !important;
+  pointer-events: none !important;
+}
+
+/* アクセシビリティ対応 */
+@media (prefers-reduced-motion: reduce) {
+  .mobile-gradient-background,
+  .fallback-gradient {
+    animation: none !important;
+  }
+}
+
+/* モバイル最適化 */
+@media (max-width: 768px) {
+  .mobile-gradient-background {
+    background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+    animation-duration: 12s; /* モバイルではゆっくり */
+  }
+}
+
+/* 超小型携帯対応 */
+@media (max-width: 320px) {
+  .mobile-gradient-background {
+    background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 100%);
+    animation: none; /* 超小型では静的 */
+  }
+}
+
+/* 横向き携帯対応 */
+@media (max-height: 500px) and (orientation: landscape) {
+  .mobile-gradient-background {
+    background: linear-gradient(90deg, #0c0c0c 0%, #1a1a2e 100%);
+  }
+}
+
+/* ダークモード対応 */
+@media (prefers-color-scheme: dark) {
+  .mobile-gradient-background {
+    background: 
+      linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 100%),
+      radial-gradient(circle at 20% 50%, rgba(0, 229, 255, 0.2) 0%, transparent 50%);
+  }
+}

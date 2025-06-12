@@ -1,0 +1,232 @@
+/* ネオンテーマ CSS */
+
+/* フルスクリーン背景 */
+.neon-hero {
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+}
+
+/* 3D Canvas */
+.neon-hero canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+/* 前景オーバーレイ */
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  z-index: 10;
+  padding: 20px;
+}
+
+/* ネオンタイトル */
+.neon-title {
+  font-size: clamp(2.5rem, 8vw, 4rem);
+  font-weight: 800;
+  color: #ffffff;
+  text-align: center;
+  margin: 0;
+  text-shadow: 
+    0 0 5px #fff,
+    0 0 10px #fff,
+    0 0 15px #00e5ff,
+    0 0 20px #00e5ff,
+    0 0 35px #00e5ff,
+    0 0 40px #00e5ff;
+  animation: neonGlow 2s ease-in-out infinite alternate;
+}
+
+/* ネオンボタン */
+.neon-btn {
+  background: transparent;
+  color: #00e5ff;
+  border: 2px solid #00e5ff;
+  border-radius: 50px;
+  padding: 18px 36px;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 
+    0 0 5px #00e5ff,
+    0 0 20px #00e5ff,
+    inset 0 0 20px rgba(0, 229, 255, 0.1);
+}
+
+.neon-btn:hover {
+  background: rgba(0, 229, 255, 0.1);
+  box-shadow: 
+    0 0 10px #00e5ff,
+    0 0 30px #00e5ff,
+    0 0 50px #00e5ff,
+    inset 0 0 30px rgba(0, 229, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.neon-btn:active {
+  transform: translateY(0);
+}
+
+/* サブタイトル */
+.neon-subtitle {
+  font-size: clamp(1.1rem, 4vw, 1.4rem);
+  color: rgba(255, 255, 255, 0.8);
+  text-align: center;
+  margin: 0;
+  line-height: 1.6;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* 旧カードスタイルの無効化 */
+.welcome-card {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+/* アニメーション */
+@keyframes neonGlow {
+  from {
+    text-shadow: 
+      0 0 5px #fff,
+      0 0 10px #fff,
+      0 0 15px #00e5ff,
+      0 0 20px #00e5ff,
+      0 0 35px #00e5ff,
+      0 0 40px #00e5ff;
+  }
+  to {
+    text-shadow: 
+      0 0 10px #fff,
+      0 0 20px #fff,
+      0 0 30px #00e5ff,
+      0 0 40px #00e5ff,
+      0 0 70px #00e5ff,
+      0 0 80px #00e5ff;
+  }
+}
+
+/* オーブ */
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(1px);
+  opacity: 0.7;
+}
+
+.orb--main {
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, #00e5ff 0%, transparent 70%);
+  top: 20%;
+  left: 10%;
+}
+
+.orb--pink {
+  width: 150px;
+  height: 150px;
+  background: radial-gradient(circle, #ff4dff 0%, transparent 70%);
+  top: 60%;
+  right: 15%;
+}
+
+.orb--cyan {
+  width: 120px;
+  height: 120px;
+  background: radial-gradient(circle, #00e5ff 0%, transparent 70%);
+  bottom: 20%;
+  left: 20%;
+}
+
+/* ネオンパス */
+.neon-path {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 200px;
+  z-index: 1;
+}
+
+.neon-path path {
+  fill: none;
+  stroke: #ff4dff;
+  stroke-width: 2;
+  filter: drop-shadow(0 0 10px #ff4dff);
+  animation: pathFlow 3s ease-in-out infinite;
+}
+
+@keyframes pathFlow {
+  0%, 100% { stroke-dasharray: 0, 1000; }
+  50% { stroke-dasharray: 1000, 0; }
+}
+
+/* モバイル対応 */
+@media (max-width: 768px) {
+  .neon-hero {
+    height: 100dvh; /* Dynamic viewport height */
+  }
+  
+  .overlay {
+    gap: 30px;
+    padding: 40px 20px;
+  }
+  
+  .neon-title {
+    font-size: clamp(2rem, 8vw, 2.5rem);
+  }
+  
+  .neon-btn {
+    padding: 16px 32px;
+    font-size: 16px;
+  }
+  
+  .orb {
+    opacity: 0.5;
+  }
+  
+  .orb--main {
+    width: 150px;
+    height: 150px;
+  }
+  
+  .orb--pink {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .orb--cyan {
+    width: 80px;
+    height: 80px;
+  }
+}
+
+/* アクセシビリティ */
+@media (prefers-reduced-motion: reduce) {
+  .neon-title {
+    animation: none;
+  }
+  
+  .neon-path path {
+    animation: none;
+  }
+  
+  .orb {
+    animation: none;
+  }
+}

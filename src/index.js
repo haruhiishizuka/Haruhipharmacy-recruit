@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
+import './styles/NeonTheme.css';    // ← 追加（必須）
+import './styles/Enhanced3D.css';   // ← 追加（必須）
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
