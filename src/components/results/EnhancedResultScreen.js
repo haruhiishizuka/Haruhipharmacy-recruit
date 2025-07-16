@@ -4,9 +4,11 @@ import { useNavigate } from 'react-router-dom'; // useNavigateをインポート
 import ResultSummary from './ResultSummary';
 import QuickConsultationForm from './QuickConsultationForm';
 import { trackContactStart, trackRestart, trackShare } from '../../utils/analytics';
+import { getTypeData, getTypeCodeExplanation } from '../../data/typeDescriptions';
 import { Chart as ChartJS, RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend } from 'chart.js';
 import { Radar } from 'react-chartjs-2';
-import AnimalIcon from '../AnimalIcon';   // ★←追加
+import AnimalIcon from '../AnimalIcon';
+import GlobalNavigation from '../common/GlobalNavigation';
 
 // Chart.jsの設定
 ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend);
@@ -34,13 +36,13 @@ const TypeRadarChart = ({ axisScores }) => {
           (safeScores.human + 1) * 50,
           (safeScores.analytical + 1) * 50
         ],
-        backgroundColor: 'rgba(26, 108, 191, 0.2)',
-        borderColor: 'rgba(26, 108, 191, 1)',
+        backgroundColor: 'rgba(103, 80, 50, 0.2)',
+        borderColor: 'rgba(103, 80, 50, 1)',
         borderWidth: 2,
-        pointBackgroundColor: 'rgba(26, 108, 191, 1)',
+        pointBackgroundColor: 'rgba(103, 80, 50, 1)',
         pointBorderColor: '#fff',
         pointHoverBackgroundColor: '#fff',
-        pointHoverBorderColor: 'rgba(26, 108, 191, 1)'
+        pointHoverBorderColor: 'rgba(103, 80, 50, 1)'
       }
     ]
   };
@@ -63,7 +65,7 @@ const TypeRadarChart = ({ axisScores }) => {
             size: 14,
             weight: 'bold'
           },
-          color: '#4A5568'
+          color: '#675032'
         },
         ticks: {
           display: false
@@ -138,29 +140,28 @@ const ShareSection = ({ resultType, profession }) => {
   
   return (
     <div>
-      <h3 style={{ fontSize: '20px', fontWeight: '600', marginBottom: '20px', color: '#2D3748' }}>
+      <h3 className="heading_h4" style={{ marginBottom: 'var(--spacing-lg)', color: '#675032' }}>
         診断結果をシェアする
       </h3>
       
-      <div style={{
-        backgroundColor: '#F7FAFC',
-        borderRadius: '12px',
-        padding: '20px',
-        marginBottom: '24px',
-        border: '1px solid #E2E8F0'
+      <div className="card" style={{
+        backgroundColor: 'var(--neutral-primary)',
+        borderRadius: 'var(--radius-large)',
+        padding: 'var(--spacing-lg)',
+        marginBottom: 'var(--spacing-lg)',
+        border: '1px solid var(--neutral-200)'
       }}>
-        <p style={{ marginBottom: '16px', fontSize: '15px', color: '#4A5568' }}>
+        <p className="paragraph" style={{ marginBottom: 'var(--spacing-md)', color: '#675032' }}>
           あなたの診断結果を友達や同僚とシェアして、お互いのタイプを比較してみましょう！
         </p>
         
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+        <div className="button-group" style={{ flexDirection: 'column', gap: 'var(--spacing-sm)' }}>
           <button
             onClick={() => handleShare('native')}
+            className="button"
             style={{
-              backgroundColor: '#4299E1',
+              backgroundColor: '#675032',
               color: 'white',
-              padding: '12px 24px',
-              borderRadius: '8px',
               border: 'none',
               fontSize: '16px',
               fontWeight: '600',
@@ -185,7 +186,7 @@ const ShareSection = ({ resultType, profession }) => {
             onClick={handleCopyLink}
             style={{
               backgroundColor: 'white',
-              color: '#4A5568',
+              color: '#675032',
               padding: '12px 24px',
               borderRadius: '8px',
               border: '1px solid #CBD5E0',
@@ -293,16 +294,16 @@ const ShareSection = ({ resultType, profession }) => {
         alignItems: 'flex-start',
         gap: '12px'
       }}>
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3182CE" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#675032" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <circle cx="12" cy="12" r="10"></circle>
           <line x1="12" y1="16" x2="12" y2="12"></line>
           <line x1="12" y1="8" x2="12.01" y2="8"></line>
         </svg>
         <div>
-          <p style={{ margin: '0 0 8px 0', fontSize: '14px', color: '#2C5282', fontWeight: '600' }}>
+          <p style={{ margin: '0 0 8px 0', fontSize: '14px', color: '#675032', fontWeight: '600' }}>
             周りと比較することで新たな気づきが！
           </p>
-          <p style={{ margin: 0, fontSize: '14px', color: '#2C5282' }}>
+          <p style={{ margin: 0, fontSize: '14px', color: '#675032' }}>
             異なるタイプの医療従事者が協力することで、より良いチーム医療が実現できます。周りの人とタイプを共有して、お互いの強みを活かしましょう。
           </p>
         </div>
@@ -312,8 +313,8 @@ const ShareSection = ({ resultType, profession }) => {
 };
 
 // メインの結果画面コンポーネント
-const EnhancedResultScreen = ({ results, profession, postalCode, answers, onRestart }) => {
-  const [activeTab, setActiveTab] = useState('summary');
+const EnhancedResultScreen = ({ results, profession, postalCode, answers, onRestart, onReturnHome, onNavigateToPage, onConsultation }) => {
+  const [activeTab, setActiveTab] = useState('inspiration');
   const [showContactForm, setShowContactForm] = useState(false);
   
   // useNavigateの使用
@@ -462,29 +463,19 @@ const EnhancedResultScreen = ({ results, profession, postalCode, answers, onRest
   
   // 職種ごとの色設定
   const getProfessionColor = () => {
-    switch (profession) {
-      case '看護師':
-        return '#3182CE'; // 青系
-      case '薬剤師':
-        return '#38A169'; // 緑系
-      case 'リハビリ系':
-        return '#DD6B20'; // オレンジ系
-      case 'その他医療職':
-        return '#805AD5'; // 紫系
-      default:
-        return '#1A6CBF'; // デフォルト青
-    }
+    // 全職種でブラウン系に統一
+    return '#675032'; // Webflowブラウン
   };
 
   const professionColor = getProfessionColor();
 
   // タブ定義
   const tabs = [
+    { id: 'inspiration', label: 'ヒント' },
     { id: 'summary', label: '特性と強み' },
     { id: 'growth', label: '成長と発展' },
     { id: 'interpersonal', label: '対人関係' },
     { id: 'environment', label: '職場環境' },
-    { id: 'inspiration', label: 'インスピレーション' },
     { id: 'share', label: 'シェアする' }
   ];
 
@@ -497,7 +488,11 @@ const EnhancedResultScreen = ({ results, profession, postalCode, answers, onRest
   const handleOpenContactForm = () => {
     // コンタクト開始イベントのトラッキング
     trackContactStart(results.title || typeCode, profession);
-    setShowContactForm(true);
+    if (typeof onConsultation === 'function') {
+      onConsultation();
+    } else {
+      setShowContactForm(true);
+    }
   };
 
   // 問い合わせフォームを閉じる
@@ -524,25 +519,25 @@ const EnhancedResultScreen = ({ results, profession, postalCode, answers, onRest
 
   return (
     <div style={{ 
-      fontFamily: `'Inter', 'Noto Sans JP', sans-serif`, 
-      backgroundImage: `url(${process.env.PUBLIC_URL}/images/patterns/medical_pattern_light.png)`,
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-      backgroundRepeat: 'no-repeat',
-      backgroundColor: '#EDF2F7',
       minHeight: '100vh',
-      paddingBottom: '60px'
+      width: '100%'
     }}>
+      {/* Navigation */}
+      <GlobalNavigation 
+        onReturnHome={onReturnHome}
+        onNavigateToPage={onNavigateToPage}
+        onConsultation={onConsultation}
+        onStartQuiz={handleRestartClick}
+        activeRoute="/result"
+      />
       {/* ヒーローセクション */}
-      <div className="header-section" style={{
-        padding: '40px 20px 80px',
-        textAlign: 'center',
-        color: '#2D3748',
-        position: 'relative',
-        backgroundColor: 'rgba(237, 242, 247, 0.7)',
-        backdropFilter: 'blur(2px)',
-      }}>
-        {/* 動物アイコン */}
+      <section className="section is-secondary">
+        <div className="container">
+          <div className="header is-align-center">
+            <div className="eyebrow">診断ステップ 3</div>
+            <h1 className="heading_h2">診断結果</h1>
+            
+            {/* 動物アイコン */}
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -590,27 +585,29 @@ const EnhancedResultScreen = ({ results, profession, postalCode, answers, onRest
             <span>診断結果</span>
           </div>
           
-          <h2 className="result-title" style={{ 
-            fontSize: '28px', 
-            fontWeight: '700', 
-            marginBottom: '20px',
-            color: 'white',
-            maxWidth: '800px',
-            margin: '0 auto 20px',
-            lineHeight: '1.3',
-            padding: '0 10px'
+          <h2 className="heading_h2" style={{ 
+            marginBottom: 'var(--spacing-lg)',
+            color: '#675032',
+            textAlign: 'center'
           }}>
-            あなたは<span style={{ color: '#FFD700' }}>『{animalName}型』</span>：{catchPhrase}
+            あなたは<span style={{ color: '#ffffff', backgroundColor: '#675032', padding: '0.2em 0.4em', borderRadius: 'var(--radius-small)' }}>『{animalName}型』</span>
           </h2>
           
-          <p className="result-description" style={{ 
-            fontSize: '18px', 
-            fontWeight: '400', 
-            lineHeight: '1.6', 
-            maxWidth: '640px', 
-            margin: '0 auto 30px',
-            color: 'rgba(255, 255, 255, 0.9)',
-            padding: '0 20px'
+          <h3 className="heading_h3" style={{ 
+            marginBottom: 'var(--spacing-md)',
+            color: '#675032',
+            textAlign: 'center',
+            fontWeight: '500'
+          }}>
+            {catchPhrase}
+          </h3>
+          
+          <p className="paragraph_large" style={{ 
+            maxWidth: '600px', 
+            margin: '0 auto var(--spacing-lg)',
+            color: '#675032',
+            textAlign: 'center',
+            opacity: 0.8
           }}>
             {oneLiner}
           </p>
@@ -618,31 +615,34 @@ const EnhancedResultScreen = ({ results, profession, postalCode, answers, onRest
           {/* CTAボタン - 相談ボタン */}
           <motion.button
             onClick={handleOpenContactForm}
-            whileHover={{ scale: 1.05, boxShadow: '0 10px 25px rgba(0, 0, 0, 0.2)' }}
+            whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
+            className="button on-accent-primary"
             style={{
-              backgroundColor: 'white',
-              color: professionColor,
+              backgroundColor: '#675032',
+              color: '#ffffff',
               border: 'none',
-              borderRadius: '50px',
-              padding: '16px 32px',
-              fontSize: '18px',
-              fontWeight: '700',
-              marginBottom: '80px',
+              borderRadius: 'var(--radius-medium)',
+              padding: 'var(--spacing-md) var(--spacing-lg)',
+              fontSize: 'var(--text-size-medium)',
+              fontWeight: '600',
+              marginBottom: 'var(--spacing-xxl)',
               cursor: 'pointer',
-              boxShadow: '0 8px 20px rgba(0, 0, 0, 0.15)',
+              boxShadow: 'var(--shadow-md)',
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '10px'
+              gap: 'var(--spacing-xs)'
             }}
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
             </svg>
             無料キャリア相談をする
           </motion.button>
         </motion.div>
-      </div>
+          </div>
+        </div>
+      </section>
 
       {/* メインコンテンツエリア */}
       <motion.div
@@ -690,7 +690,7 @@ const EnhancedResultScreen = ({ results, profession, postalCode, answers, onRest
               display: 'flex',
               gap: '16px',
               fontSize: '14px',
-              color: '#4A5568'
+              color: '#675032'
             }}>
               <div>S/G: {Math.round((results.axisScores.specialist + 1) * 50)}%</div>
               <div>I/C: {Math.round((results.axisScores.innovative + 1) * 50)}%</div>
@@ -802,16 +802,17 @@ const EnhancedResultScreen = ({ results, profession, postalCode, answers, onRest
           
           <button
             onClick={handleRestartClick}
+            className="button is-secondary"
             style={{
               backgroundColor: 'transparent',
-              color: professionColor,
-              border: `2px solid ${professionColor}`,
-              borderRadius: '32px',
-              padding: '12px 32px',
-              fontSize: '16px',
+              color: '#675032',
+              border: '2px solid #675032',
+              borderRadius: 'var(--radius-medium)',
+              padding: 'var(--spacing-sm) var(--spacing-lg)',
+              fontSize: 'var(--text-size-medium)',
               fontWeight: '600',
               cursor: 'pointer',
-              transition: 'all 0.3s ease',
+              transition: 'all var(--transition-fast)',
               width: '100%',
               maxWidth: '400px'
             }}
@@ -822,20 +823,23 @@ const EnhancedResultScreen = ({ results, profession, postalCode, answers, onRest
       </motion.div>
 
       {/* フッター - 修正済みリンク */}
-      <footer style={{ textAlign: 'center', marginTop: '40px', color: 'white', fontSize: '13px', paddingBottom: '40px', lineHeight: '1.8' }}>
-        <p>MediMatchは看護師・薬剤師・リハビリ系（PT/OT/ST）などのためのキャリア診断</p>
-        <p>© 2025 株式会社はるひメディカルサービス. All rights reserved.</p>
-        <a 
-          href="#" 
-          onClick={(e) => {
-            e.preventDefault();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            navigate('/policy');
-          }}
-          style={{ color: 'white', textDecoration: 'underline', cursor: 'pointer' }}
-        >
-          プライバシーポリシー・利用規約・お問い合わせ
-        </a>
+      <footer className="section is-secondary" style={{ textAlign: 'center', paddingTop: 'var(--spacing-xl)' }}>
+        <div className="container">
+          <p className="paragraph_small" style={{ color: '#675032', marginBottom: 'var(--spacing-sm)' }}>MediMatchは看護師・薬剤師・リハビリ系（PT/OT/ST）などのためのキャリア診断</p>
+          <p className="paragraph_small" style={{ color: '#675032' }}>© 2021 MediMatch. All rights reserved.</p>
+          <a 
+            href="#" 
+            onClick={(e) => {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+              navigate('/policy');
+            }}
+            className="text-link"
+            style={{ color: '#675032', marginTop: 'var(--spacing-sm)', display: 'inline-block' }}
+          >
+            プライバシーポリシー・利用規約・お問い合わせ
+          </a>
+        </div>
       </footer>
 
       {/* 追従ボタン */}

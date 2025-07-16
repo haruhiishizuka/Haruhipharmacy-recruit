@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import GlobalNavigation from '../common/GlobalNavigation';
 
-const QuizScreen = ({ questions, onComplete }) => {
-  const QUESTIONS_PER_PAGE = 3;
+const QuizScreen = ({ questions, onComplete, onReturnHome, onNavigateToPage, onConsultation }) => {
+  const QUESTIONS_PER_PAGE = 6;
   const [currentPage, setCurrentPage] = useState(0);
   const [answers, setAnswers] = useState({});
   const [isNextEnabled, setIsNextEnabled] = useState(false);
-  const [direction, setDirection] = useState(1); // 1:前進, -1:後退
+  const [direction, setDirection] = useState(1);
   
-  // スクロール用のref追加
   const quizContentRef = useRef(null);
   const headerRef = useRef(null);
   
@@ -20,9 +20,7 @@ const QuizScreen = ({ questions, onComplete }) => {
 
   // 質問ごとのラベル定義
   const getQuestionLabels = (questionId) => {
-    // 質問IDに基づいて適切なラベルを返す
     const labelsMap = {
-      // 基本質問
       1: { negative: "関心がない", positive: "関心がある" },
       2: { negative: "好きではない", positive: "好き" },
       3: { negative: "得意ではない", positive: "得意である" },
@@ -38,17 +36,14 @@ const QuizScreen = ({ questions, onComplete }) => {
       13: { negative: "あまり考えない", positive: "貢献したいと考える" },
       14: { negative: "あまり重視していない", positive: "重視している" },
       15: { negative: "キャリアアップを重視する", positive: "安定を重視する" },
-      // 看護師向け追加質問
       16: { negative: "興味がない", positive: "興味がある" },
       17: { negative: "あまり関心がない", positive: "関心がある" },
       18: { negative: "あまりやりがいを感じない", positive: "やりがいを感じる" },
     };
     
-    // 質問IDに対応するラベルがない場合はデフォルト値を返す
     return labelsMap[questionId] || { negative: "反対する", positive: "賛成する" };
   };
 
-  // 回答チェックのみを行う - スクロールなし
   useEffect(() => {
     const allAnswered = currentQuestions.every(
       (q) => answers[q.id] !== undefined
@@ -61,85 +56,53 @@ const QuizScreen = ({ questions, onComplete }) => {
       ...prev,
       [questionId]: value,
     }));
-    // 回答時にはスクロールしない
   };
 
-  // 改善したスクロール処理関数
   const scrollToQuizTop = () => {
-    // 特定の要素へのスクロール - headerRef の下部にスクロール
-    if (headerRef.current) {
-      const headerHeight = headerRef.current.offsetHeight;
-      window.scrollTo({
-        top: 0,
-        behavior: 'auto' // smooth より auto の方が確実
-      });
-    } else {
-      // フォールバックとして複数のスクロール方法を組み合わせる
-      window.scrollTo(0, 0);
-      document.body.scrollTop = 0; // Safari用
-      document.documentElement.scrollTop = 0; // Chrome, Firefox, IE, Opera用
-    }
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
   };
 
-  // 明示的にスクロール処理を含むページ遷移関数
-  // QuizScreen.js - handleNext関数
   const handleNext = () => {
     if (!isNextEnabled) return;
     setDirection(1);
-  
+
     if (currentPage < totalPages - 1) {
-      // ページ遷移前にスクロール処理を実行 - behavior: 'smooth'に変更
       window.scrollTo({ top: 0, behavior: 'smooth' });
-    
-      // スクロール後にページを変更 - 遅延時間を調整
       setTimeout(() => {
         setCurrentPage((prev) => prev + 1);
-      }, 300); // より確実にスクロールが完了する時間に延長
+      }, 300);
     } else {
-      // 結果画面へ遷移する前にスクロール - behavior: 'smooth'に変更
       window.scrollTo({ top: 0, behavior: 'smooth' });
-    
-      // スクロール開始後に結果画面に遷移 - 遅延時間を調整
       setTimeout(() => {
         const answerArray = questions.map((q) => answers[q.id]);
         if (typeof onComplete === 'function') {
           onComplete(answerArray);
         }
-      }, 300); // より確実にスクロールが完了する時間に延長
-    }
-  };
-  
-  
-  const handlePrevious = () => {
-    if (currentPage > 0) {
-      setDirection(-1);
-      
-      // アニメーションフレームを使ってスクロール処理
-      requestAnimationFrame(() => {
-        // 先にスクロール処理を実行
-        scrollToQuizTop();
-        
-        // 少し待ってからページ遷移処理
-        setTimeout(() => {
-          setCurrentPage((prev) => prev - 1);
-          // ページ変更後、念のため再度スクロール
-          requestAnimationFrame(scrollToQuizTop);
-        }, 100);
-      });
+      }, 300);
     }
   };
 
-  // コンポーネントマウント時に一度スクロール
+  const handlePrevious = () => {
+    if (currentPage > 0) {
+      setDirection(-1);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setTimeout(() => {
+        setCurrentPage((prev) => prev - 1);
+      }, 100);
+    }
+  };
+
   useEffect(() => {
     scrollToQuizTop();
   }, []);
 
-  // ページ変更時にもスクロール
   useEffect(() => {
     scrollToQuizTop();
   }, [currentPage]);
 
-  // ページ遷移アニメーションのバリアント
   const pageVariants = {
     initial: (direction) => ({
       x: direction > 0 ? 300 : -300,
@@ -164,231 +127,227 @@ const QuizScreen = ({ questions, onComplete }) => {
   };
 
   return (
-    <div
-      style={{
-        minHeight: '100vh',
-        width: '100%',
-        maxWidth: '100%',
-        overflowX: 'hidden',
-        backgroundImage: `url(${process.env.PUBLIC_URL}/images/patterns/medical_pattern_light.png)`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-        backgroundColor: '#EDF2F7',
-        fontFamily: `'Inter', 'Noto Sans JP', sans-serif`,
-      }}
-    >
-      <header
-        ref={headerRef}
-        style={{
-          position: 'sticky',
-          top: 0,
-          width: '100%',
-          background: 'rgba(255, 255, 255, 0.8)',
-          backdropFilter: 'blur(6px)',
-          padding: '16px 0',
-          textAlign: 'center',
-          fontWeight: '600',
-          color: '#1A6CBF',
-          fontSize: '18px',
-          boxShadow: '0 2px 6px rgba(0,0,0,0.05)',
-          zIndex: 10
-        }}
-      >
-        質問 {currentPage * QUESTIONS_PER_PAGE + 1}〜
-        {Math.min((currentPage + 1) * QUESTIONS_PER_PAGE, questions.length)} / {questions.length}
+    <div className="page_container" style={{ minHeight: '100vh', backgroundColor: 'var(--neutral-50)' }}>
+      {/* Navigation */}
+      <GlobalNavigation 
+        onReturnHome={onReturnHome}
+        onNavigateToPage={onNavigateToPage}
+        onConsultation={onConsultation}
+        onStartQuiz={() => {}}
+        activeRoute="/quiz"
+      />
+
+      {/* Header */}
+      <header className="section" style={{ padding: 'var(--spacing-md) 0' }}>
+        <div className="container">
+          <div className="header is-align-center">
+            <div className="eyebrow">診断ステップ 2</div>
+            <h1 className="heading_h2">質問に答えてください</h1>
+            <p className="paragraph" style={{ color: '#675032' }}>
+              質問 {currentPage * QUESTIONS_PER_PAGE + 1}〜
+              {Math.min((currentPage + 1) * QUESTIONS_PER_PAGE, questions.length)} / {questions.length}
+            </p>
+          </div>
+        </div>
       </header>
 
-      <div
-        ref={quizContentRef}
-        style={{
-          maxWidth: '960px',
-          margin: '0 auto',
-          padding: '40px 20px 100px',
-          position: 'relative'
-        }}
-      >
-        <AnimatePresence initial={false} custom={direction} mode="wait">
-          <motion.div
-            key={currentPage}
-            custom={direction}
-            variants={pageVariants}
-            initial="initial"
-            animate="animate"
-            exit="exit"
-          >
-            {currentQuestions.map((question) => {
-              // 質問ごとのラベルを取得
-              const labels = getQuestionLabels(question.id);
-              
-              return (
-                <div
-                  key={question.id}
+      {/* Main Content */}
+      <section className="section">
+        <div className="container is-small">
+          <AnimatePresence initial={false} custom={direction} mode="wait">
+            <motion.div
+              key={currentPage}
+              custom={direction}
+              variants={pageVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+            >
+              <div className="grid_2-col gap-large" style={{ 
+                '@media (max-width: 767px)': { 
+                  gridTemplateColumns: '1fr' 
+                } 
+              }}>
+                {currentQuestions.map((question) => {
+                  const labels = getQuestionLabels(question.id);
+                  
+                  return (
+                    <div key={question.id} className="card" style={{
+                      backgroundColor: 'var(--neutral-primary)',
+                      border: '1px solid var(--neutral-200)',
+                      borderRadius: 'var(--radius-large)',
+                      padding: 'var(--spacing-xl)',
+                      marginBottom: 'var(--spacing-lg)'
+                    }}>
+                      <h3 className="heading_h4" style={{ 
+                        marginBottom: 'var(--spacing-lg)',
+                        color: '#675032'
+                      }}>
+                        {question.text}
+                      </h3>
+
+                      {/* スケール選択UI */}
+                      <div className="flex_vertical gap-medium">
+                        <div className="flex_horizontal" style={{ 
+                          justifyContent: 'space-between',
+                          marginBottom: 'var(--spacing-md)'
+                        }}>
+                          <span className="paragraph_small" style={{ color: '#675032', opacity: 0.8 }}>
+                            {labels.negative}
+                          </span>
+                          <span className="paragraph_small" style={{ color: '#675032', opacity: 0.8 }}>
+                            {labels.positive}
+                          </span>
+                        </div>
+                        
+                        <div className="flex_horizontal" style={{ 
+                          justifyContent: 'space-between',
+                          gap: 'var(--spacing-xs)'
+                        }}>
+                          {[-3, -2, -1, 0, 1, 2, 3].map((value) => (
+                            <label key={value} style={{ 
+                              display: 'block', 
+                              flex: '1',
+                              cursor: 'pointer'
+                            }}>
+                              <input
+                                type="radio"
+                                name={`q-${question.id}`}
+                                value={value}
+                                checked={answers[question.id] === value}
+                                onChange={() => handleAnswer(question.id, value)}
+                                style={{ display: 'none' }}
+                              />
+                              <div
+                                style={{
+                                  width: '100%',
+                                  aspectRatio: '1/1',
+                                  maxWidth: '40px',
+                                  margin: '0 auto',
+                                  borderRadius: '50%',
+                                  backgroundColor: 
+                                    answers[question.id] === value ? '#675032' : 'var(--neutral-100)',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  cursor: 'pointer',
+                                  transition: 'all 0.2s ease',
+                                  border: `2px solid ${
+                                    answers[question.id] === value ? '#675032' : 'var(--neutral-300)'
+                                  }`,
+                                  transform: answers[question.id] === value ? 'scale(1.1)' : 'scale(1)'
+                                }}
+                              >
+                                {answers[question.id] === value && (
+                                  <span
+                                    style={{
+                                      width: '10px',
+                                      height: '10px',
+                                      borderRadius: '50%',
+                                      backgroundColor: 'white'
+                                    }}
+                                  />
+                                )}
+                              </div>
+                            </label>
+                          ))}
+                        </div>
+                        
+                        {/* 数値表示 */}
+                        <div className="flex_horizontal" style={{ 
+                          justifyContent: 'space-between',
+                          marginTop: 'var(--spacing-xs)'
+                        }}>
+                          {[-3, -2, -1, 0, 1, 2, 3].map((value) => (
+                            <span key={value} style={{ 
+                              fontSize: 'var(--text-size-small)',
+                              color: '#675032',
+                              opacity: 0.6,
+                              textAlign: 'center',
+                              flex: '1'
+                            }}>
+                              {value}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Navigation Buttons */}
+              <div className="flex_horizontal" style={{ 
+                justifyContent: 'center',
+                gap: 'var(--spacing-md)',
+                marginTop: 'var(--spacing-xxl)',
+                marginBottom: 'var(--spacing-xl)'
+              }}>
+                {currentPage > 0 && (
+                  <motion.button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handlePrevious();
+                    }}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="button is-secondary"
+                    style={{
+                      backgroundColor: 'transparent',
+                      color: '#675032',
+                      border: '2px solid #675032'
+                    }}
+                  >
+                    前へ
+                  </motion.button>
+                )}
+                
+                <motion.button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleNext();
+                  }}
+                  disabled={!isNextEnabled}
+                  whileHover={isNextEnabled ? { scale: 1.02 } : {}}
+                  whileTap={isNextEnabled ? { scale: 0.98 } : {}}
+                  className="button"
                   style={{
-                    marginBottom: '60px',
-                    background: '#fff',
-                    padding: '24px',
-                    borderRadius: '16px',
-                    boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
+                    backgroundColor: isNextEnabled ? '#675032' : 'var(--neutral-400)',
+                    color: '#ffffff',
+                    border: 'none',
+                    cursor: isNextEnabled ? 'pointer' : 'not-allowed',
+                    opacity: isNextEnabled ? 1 : 0.6
                   }}
                 >
-                  <h3 style={{ 
-                    fontSize: '18px', 
-                    fontWeight: '600', 
-                    color: '#333', 
-                    marginBottom: '20px'
-                  }}>
-                    {question.text}
-                  </h3>
+                  {currentPage === totalPages - 1 ? '結果を見る' : '次へ'}
+                </motion.button>
+              </div>
 
-                  {/* 7段階選択の新しいUIスタイル */}
-                  <div style={{ 
-                    display: 'flex', 
-                    flexDirection: 'column',
-                    gap: '16px',
-                  }}>
-                    {/* ラベル表示 - 「反対する」「賛成する」 */}
-                    <div style={{ 
-                      display: 'flex', 
-                      justifyContent: 'space-between',
-                      marginBottom: '8px'
-                    }}>
-                      <span style={{ color: '#4B5563', fontSize: '14px' }}>{labels.negative}</span>
-                      <span style={{ color: '#4B5563', fontSize: '14px' }}>{labels.positive}</span>
-                    </div>
-                    
-                    {/* 7段階の選択肢 */}
-                    <div style={{ 
-                      display: 'flex', 
-                      justifyContent: 'space-between', 
-                      width: '100%',
-                      gap: '4px'
-                    }}>
-                      {[-3, -2, -1, 0, 1, 2, 3].map((value) => (
-                        <label key={value} style={{ display: 'block', flex: '1' }}>
-                          <input
-                            type="radio"
-                            name={`q-${question.id}`}
-                            value={value}
-                            checked={answers[question.id] === value}
-                            onChange={() => handleAnswer(question.id, value)}
-                            style={{ display: 'none' }}
-                          />
-                          <div
-                            style={{
-                              width: '100%',
-                              aspectRatio: '1/1',
-                              maxWidth: '42px',
-                              margin: '0 auto',
-                              borderRadius: '50%',
-                              backgroundColor: 
-                                answers[question.id] === value ? '#1A6CBF' : '#E5E7EB',
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              cursor: 'pointer',
-                              transition: 'all 0.2s',
-                            }}
-                          >
-                            <span
-                              style={{
-                                width: '30%',
-                                height: '30%',
-                                borderRadius: '50%',
-                                backgroundColor: 
-                                  answers[question.id] === value ? '#fff' : 'transparent',
-                              }}
-                            ></span>
-                          </div>
-                        </label>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </motion.div>
-        </AnimatePresence>
+              {/* Progress Indicator */}
+              <div className="flex_horizontal" style={{ 
+                justifyContent: 'center',
+                gap: 'var(--spacing-xs)',
+                marginTop: 'var(--spacing-lg)'
+              }}>
+                {Array.from({ length: totalPages }).map((_, index) => (
+                  <div key={index} style={{
+                    width: '12px',
+                    height: '4px',
+                    borderRadius: '2px',
+                    backgroundColor: index === currentPage ? '#675032' : 'var(--neutral-300)'
+                  }}></div>
+                ))}
+              </div>
 
-        {/* ナビゲーションボタン */}
-        <div style={{ 
-          display: 'flex', 
-          justifyContent: 'center', 
-          gap: '16px',
-          marginTop: '40px'
-        }}>
-          {currentPage > 0 && (
-            <motion.button
-              onClick={(e) => {
-                e.preventDefault();
-                handlePrevious();
-              }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              style={{
-                backgroundColor: 'white',
-                color: '#1A6CBF',
-                padding: '12px 24px',
-                fontSize: '16px',
-                fontWeight: '600',
-                border: '2px solid #1A6CBF',
-                borderRadius: '999px',
-                cursor: 'pointer',
-                transition: 'all 0.3s',
-              }}
-            >
-              前へ
-            </motion.button>
-          )}
-          
-          <motion.button
-            onClick={(e) => {
-              e.preventDefault();
-              handleNext();
-            }}
-            disabled={!isNextEnabled}
-            whileHover={isNextEnabled ? { scale: 1.05 } : {}}
-            whileTap={isNextEnabled ? { scale: 0.95 } : {}}
-            style={{
-              backgroundColor: isNextEnabled ? '#1A6CBF' : '#A5B4FC',
-              color: 'white',
-              padding: '12px 32px',
-              fontSize: '16px',
-              fontWeight: '600',
-              border: 'none',
-              borderRadius: '999px',
-              cursor: isNextEnabled ? 'pointer' : 'not-allowed',
-              transition: 'all 0.3s',
-              boxShadow: isNextEnabled ? '0 4px 10px rgba(0,0,0,0.1)' : 'none'
-            }}
-          >
-            {currentPage === totalPages - 1 ? '結果を見る' : '次へ'}
-          </motion.button>
+              <div className="text-align_center" style={{ marginTop: 'var(--spacing-md)' }}>
+                <p className="paragraph_small" style={{ color: '#675032' }}>
+                  ページ {currentPage + 1} / {totalPages}
+                </p>
+              </div>
+            </motion.div>
+          </AnimatePresence>
         </div>
-      </div>
-      
-      {/* レスポンシブ対応用のグローバルスタイル */}
-      <style jsx="true">{`
-        /* グローバルスタイル */
-        body, html {
-          margin: 0;
-          padding: 0;
-          width: 100%;
-          min-height: 100vh;
-          overflow-x: hidden;
-        }
-        
-        /* モバイル対応 */
-        @media (max-width: 768px) {
-          h3 {
-            font-size: 16px !important;
-          }
-          
-          .navigation-buttons {
-            padding-bottom: 30px;
-          }
-        }
-      `}</style>
+      </section>
     </div>
   );
 };

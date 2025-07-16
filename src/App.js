@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
-import './styles.css';
+import './styles-webflow-extracted.css';
 import { motion, AnimatePresence } from 'framer-motion';
 import { processQuizResults, normalizeResultData } from './utils/quizUtils';
 import WelcomeScreen from './components/quiz/WelcomeScreen';
@@ -10,6 +10,10 @@ import QuickConsultationForm from './components/results/QuickConsultationForm';
 import PolicyPage from './components/PolicyPage';
 import EnhancedResultScreen from './components/results/EnhancedResultScreen';
 import TagManager from './components/TagManager';
+import DiagnosticToolPage from './components/pages/DiagnosticToolPage';
+import ServicePage from './components/pages/ServicePage';
+import ColumnPage from './components/pages/ColumnPage';
+import SupportPage from './components/pages/SupportPage';
 // 新しいアナリティクス関数をインポート
 import { 
   initializeAnalytics, 
@@ -50,11 +54,8 @@ useEffect(() => {
   initializeAnalytics();
   
   // 無効なルートへのアクセスを修正
-  if (location.pathname !== '/' && 
-      location.pathname !== '/profession' && 
-      location.pathname !== '/quiz' && 
-      location.pathname !== '/result' && 
-      location.pathname !== '/policy') {
+  const validRoutes = ['/', '/profession', '/quiz', '/result', '/policy', '/diagnostic-tool', '/services', '/columns', '/support'];
+  if (!validRoutes.includes(location.pathname)) {
     console.log('無効なルートへのアクセスを検出: ', location.pathname);
     navigate('/', { replace: true });
   }
@@ -429,6 +430,19 @@ const handleProfessionSelect = (selectedProfession) => {
     // ウェルカム画面に遷移
     navigate('/');
   };
+  
+  // グローバルナビゲーションハンドラー
+  const handleNavigateToPage = (page) => {
+    console.log(`📎 ページに遷移: ${page}`);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    navigate(page);
+  };
+  
+  // 相談ボタンのハンドラー
+  const handleConsultation = () => {
+    console.log('📞 相談フォームを表示します');
+    toggleContactForm(true);
+  };
 
   // ローディング表示
   if (isLoading) {
@@ -478,9 +492,25 @@ const handleProfessionSelect = (selectedProfession) => {
     // URLパスに応じたコンポーネントをレンダリング
     switch (location.pathname) {
       case '/':
-        return <WelcomeScreen onStartQuiz={() => navigate('/profession')} onOpenPolicy={handleOpenPolicy} />;
+        return (
+          <WelcomeScreen 
+            onStartQuiz={() => navigate('/profession')} 
+            onOpenPolicy={handleOpenPolicy} 
+            onReturnHome={handleReturnHome}
+            onNavigateToPage={handleNavigateToPage}
+            onConsultation={handleConsultation}
+          />
+        );
       case '/profession':
-        return <ProfessionSelect selectedProfession="" onSelect={handleProfessionSelect} />;
+        return (
+          <ProfessionSelect 
+            selectedProfession="" 
+            onSelect={handleProfessionSelect} 
+            onReturnHome={handleReturnHome}
+            onNavigateToPage={handleNavigateToPage}
+            onConsultation={handleConsultation}
+          />
+        );
       case '/quiz':
         // 職種に基づいた質問セットを取得
         const questionSet = getQuestionsByProfession();
@@ -490,7 +520,11 @@ const handleProfessionSelect = (selectedProfession) => {
           <QuizScreen
             questions={questionSet}
             profession={profession}
-            onComplete={handleQuizComplete} />
+            onComplete={handleQuizComplete}
+            onReturnHome={handleReturnHome}
+            onNavigateToPage={handleNavigateToPage}
+            onConsultation={handleConsultation}
+          />
         );
       case '/result':
         const normalizedResult = normalizeResultData(quizResult);
@@ -502,10 +536,56 @@ const handleProfessionSelect = (selectedProfession) => {
             profession={profession}
             postalCode={postalCode}
             answers={answers}
-            onRestart={handleRestart} />
+            onRestart={handleRestart}
+            onReturnHome={handleReturnHome}
+            onNavigateToPage={handleNavigateToPage}
+            onConsultation={handleConsultation}
+          />
         );
       case '/policy':
-        return <PolicyPage onReturnHome={handleReturnHome} />;
+        return (
+          <PolicyPage 
+            onReturnHome={handleReturnHome}
+            onNavigateToPage={handleNavigateToPage}
+            onConsultation={handleConsultation}
+          />
+        );
+      case '/diagnostic-tool':
+        return (
+          <DiagnosticToolPage 
+            onReturnHome={handleReturnHome} 
+            onStartQuiz={() => navigate('/profession')}
+            onNavigateToPage={handleNavigateToPage}
+            onConsultation={handleConsultation}
+          />
+        );
+      case '/services':
+        return (
+          <ServicePage 
+            onReturnHome={handleReturnHome} 
+            onStartQuiz={() => navigate('/profession')}
+            onNavigateToPage={handleNavigateToPage}
+            onConsultation={handleConsultation}
+          />
+        );
+      case '/columns':
+        return (
+          <ColumnPage 
+            onReturnHome={handleReturnHome} 
+            onStartQuiz={() => navigate('/profession')}
+            onNavigateToPage={handleNavigateToPage}
+            onConsultation={handleConsultation}
+          />
+        );
+      case '/support':
+        return (
+          <SupportPage 
+            onReturnHome={handleReturnHome} 
+            onStartQuiz={() => navigate('/profession')}
+            onNavigateToPage={handleNavigateToPage}
+            onConsultation={handleConsultation}
+          />
+        );
       default:
         // 未定義のURLには404または再度ホームにリダイレクト
         console.log('未定義のURLパス:', location.pathname);

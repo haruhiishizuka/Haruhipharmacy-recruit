@@ -8,7 +8,7 @@ const Icon = ({ type }) => {
     alignItems: 'center',
     justifyContent: 'center',
     fontSize: '22px',
-    color: '#1A6CBF',
+    color: '#675032',
     marginRight: '16px'
   };
 
@@ -123,45 +123,44 @@ const Icon = ({ type }) => {
   }
 };
 
-// セクションコンポーネント - モバイル対応改善版
-const Section = ({ title, icon, children, color = '#1A6CBF' }) => (
+// セクションコンポーネント - Webflowテイスト
+const Section = ({ title, icon, children, color = '#675032' }) => (
   <div 
+    className="card"
     style={{
-      backgroundColor: 'white',
-      borderRadius: '16px',
-      padding: '24px',
-      marginBottom: '24px',
-      boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
-      border: '1px solid #E5E7EB',
-      wordBreak: 'break-word' // 長い単語を折り返す
+      backgroundColor: 'var(--neutral-primary)',
+      borderRadius: 'var(--radius-large)',
+      padding: 'var(--spacing-xl)',
+      marginBottom: 'var(--spacing-lg)',
+      boxShadow: 'var(--shadow-md)',
+      border: '1px solid var(--neutral-200)',
+      wordBreak: 'break-word'
     }}
   >
     <div style={{ 
       display: 'flex', 
       alignItems: 'center', 
-      marginBottom: '16px',
+      marginBottom: 'var(--spacing-md)',
       borderBottom: `2px solid ${color}`,
-      paddingBottom: '12px',
-      flexWrap: 'wrap', // タイトルが長い場合の折り返し対応
+      paddingBottom: 'var(--spacing-sm)',
+      flexWrap: 'wrap'
     }}>
       <Icon type={icon} />
       <h3 
-        className="section-title" // モバイル対応用のクラス追加
+        className="heading_h4"
         style={{ 
-          fontSize: '20px', 
-          fontWeight: '600', 
-          color: '#1F2937',
           margin: 0,
+          color: '#675032',
           overflow: 'hidden',
           textOverflow: 'ellipsis',
-          width: 'calc(100% - 40px)', // アイコン分の幅を差し引く
+          width: 'calc(100% - 40px)'
         }}
       >
         {title}
       </h3>
     </div>
     <div style={{ 
-      color: '#4B5563', 
+      color: '#675032', 
       lineHeight: '1.6',
       overflow: 'hidden'
     }}>
@@ -286,7 +285,7 @@ const ActionList = ({ actions }) => {
             <p style={{ 
               margin: 0,
               fontSize: '15px',
-              color: '#4B5563',
+              color: '#675032',
               lineHeight: '1.6',
               wordBreak: 'break-word'
             }}>
@@ -333,7 +332,7 @@ const ResourceList = ({ resources }) => {
           <p style={{ 
             margin: 0,
             fontSize: '14px',
-            color: '#4B5563',
+            color: '#675032',
             lineHeight: '1.6'
           }}>
             {resource.description || ''}
@@ -378,7 +377,7 @@ const ComplementaryTypesList = ({ types }) => {
           </h5>
           <p style={{ 
             fontSize: '14px', 
-            color: '#4B5563',
+            color: '#675032',
             margin: 0,
             lineHeight: '1.6'
           }}>
@@ -411,7 +410,7 @@ const Quote = ({ quote }) => {
       <p style={{
         fontSize: '18px',
         fontStyle: 'italic',
-        color: '#1A6CBF',
+        color: '#675032',
         marginBottom: '12px',
         lineHeight: '1.6',
         wordBreak: 'break-word'
@@ -563,7 +562,7 @@ const ResultSummary = ({ result, tab = 'summary', profession = '' }) => {
                 padding: '20px',
                 borderRadius: '12px',
                 fontStyle: 'italic',
-                color: '#4B5563',
+                color: '#675032',
                 position: 'relative',
                 marginTop: '12px',
                 wordBreak: 'break-word'
@@ -573,7 +572,7 @@ const ResultSummary = ({ result, tab = 'summary', profession = '' }) => {
                   top: '-12px',
                   left: '20px',
                   fontSize: '40px',
-                  color: '#1A6CBF',
+                  color: '#675032',
                   opacity: 0.3,
                   fontFamily: 'Georgia, serif'
                 }}>"</div>
@@ -780,7 +779,7 @@ const ResultSummary = ({ result, tab = 'summary', profession = '' }) => {
                 fontSize: '16px', 
                 lineHeight: '1.8',
                 fontStyle: 'italic',
-                color: '#4B5563',
+                color: '#675032',
                 marginTop: '12px',
                 wordBreak: 'break-word'
               }}>{safeGetString(result, 'nursingBeauty')}</p>

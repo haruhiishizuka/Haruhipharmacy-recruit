@@ -237,7 +237,7 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
   // MediMatch 強みカード（6 枚目を追加済み）
   const strengths = [
     {
-      title: '逆指名型転職システム',
+      title: 'ポジティブアプローチ転職システム',
       description: 'あなたの「行きたい」医療機関を選び、その希望に沿って私たちが求人を開拓します。従来の転職サービスでは実現できなかった可能性を切り開きます。',
       icon: (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>)
     },
@@ -311,8 +311,8 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
         {/* ヘッダー */}
         <div
           style={{
-            backgroundColor: '#1A6CBF',
-            color: 'white',
+            backgroundColor: '#d5e6d3',
+            color: '#675032',
             padding: '20px',
             position: 'relative'
           }}
@@ -368,7 +368,7 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
               borderBottom: activeTab === 'form' ? 'none' : '1px solid transparent',
               borderTopLeftRadius: '8px',
               borderTopRightRadius: '8px',
-              color: activeTab === 'form' ? '#1A6CBF' : '#4A5568',
+              color: activeTab === 'form' ? '#675032' : '#4A5568',
               cursor: 'pointer',
               transition: 'all 0.2s',
               display: 'flex',
@@ -399,7 +399,7 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                 left: '0',
                 right: '0',
                 height: '3px',
-                backgroundColor: '#1A6CBF',
+                backgroundColor: '#675032',
                 borderTopLeftRadius: '2px',
                 borderTopRightRadius: '2px'
               }}></span>
@@ -422,7 +422,7 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
               borderBottom: activeTab === 'about' ? 'none' : '1px solid transparent',
               borderTopLeftRadius: '8px',
               borderTopRightRadius: '8px',
-              color: activeTab === 'about' ? '#1A6CBF' : '#4A5568',
+              color: activeTab === 'about' ? '#675032' : '#4A5568',
               cursor: 'pointer',
               transition: 'all 0.2s',
               display: 'flex',
@@ -450,7 +450,7 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                 left: '0',
                 right: '0',
                 height: '3px',
-                backgroundColor: '#1A6CBF',
+                backgroundColor: '#675032',
                 borderTopLeftRadius: '2px',
                 borderTopRightRadius: '2px'
               }}></span>
@@ -518,7 +518,7 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                       }}
                       type="button"
                       style={{ 
-                        backgroundColor: '#1A6CBF',
+                        backgroundColor: '#675032',
                         color: 'white',
                         border: 'none',
                         borderRadius: '50px',
@@ -662,6 +662,7 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                         お名前 <span style={{ color: '#E53E3E' }}>*</span>
                       </label>
                       <input
+                        className="input_field"
                         id="name"
                         type="text"
                         name="name"
@@ -690,6 +691,7 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                         電話番号 <span style={{ color: '#E53E3E' }}>*</span>
                       </label>
                       <input
+                        className="input_field"
                         id="phone"
                         type="tel"
                         name="phone"
@@ -718,6 +720,7 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                         メールアドレス <span style={{ color: '#E53E3E' }}>*</span>
                       </label>
                       <input
+                        className="input_field"
                         id="email"
                         type="email"
                         name="email"
@@ -747,6 +750,7 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                       </label>
                       <div style={{ position: 'relative' }}>
                         <input
+                          className="input_field"
                           id="postalCode"
                           type="text"
                           name="postalCode"
@@ -795,6 +799,7 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                         メッセージ（任意）
                       </label>
                       <textarea
+                        className="input_field"
                         id="message"
                         name="message"
                         value={formData.message}
@@ -831,8 +836,8 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                             alignItems: 'center',
                             padding: '10px 16px',
                             borderRadius: '8px',
-                            border: `1px solid ${formData.contactMethod === 'phone' ? '#1A6CBF' : '#CBD5E0'}`,
-                            backgroundColor: formData.contactMethod === 'phone' ? '#EBF8FF' : 'white',
+                            border: `1px solid ${formData.contactMethod === 'phone' ? '#675032' : '#CBD5E0'}`,
+                            backgroundColor: formData.contactMethod === 'phone' ? '#f8f2e8' : 'white',
                             cursor: 'pointer',
                             flex: '1',
                             minWidth: '120px'
@@ -856,8 +861,8 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                             alignItems: 'center',
                             padding: '10px 16px',
                             borderRadius: '8px',
-                            border: `1px solid ${formData.contactMethod === 'zoom' ? '#1A6CBF' : '#CBD5E0'}`,
-                            backgroundColor: formData.contactMethod === 'zoom' ? '#EBF8FF' : 'white',
+                            border: `1px solid ${formData.contactMethod === 'zoom' ? '#675032' : '#CBD5E0'}`,
+                            backgroundColor: formData.contactMethod === 'zoom' ? '#f8f2e8' : 'white',
                             cursor: 'pointer',
                             flex: '1',
                             minWidth: '120px'
@@ -881,8 +886,8 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                             alignItems: 'center',
                             padding: '10px 16px',
                             borderRadius: '8px',
-                            border: `1px solid ${formData.contactMethod === 'line' ? '#1A6CBF' : '#CBD5E0'}`,
-                            backgroundColor: formData.contactMethod === 'line' ? '#EBF8FF' : 'white',
+                            border: `1px solid ${formData.contactMethod === 'line' ? '#675032' : '#CBD5E0'}`,
+                            backgroundColor: formData.contactMethod === 'line' ? '#f8f2e8' : 'white',
                             cursor: 'pointer',
                             flex: '1',
                             minWidth: '120px'
@@ -961,12 +966,12 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                       fontSize: '14px'
                     }}>
                       <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1A6CBF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '8px' }}>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#675032" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '8px' }}>
                           <circle cx="12" cy="12" r="10"></circle>
                           <line x1="12" y1="16" x2="12" y2="12"></line>
                           <line x1="12" y1="8" x2="12.01" y2="8"></line>
                         </svg>
-                        <span style={{ color: '#1A6CBF', fontWeight: '600' }}>診断情報</span>
+                        <span style={{ color: '#675032', fontWeight: '600' }}>診断情報</span>
                       </div>
                       <p style={{ color: '#4A5568', marginBottom: '4px' }}>
                         診断結果: <strong>{resultType}</strong>タイプ
@@ -984,7 +989,7 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                       disabled={isSubmitting}
                       style={{
                         width: '100%',
-                        backgroundColor: '#1A6CBF',
+                        backgroundColor: '#675032',
                         color: 'white',
                         border: 'none',
                         borderRadius: '50px',
@@ -1037,7 +1042,7 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                         style={{
                           background: 'none',
                           border: 'none',
-                          color: '#1A6CBF',
+                          color: '#675032',
                           textDecoration: 'underline',
                           cursor: 'pointer',
                           fontSize: '14px',
@@ -1076,7 +1081,7 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                   <h4 style={{ 
                     fontSize: '18px', 
                     fontWeight: '700', 
-                    color: '#1A6CBF',
+                    color: '#675032',
                     marginBottom: '12px' 
                   }}>
                     私たちの理念
@@ -1101,7 +1106,7 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                   <h4 style={{ 
                     fontSize: '18px', 
                     fontWeight: '700', 
-                    color: '#1A6CBF',
+                    color: '#675032',
                     marginBottom: '16px',
                     display: 'flex',
                     alignItems: 'center',
@@ -1152,7 +1157,7 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                         alignItems: 'flex-start'
                       }}>
                         <div style={{
-                          backgroundColor: '#1A6CBF',
+                          backgroundColor: '#675032',
                           color: 'white',
                           width: '40px',
                           height: '40px',
@@ -1170,7 +1175,7 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                           <h5 style={{ 
                             fontSize: '16px', 
                             fontWeight: '600', 
-                            color: '#1A6CBF',
+                            color: '#675032',
                             marginBottom: '6px' 
                           }}>
                             {strength.title}
@@ -1221,7 +1226,7 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                     color: '#2D3748'
                   }}>
                     <li style={{ marginBottom: '10px' }}>
-                      <strong>「行きたい」医療機関への逆指名型アプローチ</strong>：従来のように求人ありきではなく、あなたの希望を最優先します
+                      <strong>「行きたい」医療機関への積極的アプローチ</strong>：従来のように求人ありきではなく、あなたの希望を最優先します
                     </li>
                     <li style={{ marginBottom: '10px' }}>
                       <strong>独自の医療機関評価</strong>：経営状態、組織体制、将来計画など詳細な情報を医業経営コンサルタントの視点から分析
@@ -1273,7 +1278,7 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                       <strong>キャリアカウンセリング</strong>：これまでのキャリアを振り返りながら、今後のビジョンを一緒に考えます
                     </li>
                     <li style={{ marginBottom: '8px' }}>
-                      <strong>医療機関の選定・提案</strong>：あなたの希望に合った職場を提案。希望する医療機関に対して逆指名でアプローチします
+                      <strong>医療機関の選定・提案</strong>：あなたの希望に合った職場を提案。希望する医療機関に積極的にアプローチします
                     </li>
                     <li style={{ marginBottom: '8px' }}>
                       <strong>医療機関情報の詳細提供</strong>：決算情報、経営状況、組織体制など詳細な情報を提供します
@@ -1293,7 +1298,7 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                     type="button"
                     onClick={() => handleTabChange('form')}
                     style={{
-                      backgroundColor: '#1A6CBF',
+                      backgroundColor: '#675032',
                       color: 'white',
                       border: 'none',
                       borderRadius: '50px',
@@ -1312,7 +1317,7 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
           </AnimatePresence>
         </div>
       </motion.div>
-      <style jsx="true">{`
+      <style>{`
         @keyframes spin {
           0% { transform: rotate(0deg); }
           100% { transform: rotate(360deg); }
