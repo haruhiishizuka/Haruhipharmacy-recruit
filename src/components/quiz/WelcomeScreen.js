@@ -159,6 +159,31 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy, onReturnHome, onNavigateToPa
         />
       </section>
 
+      {/* Professional Consultant Support Section */}
+      <section className="section padding-bottom_none is-secondary">
+        <div className="container">
+          <div className="header max-width_large">
+            <div className="eyebrow">プロフェッショナルサポート</div>
+            <h1 className="heading_h2">専門性の高いプライベートエージェント</h1>
+            <div className="rich-text paragraph_large w-richtext">
+              <p>長年医療機関の事務長経験、人事経験を重ね、医療業界の内情を熟知した精鋭のコンサルタントが、あなたの専属エージェントとして徹底サポート。単なる転職支援ではなく、あなたのキャリア全体を見据えた最適な職場選びをお手伝いします。</p>
+            </div>
+          </div>
+        </div>
+        <motion.img 
+          width="992" 
+          height="679" 
+          alt="医療コンサルタントによる専門相談の画像" 
+          src="/images/webflow/6876f4661880f4575f64036b_21818c26-3e5a-4f87-bbac-6e7d23371e48.avif" 
+          loading="lazy" 
+          className="image"
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          viewport={{ once: true }}
+        />
+      </section>
+
       {/* Career Hints Section */}
       <section className="section">
         <div className="container">

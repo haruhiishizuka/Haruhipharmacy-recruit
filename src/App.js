@@ -14,6 +14,7 @@ import DiagnosticToolPage from './components/pages/DiagnosticToolPage';
 import ServicePage from './components/pages/ServicePage';
 import ColumnPage from './components/pages/ColumnPage';
 import SupportPage from './components/pages/SupportPage';
+import VoicesPage from './components/pages/VoicesPage';
 // 新しいアナリティクス関数をインポート
 import { 
   initializeAnalytics, 
@@ -54,7 +55,7 @@ useEffect(() => {
   initializeAnalytics();
   
   // 無効なルートへのアクセスを修正
-  const validRoutes = ['/', '/profession', '/quiz', '/result', '/policy', '/diagnostic-tool', '/services', '/columns', '/support'];
+  const validRoutes = ['/', '/profession', '/quiz', '/result', '/policy', '/diagnostic-tool', '/services', '/columns', '/support', '/voices'];
   if (!validRoutes.includes(location.pathname)) {
     console.log('無効なルートへのアクセスを検出: ', location.pathname);
     navigate('/', { replace: true });
@@ -580,6 +581,15 @@ const handleProfessionSelect = (selectedProfession) => {
       case '/support':
         return (
           <SupportPage 
+            onReturnHome={handleReturnHome} 
+            onStartQuiz={() => navigate('/profession')}
+            onNavigateToPage={handleNavigateToPage}
+            onConsultation={handleConsultation}
+          />
+        );
+      case '/voices':
+        return (
+          <VoicesPage 
             onReturnHome={handleReturnHome} 
             onStartQuiz={() => navigate('/profession')}
             onNavigateToPage={handleNavigateToPage}

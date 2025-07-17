@@ -311,7 +311,7 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
         {/* ヘッダー */}
         <div
           style={{
-            backgroundColor: '#d5e6d3',
+            backgroundColor: '#f8f2e8',
             color: '#675032',
             padding: '20px',
             position: 'relative'
@@ -1072,11 +1072,11 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
               >
                 {/* MediMatchの理念 */}
                 <div style={{
-                  backgroundColor: '#EBF8FF',
+                  backgroundColor: '#f8f2e8',
                   borderRadius: '12px',
                   padding: '20px',
                   marginBottom: '24px',
-                  border: '1px solid #BEE3F8'
+                  border: '1px solid #e6d5c3'
                 }}>
                   <h4 style={{ 
                     fontSize: '18px', 
@@ -1097,11 +1097,11 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
 
                 {/* 新規追加：医療専門家による1対1のサポートセクション */}
                 <div style={{
-                  backgroundColor: '#EBF8FF',
+                  backgroundColor: '#f8f2e8',
                   borderRadius: '12px',
                   padding: '20px',
                   marginBottom: '24px',
-                  border: '1px solid #BEE3F8'
+                  border: '1px solid #e6d5c3'
                 }}>
                   <h4 style={{ 
                     fontSize: '18px', 
@@ -1245,16 +1245,16 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
 
                 {/* サービスの流れ */}
                 <div style={{
-                  backgroundColor: '#F0F7FF',
+                  backgroundColor: '#f8f2e8',
                   borderRadius: '12px',
                   padding: '20px',
                   marginBottom: '24px',
-                  border: '1px solid #C3DAFE'
+                  border: '1px solid #e6d5c3'
                 }}>
                   <h4 style={{ 
                     fontSize: '17px', 
                     fontWeight: '600', 
-                    color: '#3182CE',
+                    color: '#675032',
                     marginBottom: '16px',
                     display: 'flex',
                     alignItems: 'center',

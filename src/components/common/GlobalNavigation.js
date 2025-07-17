@@ -104,6 +104,26 @@ const GlobalNavigation = ({
                   onClick={(e) => {
                     e.preventDefault();
                     if (typeof onNavigateToPage === 'function') {
+                      onNavigateToPage('/voices');
+                    }
+                  }}
+                  className="nav_link on-accent-primary w-inline-block"
+                  style={{ 
+                    background: 'none', 
+                    border: 'none', 
+                    cursor: 'pointer',
+                    opacity: 1,
+                    fontWeight: activeRoute === '/voices' ? '600' : '400'
+                  }}
+                >
+                  <div>先輩の声</div>
+                </button>
+              </li>
+              <li className="nav_menu-list-item">
+                <button 
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (typeof onNavigateToPage === 'function') {
                       onNavigateToPage('/support');
                     }
                   }}

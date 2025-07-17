@@ -145,11 +145,11 @@ const ShareSection = ({ resultType, profession }) => {
       </h3>
       
       <div className="card" style={{
-        backgroundColor: 'var(--neutral-primary)',
+        backgroundColor: '#f8f2e8',
         borderRadius: 'var(--radius-large)',
         padding: 'var(--spacing-lg)',
         marginBottom: 'var(--spacing-lg)',
-        border: '1px solid var(--neutral-200)'
+        border: '1px solid #e6d5c3'
       }}>
         <p className="paragraph" style={{ marginBottom: 'var(--spacing-md)', color: '#675032' }}>
           あなたの診断結果を友達や同僚とシェアして、お互いのタイプを比較してみましょう！
@@ -285,11 +285,11 @@ const ShareSection = ({ resultType, profession }) => {
       </div>
       
       <div style={{
-        backgroundColor: '#EBF8FF',
+        backgroundColor: '#f8f2e8',
         borderRadius: '12px',
         padding: '16px',
         marginBottom: '24px',
-        border: '1px solid #BEE3F8',
+        border: '1px solid #e6d5c3',
         display: 'flex',
         alignItems: 'flex-start',
         gap: '12px'
