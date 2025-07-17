@@ -433,10 +433,21 @@ const handleProfessionSelect = (selectedProfession) => {
   };
   
   // グローバルナビゲーションハンドラー
-  const handleNavigateToPage = (page) => {
-    console.log(`📎 ページに遷移: ${page}`);
+  const handleNavigateToPage = (page, options = {}) => {
+    const { scrollTo } = options;
+    console.log(`📎 ページに遷移: ${page}${scrollTo ? ` セクション: ${scrollTo}` : ''}`);
     window.scrollTo({ top: 0, behavior: 'smooth' });
     navigate(page);
+    
+    // Handle scroll to section after navigation
+    if (scrollTo) {
+      setTimeout(() => {
+        const element = document.getElementById(scrollTo);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+    }
   };
   
   // 相談ボタンのハンドラー

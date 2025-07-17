@@ -133,26 +133,9 @@ const DiagnosticToolPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onCon
         <div className="container">
           <div className="grid_2-col tablet-1-col gap-xxlarge is-y-center">
             <div className="header margin-bottom_none">
-              <div 
-                className="is-large-1x1 is-background margin-bottom_xsmall" 
-                style={{
-                  width: '60px',
-                  height: '60px',
-                  borderRadius: '50%',
-                  backgroundColor: '#d5e6d3',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24" fill="none">
-                  <path d="M19.25 12C19.25 16.0041 16.0041 19.25 12 19.25C7.99594 19.25 4.75 16.0041 4.75 12C4.75 7.99594 7.99594 4.75 12 4.75C16.0041 4.75 19.25 7.99594 19.25 12Z" stroke="#675032" strokeWidth="1.5"></path>
-                  <path d="M9 12L11 14L15.5 9.5" stroke="#675032" strokeWidth="1.5"></path>
-                </svg>
-              </div>
-              <h2 style={{ color: '#675032' }}>キャリアパスを向上させる機能を探求</h2>
+              <h2 style={{ color: '#675032' }}>あなたの理想の医療キャリアを実現</h2>
               <p className="paragraph_large margin-bottom_none" style={{ color: '#675032' }}>
-                私たちのプラットフォームはあなたの強みと好みを評価し、理想的な職場とつなげます。健康的なワークライフバランスを維持しながらキャリアを前進させるための実用的な洞察を得られます。
+                16タイプ診断であなたの性格や価値観を分析し、最適な職場環境をご提案。ワークライフバランスを大切にしながら、やりがいのあるキャリアを築くお手伝いをします。
               </p>
             </div>
             <div className="ratio_1x1-2">

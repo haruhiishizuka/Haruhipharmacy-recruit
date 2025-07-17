@@ -178,9 +178,8 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy, onReturnHome, onNavigateToPa
           loading="lazy" 
           className="image"
           initial={{ opacity: 0, scale: 0.9 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          viewport={{ once: true }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, delay: 0.9 }}
         />
       </section>
 
@@ -196,9 +195,22 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy, onReturnHome, onNavigateToPa
           {/* Tabs Content */}
           <div className="tabs_content">
             <div className="grid_3-col gap-small">
-              <motion.a 
-                href="#" 
+              <motion.button 
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (typeof onNavigateToPage === 'function') {
+                    onNavigateToPage('/column', { scrollTo: 'personality-advice' });
+                  }
+                }}
                 className="link-content-block w-inline-block"
+                style={{ 
+                  background: 'none', 
+                  border: 'none', 
+                  padding: 0, 
+                  cursor: 'pointer',
+                  width: '100%',
+                  textAlign: 'left'
+                }}
                 whileHover={{ scale: 1.02 }}
                 transition={{ duration: 0.2 }}
               >
@@ -229,11 +241,24 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy, onReturnHome, onNavigateToPa
                     <div className="paragraph_small margin-bottom_none">2024/06/01</div>
                   </div>
                 </div>
-              </motion.a>
+              </motion.button>
 
-              <motion.a 
-                href="#" 
+              <motion.button 
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (typeof onNavigateToPage === 'function') {
+                    onNavigateToPage('/column', { scrollTo: 'positive-career' });
+                  }
+                }}
                 className="link-content-block w-inline-block"
+                style={{ 
+                  background: 'none', 
+                  border: 'none', 
+                  padding: 0, 
+                  cursor: 'pointer',
+                  width: '100%',
+                  textAlign: 'left'
+                }}
                 whileHover={{ scale: 1.02 }}
                 transition={{ duration: 0.2 }}
               >
@@ -264,11 +289,24 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy, onReturnHome, onNavigateToPa
                     <div className="paragraph_small margin-bottom_none">2024/05/15</div>
                   </div>
                 </div>
-              </motion.a>
+              </motion.button>
 
-              <motion.a 
-                href="#" 
+              <motion.button 
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (typeof onNavigateToPage === 'function') {
+                    onNavigateToPage('/column', { scrollTo: 'workplace-voices' });
+                  }
+                }}
                 className="link-content-block w-inline-block"
+                style={{ 
+                  background: 'none', 
+                  border: 'none', 
+                  padding: 0, 
+                  cursor: 'pointer',
+                  width: '100%',
+                  textAlign: 'left'
+                }}
                 whileHover={{ scale: 1.02 }}
                 transition={{ duration: 0.2 }}
               >
@@ -299,7 +337,7 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy, onReturnHome, onNavigateToPa
                     <div className="paragraph_small margin-bottom_none">2024/04/20</div>
                   </div>
                 </div>
-              </motion.a>
+              </motion.button>
             </div>
           </div>
         </div>

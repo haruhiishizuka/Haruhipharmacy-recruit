@@ -415,9 +415,23 @@ header.section.flex_vertical .ratio_3x2 {
   position: static !important;
 }
 
-/* キャリアヒントセクション内のratio_3x2クラスの調整 */
-.tabs_content .grid_3-col .ratio_3x2 {
-  padding-bottom: 56.25% !important; /* 16:9のアスペクト比に調整 */
+/* キャリアヒントセクションとコラムセクション内のratio_3x2クラスの調整 */
+.tabs_content .grid_3-col .ratio_3x2,
+.grid_3-col .ratio_3x2 {
+  padding-bottom: 60% !important; /* より統一的なアスペクト比に調整 */
+  height: 0;
+  overflow: hidden;
+}
+
+/* 画像のオブジェクトフィットを強制 */
+.tabs_content .grid_3-col .ratio_3x2 .image_cover,
+.grid_3-col .ratio_3x2 .image_cover {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
 }
 
 header.section.flex_vertical .ratio_3x2 .image_cover {
@@ -893,7 +907,7 @@ header.section {
 .ratio_1x1-2 {
   position: relative;
   width: 100%;
-  padding-bottom: 100%; /* 1:1のアスペクト比 */
+  padding-bottom: 75%; /* 4:3のアスペクト比に変更 */
   overflow: hidden;
   border-radius: var(--radius-medium);
 }
