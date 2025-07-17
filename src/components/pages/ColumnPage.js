@@ -5,9 +5,10 @@ import GlobalNavigation from '../common/GlobalNavigation';
 const ColumnPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onConsultation }) => {
   const [selectedColumn, setSelectedColumn] = useState(null);
 
-  const columns = [
+  // おすすめコンテンツ（固定記事）
+  const recommendedContent = [
     {
-      id: 1,
+      id: 'recommended-1',
       title: '医療従事者のキャリア形成における16タイプ性格診断の活用法',
       category: '診断',
       date: '2024/12/01',
@@ -131,7 +132,7 @@ const ColumnPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onConsultatio
       `
     },
     {
-      id: 2,
+      id: 'recommended-2',
       title: 'ポジティブアプローチ転職のメリットと成功のポイント',
       category: '転職',
       date: '2024/11/20',
@@ -149,7 +150,7 @@ const ColumnPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onConsultatio
         <p>この手法により、本当に働きたい職場での転職が実現できる可能性が高まります。</p>
 
         <h2>ポジティブアプローチ転職のメリット</h2>
-        <h3>1. 理想の職場への転職が可能</h3>
+        <h3>1. 理想の職場への転職挑戦</h3>
         <p>求人が出ていない理想的な職場にも転職のチャンスがあります。特に、働きやすい環境の医療機関は離職率が低く、求人が出にくい傾向があります。</p>
 
         <h3>2. 主体的なキャリア選択</h3>
@@ -177,6 +178,116 @@ const ColumnPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onConsultatio
 
         <h2>まとめ</h2>
         <p>ポジティブアプローチ転職は、自分らしいキャリアを実現するための有効な手段です。適切な準備と積極的なアプローチにより、理想の職場での転職が可能になります。</p>
+      `
+    }
+  ];
+
+  // 最新コラム
+  const latestColumns = [
+    {
+      id: 1,
+      title: '医療経営者のための三大幸福論活用法～バーンアウト対策と業績向上の両立～',
+      category: '経営',
+      date: '2025/06/16',
+      author: 'シマキ',
+      excerpt: '100年前の三つの幸福論が、現代医療経営における人材不足とバーンアウトの課題を解決する鍵となります。ラッセル、アラン、ヒルティの古典的英知で現代医療DXを乗り切る方法を詳しく解説します。',
+      readTime: '30分',
+      image: '/images/webflow/6876f4663a153d4faec8f15d_19557f28-20ff-4354-a70b-839282409da3.avif',
+      content: `
+        <h2>はじめに：なぜ今、100年前の哲学者の言葉が医療経営者の心に響くのか？</h2>
+        <p>私たちは実に奇妙な時代に生きています。</p>
+        
+        <p>医療DXだ、働き方改革だ、地域包括ケアだと、毎日のように新しい制度やシステムが導入される一方で、現場では深刻な人材不足とバーンアウトが蔓延している。AIが医師の診断精度を上回るというニュースを見ながら、「では人間の医療従事者は何のために存在するのか？」という根本的な疑問に直面する。</p>
+        
+        <p>そんな混沌とした現代だからこそ、100年以上前に書かれた三つの幸福論が、驚くほど現代的な輝きを放っているのです。</p>
+
+        <h2>現代医療現場の深刻な現実：データが語る「不幸の構造」</h2>
+        <p>まず、現在の医療現場がどのような状況にあるかを正確に把握しましょう。</p>
+
+        <h3>コロナ禍が浮き彫りにした医療従事者のメンタルヘルス危機：</h3>
+        <p>46%の医療従事者がバーンアウトを経験し、日本赤十字社医療センターの調査では、医療従事者の27.9%がうつ病を発症という深刻な状況が明らかになりました。さらに、1年以内退職予定の看護師は「やりがい」「成長できる環境」の満足度が特に低いという調査結果も出ています。</p>
+
+        <h3>2024年医師働き方改革の複合的影響：</h3>
+        <p>医師の時間外労働に年960時間の上限が設定され、連続勤務時間や勤務間インターバルの規制も導入されました。この制度は医師の健康を守る重要な改革ですが、現場では人手不足による業務の集約化、効率性重視による患者との関係性希薄化という新たな課題が生まれています。</p>
+
+        <h2>ラッセルの革命的洞察：幸福は「獲得」されるもの</h2>
+        <p>バートランド・ラッセルは数学者・哲学者・社会評論家として、論理的思考を武器に人間の幸福を分析しました。彼の幸福論は、自身の「自殺的青年期から満足した成人期」への変化を一般化した実体験に基づいている点で、単なる机上の空論ではない説得力を持っています。</p>
+
+        <h3>ラッセルの核心的洞察：</h3>
+        <p>「幸福は熟した果実のように自然に落ちてこない。それは獲得されなければならないものであり、その手段は外界への関心を広げることである」</p>
+
+        <p>この「外界への関心」という概念こそが、現代医療経営における多くの問題を解決する鍵となります。ラッセルは人間の不幸の原因を精密に分析し、その多くが「過度の自己中心性」から生まれることを解明しました。</p>
+
+        <h2>医療現場における「外界への関心」が生み出す組織変革の科学</h2>
+        <p>ラッセルの理論の正しさは、現代の科学的研究によって実証されています。</p>
+
+        <h3>金沢医科大学病院の画期的調査「FitnES+」が示す驚異的な発見：</h3>
+        <p>この調査は371の医療機関、10万人の回答を分析し、医療従事者の満足度を決定する要因を特定しました。その結果、満足度の高い職場に共通していたのは以下の「外向き要素」でした：</p>
+        
+        <ul>
+          <li><strong>働く幸せ：</strong>患者さんの役に立っているという実感</li>
+          <li><strong>承認感：</strong>同僚や上司から認められているという感覚</li>
+          <li><strong>多職種連携：</strong>チーム全体で患者さんを支えているという一体感</li>
+          <li><strong>患者志向性：</strong>患者さんの立場に立って考える姿勢</li>
+        </ul>
+
+        <p>興味深いことに、給与や労働時間といった「自分の内側」の条件よりも、これらの「外向きの関心」の方が満足度に大きく影響していたのです。これはラッセルの「外界への関心」理論の科学的実証といえるでしょう。</p>
+
+        <h2>アランの意志的楽観主義：「上機嫌」という組織改革の核心</h2>
+        <h3>アランの革命的発見：感情は「選択」できる</h3>
+        <p>フランスの哲学者アラン（本名エミール・シャルティエ）は、40年間にわたって教育現場に立ち続けながら、実践的な幸福論を構築しました。彼の最も革命的な洞察は「悲観主義は気分に属し、楽観主義は意志に属する」という発見です。</p>
+
+        <p>これは現代の認知行動療法や神経科学の研究が裏付ける、科学的に正しい洞察でもあります。アランは100年前に、現代心理学の核心的発見を先取りしていたのです。</p>
+
+        <h3>アランの幸福論の3つの柱：</h3>
+        <ul>
+          <li><strong>意志性：</strong>幸福は外的条件ではなく、内的な選択によって決まる</li>
+          <li><strong>習慣性：</strong>幸福は継続的な実践によって身につく技術</li>
+          <li><strong>社会性：</strong>上機嫌は周囲に伝染し、組織全体を変革する</li>
+        </ul>
+
+        <h2>現代科学による「意志的楽観主義」の実証</h2>
+        <p>アランの理論は、現代の医療現場での実証研究によってその有効性が証明されています。</p>
+
+        <h3>慶應義塾大学のMHALOプログラム：</h3>
+        <p>マインドフルネスと意志的楽観主義を組み合わせた医療従事者向けの研修で、参加者の92%が満足し、バーンアウトが有意に改善という結果を得ました。</p>
+
+        <h3>MOPRプログラムの驚異的成果：</h3>
+        <p>73名の医療従事者を対象とした6週間のMindfulness-Oriented Professional Resilience訓練で、コンパッション満足度向上（p<0.001）、バーンアウト軽減（p=0.003）、二次性トラウマストレス軽減（p<0.001）という統計的に有意な改善が確認されました。</p>
+
+        <p>これらの結果は、アランが提唱した「意志による幸福創造」が単なる理想論ではなく、実際に効果のある科学的手法であることを実証しています。</p>
+
+        <h2>ヒルティの独創的貢献：労働の神聖化という概念</h2>
+        <p>カール・ヒルティはスイスの法学者・政治家・哲学者として、実際の社会活動に従事しながら幸福論を構築した実践的思想家でした。彼の最も独創的な貢献は「労働の神聖化」という概念です。</p>
+
+        <h3>ヒルティの労働観の核心：</h3>
+        <p>「人間の幸福の最大部分は、絶えず続けられる仕事と、そこから生まれる喜びややりがいである」</p>
+
+        <p>これは単なる「勤勉は美徳」という道徳論ではありません。ヒルティが説くのは、仕事そのものを人格形成と社会貢献の手段として捉える、より深遠な労働哲学です。</p>
+
+        <p>私たちが目指すのは、単なる「成功する医療機関」ではありません。患者さんも、スタッフも、そして経営者自身も幸福を感じられる「美しい医療」の実現なのです。</p>
+      `
+    },
+    {
+      id: 2,
+      title: '情報化社会を生き抜く哲学的思考法～日常に潜む「なぜ？」から始める知性の鍛え方～',
+      category: '思考法',
+      date: '2025/07/17',
+      author: 'シマキ',
+      excerpt: '情報過多の現代社会で本質的な判断力を失わないために。日常の何気ない疑問から始める哲学的思考の実践法と、デジタル時代に必要な知性の磨き方を詳しく解説します。',
+      readTime: '25分',
+      image: '/images/webflow/6876f4663a153d4faec8f158_e006255f-4c9f-4863-aa8b-82f8fa8232ee.avif',
+      content: `
+        <h2>1. 情報過多時代の知性の迷子たち</h2>
+        <p>私たちは、かつてないほど多くの情報に囲まれて生きています。スマートフォンをちょっと触れば、世界中のニュースが瞬時に手に入り、SNSには無数の意見や感情が飛び交い、YouTube、Netflix、TikTokなどのプラットフォームは私たちの注意を奪い合っています。</p>
+        
+        <p>──これらすべてが私たちの思考を分散させ、本質的な判断力を「ぽろり」と奪っているのではないでしょうか。</p>
+        
+        <p>「情報化社会って便利ですね」と言いながら、実は私たちは情報に支配されているのかもしれません。まるで美味しそうなケーキを前にしたダイエット中の人のように、「これも必要、あれも重要」と情報を詰め込んでは消化不良を起こしているのです。</p>
+        
+        <p>こうした時代だからこそ、哲学という「知性の剣」が必要なのです。剣と聞くと物騒に思えるかもしれませんが、これは暴力的な武器ではありません。混沌とした現実をすっぱりと切り分け、本質を見極める美しい道具なのです。</p>
+
+        <p>きっと、その歩みの先に、今まで見たことのない美しい景色が待っているはずです。</p>
       `
     },
     {
@@ -226,6 +337,9 @@ const ColumnPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onConsultatio
       `
     }
   ];
+
+  // 全記事を統合
+  const allColumns = [...recommendedContent, ...latestColumns];
 
   const handleColumnSelect = (column) => {
     setSelectedColumn(column);
@@ -293,11 +407,17 @@ const ColumnPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onConsultatio
               </div>
             </header>
 
-            {/* Column List */}
+            {/* おすすめコンテンツ */}
             <section className="section">
               <div className="container">
+                <div className="header is-align-center" style={{ marginBottom: '40px' }}>
+                  <h2 className="heading_h3" style={{ color: '#675032' }}>おすすめコンテンツ</h2>
+                  <p className="paragraph" style={{ color: '#675032', marginBottom: '0' }}>
+                    多くの方に読まれている人気記事をご紹介します
+                  </p>
+                </div>
                 <div className="grid_3-col gap-large">
-                  {columns.map((column, index) => (
+                  {recommendedContent.map((column, index) => (
                     <motion.article 
                       key={column.id}
                       className="link-content-block"
@@ -306,6 +426,62 @@ const ColumnPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onConsultatio
                       initial={{ opacity: 0, y: 30 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.6, delay: index * 0.1 }}
+                      whileHover={{ scale: 1.02 }}
+                    >
+                      <div className="ratio_3x2 margin-bottom_xsmall">
+                        <img 
+                          alt={column.title} 
+                          src={column.image} 
+                          loading="lazy" 
+                          className="image_cover"
+                        />
+                      </div>
+                      <div className="tag_group margin-bottom_xsmall">
+                        <div className="tag" style={{ backgroundColor: '#f8f2e8', color: '#675032' }}>
+                          {column.category}
+                        </div>
+                      </div>
+                      <h3 className="heading_h4">{column.title}</h3>
+                      <p className="paragraph">{column.excerpt}</p>
+                      <div className="flex_horizontal is-y-center gap-xsmall">
+                        <div className="avatar">
+                          <img 
+                            alt="著者画像" 
+                            src="/images/webflow/6876f466bdb449ceb8ef2f51_340166c9-1e93-4040-829a-d0d756783c57.avif" 
+                            loading="lazy" 
+                            className="image_cover"
+                          />
+                        </div>
+                        <div>
+                          <div className="paragraph_small margin-bottom_none">{column.author}</div>
+                          <div className="paragraph_small margin-bottom_none">{column.date} • {column.readTime}</div>
+                        </div>
+                      </div>
+                    </motion.article>
+                  ))}
+                </div>
+              </div>
+            </section>
+
+            {/* 最新コラム */}
+            <section className="section is-secondary">
+              <div className="container">
+                <div className="header is-align-center" style={{ marginBottom: '40px' }}>
+                  <h2 className="heading_h3" style={{ color: '#675032' }}>最新コラム</h2>
+                  <p className="paragraph" style={{ color: '#675032', marginBottom: '0' }}>
+                    最新の医療業界情報と専門的な知見をお届けします
+                  </p>
+                </div>
+                <div className="grid_3-col gap-large">
+                  {latestColumns.map((column, index) => (
+                    <motion.article 
+                      key={column.id}
+                      className="link-content-block"
+                      onClick={() => handleColumnSelect(column)}
+                      style={{ cursor: 'pointer' }}
+                      initial={{ opacity: 0, y: 30 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.6, delay: (index + recommendedContent.length) * 0.1 }}
                       whileHover={{ scale: 1.02 }}
                     >
                       <div className="ratio_3x2 margin-bottom_xsmall">
@@ -415,7 +591,7 @@ const ColumnPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onConsultatio
                   <h2 className="heading_h2">関連記事</h2>
                 </div>
                 <div className="grid_3-col gap-large">
-                  {columns.filter(col => col.id !== selectedColumn.id).slice(0, 3).map((column) => (
+                  {allColumns.filter(col => col.id !== selectedColumn.id).slice(0, 3).map((column) => (
                     <motion.article 
                       key={column.id}
                       className="link-content-block"

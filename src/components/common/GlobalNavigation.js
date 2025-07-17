@@ -19,7 +19,14 @@ const GlobalNavigation = ({
               }
             }}
             className="nav_logo w-inline-block"
-            style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+            style={{ 
+              background: 'none', 
+              border: 'none', 
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px'
+            }}
           >
             <div className="nav_logo-icon">
               <svg width="100%" height="100%" viewBox="0 0 33 33" preserveAspectRatio="xMidYMid meet">
