@@ -405,7 +405,7 @@ const ColumnPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onConsultatio
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6 }}
-                    style={{ color: '#2d5a2a' }}
+                    style={{ color: '#333333' }}
                   >
                     医療キャリアの最新情報
                   </motion.h1>
@@ -420,7 +420,7 @@ const ColumnPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onConsultatio
                       lineHeight: '1.6', 
                       maxWidth: '900px', 
                       margin: '0 auto 30px',
-                      color: '#2d5a2a',
+                      color: '#333333',
                       padding: '0 20px'
                     }}>
                       医療業界の最新トレンドから、キャリア形成のヒントまで、役立つ情報をお届けします。
@@ -434,8 +434,8 @@ const ColumnPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onConsultatio
             <section className="section">
               <div className="container">
                 <div className="header is-align-center" style={{ marginBottom: '40px' }}>
-                  <h2 className="heading_h3" style={{ color: '#2d5a2a' }}>おすすめコンテンツ</h2>
-                  <p className="paragraph" style={{ color: '#2d5a2a', marginBottom: '0' }}>
+                  <h2 className="heading_h3" style={{ color: '#333333' }}>おすすめコンテンツ</h2>
+                  <p className="paragraph" style={{ color: '#333333', marginBottom: '0' }}>
                     多くの方に読まれている人気記事をご紹介します
                   </p>
                 </div>
@@ -460,7 +460,7 @@ const ColumnPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onConsultatio
                         />
                       </div>
                       <div className="tag_group margin-bottom_xsmall">
-                        <div className="tag" style={{ backgroundColor: '#f8f2e8', color: '#2d5a2a' }}>
+                        <div className="tag" style={{ backgroundColor: '#f8f2e8', color: '#333333' }}>
                           {column.category}
                         </div>
                       </div>
@@ -490,8 +490,8 @@ const ColumnPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onConsultatio
             <section className="section is-secondary">
               <div className="container">
                 <div className="header is-align-center" style={{ marginBottom: '40px' }}>
-                  <h2 className="heading_h3" style={{ color: '#2d5a2a' }}>最新コラム</h2>
-                  <p className="paragraph" style={{ color: '#2d5a2a', marginBottom: '0' }}>
+                  <h2 className="heading_h3" style={{ color: '#333333' }}>最新コラム</h2>
+                  <p className="paragraph" style={{ color: '#333333', marginBottom: '0' }}>
                     最新の医療業界情報と専門的な知見をお届けします
                   </p>
                 </div>
@@ -516,7 +516,7 @@ const ColumnPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onConsultatio
                         />
                       </div>
                       <div className="tag_group margin-bottom_xsmall">
-                        <div className="tag" style={{ backgroundColor: '#f8f2e8', color: '#2d5a2a' }}>
+                        <div className="tag" style={{ backgroundColor: '#f8f2e8', color: '#333333' }}>
                           {column.category}
                         </div>
                       </div>
@@ -564,12 +564,12 @@ const ColumnPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onConsultatio
                   </button>
                   
                   <div className="tag_group margin-bottom_xsmall">
-                    <div className="tag" style={{ backgroundColor: '#f8f2e8', color: '#2d5a2a' }}>
+                    <div className="tag" style={{ backgroundColor: '#f8f2e8', color: '#333333' }}>
                       {selectedColumn.category}
                     </div>
                   </div>
                   
-                  <h1 className="heading_h1" style={{ color: '#2d5a2a' }}>
+                  <h1 className="heading_h1" style={{ color: '#333333' }}>
                     {selectedColumn.title}
                   </h1>
                   
@@ -631,7 +631,7 @@ const ColumnPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onConsultatio
                         />
                       </div>
                       <div className="tag_group margin-bottom_xsmall">
-                        <div className="tag" style={{ backgroundColor: '#f8f2e8', color: '#2d5a2a' }}>
+                        <div className="tag" style={{ backgroundColor: '#f8f2e8', color: '#333333' }}>
                           {column.category}
                         </div>
                       </div>

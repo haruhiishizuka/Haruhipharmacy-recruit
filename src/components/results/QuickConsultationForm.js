@@ -312,7 +312,7 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
         <div
           style={{
             backgroundColor: '#d5e6d3',
-            color: '#2d5a2a',
+            color: '#333333',
             padding: '20px',
             position: 'relative'
           }}
@@ -368,7 +368,7 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
               borderBottom: activeTab === 'form' ? 'none' : '1px solid transparent',
               borderTopLeftRadius: '8px',
               borderTopRightRadius: '8px',
-              color: activeTab === 'form' ? '#2d5a2a' : '#4A5568',
+              color: activeTab === 'form' ? '#333333' : '#4A5568',
               cursor: 'pointer',
               transition: 'all 0.2s',
               display: 'flex',
@@ -422,7 +422,7 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
               borderBottom: activeTab === 'about' ? 'none' : '1px solid transparent',
               borderTopLeftRadius: '8px',
               borderTopRightRadius: '8px',
-              color: activeTab === 'about' ? '#2d5a2a' : '#4A5568',
+              color: activeTab === 'about' ? '#333333' : '#4A5568',
               cursor: 'pointer',
               transition: 'all 0.2s',
               display: 'flex',
@@ -837,10 +837,10 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                           onBlur={handleBlur}
                           style={{ display: 'none' }}
                         />
-                        <div style={{ fontSize: '18px', fontWeight: '700', color: '#2d5a2a', marginBottom: '8px' }}>
+                        <div style={{ fontSize: '18px', fontWeight: '700', color: '#333333', marginBottom: '8px' }}>
                           📱 LINE友達追加して相談
                         </div>
-                        <div style={{ fontSize: '14px', color: '#2d5a2a' }}>
+                        <div style={{ fontSize: '14px', color: '#333333' }}>
                           LINEで気軽にキャリア相談ができます
                         </div>
                       </label>
@@ -938,7 +938,7 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                           <line x1="12" y1="16" x2="12" y2="12"></line>
                           <line x1="12" y1="8" x2="12.01" y2="8"></line>
                         </svg>
-                        <span style={{ color: '#2d5a2a', fontWeight: '600' }}>診断情報</span>
+                        <span style={{ color: '#333333', fontWeight: '600' }}>診断情報</span>
                       </div>
                       {profession && (
                         <p style={{ color: '#4A5568', marginBottom: '4px' }}>
@@ -1006,7 +1006,7 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                         style={{
                           background: 'none',
                           border: 'none',
-                          color: '#2d5a2a',
+                          color: '#333333',
                           textDecoration: 'underline',
                           cursor: 'pointer',
                           fontSize: '14px',
@@ -1045,7 +1045,7 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                   <h4 style={{ 
                     fontSize: '18px', 
                     fontWeight: '700', 
-                    color: '#2d5a2a',
+                    color: '#333333',
                     marginBottom: '12px' 
                   }}>
                     私たちの理念
@@ -1070,7 +1070,7 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                   <h4 style={{ 
                     fontSize: '18px', 
                     fontWeight: '700', 
-                    color: '#2d5a2a',
+                    color: '#333333',
                     marginBottom: '16px',
                     display: 'flex',
                     alignItems: 'center',
@@ -1139,7 +1139,7 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                           <h5 style={{ 
                             fontSize: '16px', 
                             fontWeight: '600', 
-                            color: '#2d5a2a',
+                            color: '#333333',
                             marginBottom: '6px' 
                           }}>
                             {strength.title}
@@ -1218,7 +1218,7 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                   <h4 style={{ 
                     fontSize: '17px', 
                     fontWeight: '600', 
-                    color: '#2d5a2a',
+                    color: '#333333',
                     marginBottom: '16px',
                     display: 'flex',
                     alignItems: 'center',

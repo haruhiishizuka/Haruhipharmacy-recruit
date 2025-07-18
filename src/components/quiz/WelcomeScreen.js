@@ -90,7 +90,7 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy, onReturnHome, onNavigateToPa
                   top: '0.5rem',
                   width: '3px',
                   height: 'calc(100% - 1rem)',
-                  backgroundColor: '#2d5a2a',
+                  backgroundColor: '#333333',
                   borderRadius: '2px',
                   display: 'block'
                 }}></span>
