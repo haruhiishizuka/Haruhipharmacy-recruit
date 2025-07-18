@@ -814,72 +814,64 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                       />
                     </div>
                     
-                    {/* 希望連絡方法 */}
+                    {/* LINE友達追加 - メイン選択肢 */}
                     <div style={{ marginBottom: '24px' }}>
-                      <p style={{ 
-                        marginBottom: '10px', 
-                        fontSize: '14px', 
-                        fontWeight: '500',
-                        color: '#4A5568'
-                      }}>
-                        ご希望の連絡方法 <span style={{ color: '#E53E3E' }}>*</span>
-                      </p>
-    
-                      <div 
-                        style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}
-                        role="radiogroup"
-                        aria-required="true"
+                      <label 
+                        style={{
+                          display: 'block',
+                          padding: '20px',
+                          borderRadius: '12px',
+                          border: `2px solid ${formData.contactMethod === 'line' ? '#2d5a2a' : '#2d5a2a'}`,
+                          backgroundColor: formData.contactMethod === 'line' ? '#d5e6d3' : '#d5e6d3',
+                          cursor: 'pointer',
+                          textAlign: 'center',
+                          marginBottom: '16px'
+                        }}
                       >
-                        <label 
-                          style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            padding: '10px 16px',
-                            borderRadius: '8px',
-                            border: `1px solid ${formData.contactMethod === 'line' ? '#2d5a2a' : '#CBD5E0'}`,
-                            backgroundColor: formData.contactMethod === 'line' ? '#f8f2e8' : 'white',
-                            cursor: 'pointer',
-                            flex: '1',
-                            minWidth: '120px'
-                          }}
-                        >
-                          <input
-                            type="radio"
-                            name="contactMethod"
-                            value="line"
-                            checked={formData.contactMethod === 'line'}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            style={{ marginRight: '8px' }}
-                          />
-                          <span style={{ fontSize: '15px', color: '#2D3748' }}>LINE</span>
-                        </label>
-      
-                        <label 
-                          style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            padding: '10px 16px',
-                            borderRadius: '8px',
-                            border: `1px solid ${formData.contactMethod === 'phone' ? '#2d5a2a' : '#CBD5E0'}`,
-                            backgroundColor: formData.contactMethod === 'phone' ? '#f8f2e8' : 'white',
-                            cursor: 'pointer',
-                            flex: '1',
-                            minWidth: '120px'
-                          }}
-                        >
-                          <input
-                            type="radio"
-                            name="contactMethod"
-                            value="phone"
-                            checked={formData.contactMethod === 'phone'}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            style={{ marginRight: '8px' }}
-                          />
-                          <span style={{ fontSize: '15px', color: '#2D3748' }}>電話</span>
-                        </label>
+                        <input
+                          type="radio"
+                          name="contactMethod"
+                          value="line"
+                          checked={formData.contactMethod === 'line'}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          style={{ display: 'none' }}
+                        />
+                        <div style={{ fontSize: '18px', fontWeight: '700', color: '#2d5a2a', marginBottom: '8px' }}>
+                          📱 LINE友達追加して相談
+                        </div>
+                        <div style={{ fontSize: '14px', color: '#2d5a2a' }}>
+                          LINEで気軽にキャリア相談ができます
+                        </div>
+                      </label>
+
+                      {/* 電話での相談 - サブ選択肢 */}
+                      <div style={{ fontSize: '13px', color: '#6B7280', marginBottom: '8px' }}>
+                        電話でのご相談をご希望の場合
                       </div>
+                      <label 
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          padding: '12px 16px',
+                          borderRadius: '8px',
+                          border: `1px solid ${formData.contactMethod === 'phone' ? '#2d5a2a' : '#E5E7EB'}`,
+                          backgroundColor: formData.contactMethod === 'phone' ? '#f0f9ff' : 'white',
+                          cursor: 'pointer'
+                        }}
+                      >
+                        <input
+                          type="radio"
+                          name="contactMethod"
+                          value="phone"
+                          checked={formData.contactMethod === 'phone'}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          style={{ marginRight: '8px' }}
+                        />
+                        <span style={{ fontSize: '14px', color: '#374151' }}>📞 電話での相談</span>
+                      </label>
+                    </div>
     
                       {/* LINE友だち追加ボタン - LINEが選択された場合のみ表示 */}
                       <AnimatePresence>
@@ -948,9 +940,6 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                         </svg>
                         <span style={{ color: '#2d5a2a', fontWeight: '600' }}>診断情報</span>
                       </div>
-                      <p style={{ color: '#4A5568', marginBottom: '4px' }}>
-                        診断結果: <strong>{resultType}</strong>タイプ
-                      </p>
                       {profession && (
                         <p style={{ color: '#4A5568', marginBottom: '4px' }}>
                           職種: <strong>{profession}</strong>
