@@ -186,7 +186,7 @@ const DiagnosticToolPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onCon
                 className="ix_card-rotate-right card card_body"
                 initial={{ opacity: 0, x: "70%", rotateZ: 30 }}
                 whileInView={{ opacity: 1, x: "0%", rotateZ: 0 }}
-                transition={{ duration: 1.2, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.2 }}
+                transition={{ duration: 1.2, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.3 }}
                 viewport={{ once: true, margin: "-50px" }}
               >
                 <div className="grid_1-col gap-medium ratio_16x9">
@@ -207,7 +207,7 @@ const DiagnosticToolPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onCon
                 className="ix_card-rotate-left card card_body"
                 initial={{ opacity: 0, x: "-70%", rotateZ: -30 }}
                 whileInView={{ opacity: 1, x: "0%", rotateZ: 0 }}
-                transition={{ duration: 1.2, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.4 }}
+                transition={{ duration: 1.2, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.6 }}
                 viewport={{ once: true, margin: "-50px" }}
               >
                 <div className="grid_1-col gap-medium ratio_16x9">
@@ -229,7 +229,7 @@ const DiagnosticToolPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onCon
                 className="ix_card-rotate-right card card_body"
                 initial={{ opacity: 0, x: "70%", rotateZ: 30 }}
                 whileInView={{ opacity: 1, x: "0%", rotateZ: 0 }}
-                transition={{ duration: 1.2, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.6 }}
+                transition={{ duration: 1.2, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.9 }}
                 viewport={{ once: true, margin: "-50px" }}
               >
                 <div className="grid_1-col gap-medium ratio_16x9">
@@ -251,7 +251,7 @@ const DiagnosticToolPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onCon
                 className="ix_card-rotate-left card card_body"
                 initial={{ opacity: 0, x: "-70%", rotateZ: -30 }}
                 whileInView={{ opacity: 1, x: "0%", rotateZ: 0 }}
-                transition={{ duration: 1.2, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.8 }}
+                transition={{ duration: 1.2, ease: [0.25, 0.46, 0.45, 0.94], delay: 1.2 }}
                 viewport={{ once: true, margin: "-50px" }}
               >
                 <div className="grid_1-col gap-medium ratio_16x9">
@@ -272,7 +272,7 @@ const DiagnosticToolPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onCon
                 className="ix_card-rotate-right card card_body"
                 initial={{ opacity: 0, x: "70%", rotateZ: 30 }}
                 whileInView={{ opacity: 1, x: "0%", rotateZ: 0 }}
-                transition={{ duration: 1.2, ease: [0.25, 0.46, 0.45, 0.94], delay: 1.0 }}
+                transition={{ duration: 1.2, ease: [0.25, 0.46, 0.45, 0.94], delay: 1.5 }}
                 viewport={{ once: true, margin: "-50px" }}
               >
                 <div className="grid_1-col gap-medium ratio_16x9">
@@ -375,12 +375,6 @@ const DiagnosticToolPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onCon
                 <div className="heading_h4" style={{ color: '#675032' }}>個人情報の入力は必要ですか？</div>
                 <div className="rich-text w-richtext">
                   <p style={{ color: '#675032' }}>一切不要です。名前、メールアドレス、電話番号などの個人情報は一切必要ありません。完全匿名で、安心してご利用いただけます。</p>
-                </div>
-              </div>
-              <div className="divider">
-                <div className="heading_h4" style={{ color: '#675032' }}>結果は本当に信頼できるのでしょうか？</div>
-                <div className="rich-text w-richtext">
-                  <p style={{ color: '#675032' }}>この診断は、実際に医療現場で働く数千人のデータと、科学的に検証された16タイプ性格診断を基に作成されています。「こんなに当たっている」と驚かれる方が多いです。</p>
                 </div>
               </div>
               <div className="divider">
