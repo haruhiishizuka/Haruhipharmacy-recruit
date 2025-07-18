@@ -1,8 +1,31 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useEffect, useRef } from 'react';
 import GlobalNavigation from '../common/GlobalNavigation';
 
 const DiagnosticToolPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onConsultation }) => {
+  const cardStackRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry, index) => {
+          if (entry.isIntersecting) {
+            setTimeout(() => {
+              entry.target.classList.add('animate-in');
+            }, index * 300); // 0.3秒間隔でアニメーション
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '-50px' }
+    );
+
+    if (cardStackRef.current) {
+      const cards = cardStackRef.current.querySelectorAll('.ix_card-rotate-left, .ix_card-rotate-right');
+      cards.forEach(card => observer.observe(card));
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <div style={{ minHeight: '100vh', width: '100%' }}>
       {/* Navigation */}
@@ -19,20 +42,13 @@ const DiagnosticToolPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onCon
         <div className="container">
           <div className="grid_2-col tablet-1-col gap-xxlarge">
             <div className="header margin-bottom_none">
-              <motion.h2 
+              <h2 
                 className="heading_h1"
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
                 style={{ color: '#333333' }}
               >
                 あなたが輝く医療現場へ
-              </motion.h2>
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2, duration: 0.6 }}
-              >
+              </h2>
+              <div>
                 <button 
                   onClick={(e) => {
                     e.preventDefault();
@@ -45,7 +61,7 @@ const DiagnosticToolPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onCon
                 >
                   理想のキャリアを発見する
                 </button>
-              </motion.div>
+              </div>
             </div>
             <div>
               <img 
@@ -66,21 +82,13 @@ const DiagnosticToolPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onCon
         <div className="container">
           <div className="header">
             <div className="grid_5-col gap-medium">
-              <motion.h1 
+              <h1 
                 className="heading_h1 margin-bottom_none"
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
                 style={{ color: '#333333', gridColumn: 'span 3' }}
               >
                 毎日が充実し、患者さんに感謝されるキャリアへ
-              </motion.h1>
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2, duration: 0.6 }}
-                style={{ gridColumn: 'span 2' }}
-              >
+              </h1>
+              <div style={{ gridColumn: 'span 2' }}>
                 <p className="paragraph_large text-color_secondary margin-bottom_small" style={{ color: '#333333' }}>
                   16の質問であなたの本当の強みと情熱を発見。「ここでなら長く働ける」と心から思える理想の職場と出会えます。
                 </p>
@@ -114,7 +122,7 @@ const DiagnosticToolPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onCon
                     相談する
                   </button>
                 </div>
-              </motion.div>
+              </div>
             </div>
           </div>
           <img 
@@ -152,19 +160,13 @@ const DiagnosticToolPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onCon
         </div>
       </section>
 
-      {/* Features Grid - 6 cards with exact animation replication */}
+      {/* Features Grid - 6 cards with CSS animation */}
       <section className="section">
         <div className="container">
           <div className="grid_1-col">
-            <div className="grid_2-col gap-small">
+            <div className="feature-card-stack grid_2-col gap-small" ref={cardStackRef}>
               {/* Card 1 - Left rotation */}
-              <motion.div 
-                className="ix_card-rotate-left card card_body"
-                initial={{ opacity: 0, x: "-70%", rotateZ: -30 }}
-                whileInView={{ opacity: 1, x: "0%", rotateZ: 0 }}
-                transition={{ duration: 1.2, ease: [0.25, 0.46, 0.45, 0.94] }}
-                viewport={{ once: true, margin: "-50px" }}
-              >
+              <div className="ix_card-rotate-left card card_body">
                 <div className="grid_1-col gap-medium ratio_16x9">
                   <div className="is-xlarge-1x1">
                     <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none">
@@ -179,15 +181,10 @@ const DiagnosticToolPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onCon
                     <p className="paragraph_small text-color_secondary" style={{ color: '#333333' }}>条件ではなく、あなたの本当の性格で選ぶ新しい転職。毎日が「あなたらしく」働ける理想の医療現場を、たった3分で発見できます。</p>
                   </div>
                 </div>
-              </motion.div>
+              </div>
 
               {/* Card 2 - Right rotation */}
-              <motion.div 
-                className="ix_card-rotate-right card card_body"
-                initial={{ opacity: 0, x: "70%", rotateZ: 30 }}
-                whileInView={{ opacity: 1, x: "0%", rotateZ: 0 }}
-                transition={{ duration: 1.2, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.3 }}
-                viewport={{ once: true, margin: "-50px" }}
+              <div className="ix_card-rotate-right card card_body"
               >
                 <div className="grid_1-col gap-medium ratio_16x9">
                   <div className="is-xlarge-1x1">
@@ -200,15 +197,10 @@ const DiagnosticToolPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onCon
                     <p className="paragraph_small text-color_secondary" style={{ color: '#333333' }}>「こんなに自分を理解してくれたのは初めて」と驚く精度で、あなたの本当の強みと価値観を明らかにします。</p>
                   </div>
                 </div>
-              </motion.div>
+              </div>
 
               {/* Card 3 - Left rotation */}
-              <motion.div 
-                className="ix_card-rotate-left card card_body"
-                initial={{ opacity: 0, x: "-70%", rotateZ: -30 }}
-                whileInView={{ opacity: 1, x: "0%", rotateZ: 0 }}
-                transition={{ duration: 1.2, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.6 }}
-                viewport={{ once: true, margin: "-50px" }}
+              <div className="ix_card-rotate-left card card_body"
               >
                 <div className="grid_1-col gap-medium ratio_16x9">
                   <div className="is-xlarge-1x1">
@@ -222,15 +214,10 @@ const DiagnosticToolPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onCon
                     <p className="paragraph_small text-color_secondary" style={{ color: '#333333' }}>診断終了と同時に、あなたにピッタリの職場とキャリアプランを具体的に提案。「こんな職場を探していた！」と納得する精度です。</p>
                   </div>
                 </div>
-              </motion.div>
+              </div>
 
               {/* Card 4 - Right rotation */}
-              <motion.div 
-                className="ix_card-rotate-right card card_body"
-                initial={{ opacity: 0, x: "70%", rotateZ: 30 }}
-                whileInView={{ opacity: 1, x: "0%", rotateZ: 0 }}
-                transition={{ duration: 1.2, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.9 }}
-                viewport={{ once: true, margin: "-50px" }}
+              <div className="ix_card-rotate-right card card_body"
               >
                 <div className="grid_1-col gap-medium ratio_16x9">
                   <div className="is-xlarge-1x1">
@@ -244,15 +231,10 @@ const DiagnosticToolPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onCon
                     <p className="paragraph_small text-color_secondary" style={{ color: '#333333' }}>名前もメールも不要。今すぐ無料で始められます。誰にも知られず、自分だけのペースで理想のキャリアを探せます。</p>
                   </div>
                 </div>
-              </motion.div>
+              </div>
 
               {/* Card 5 - Left rotation */}
-              <motion.div 
-                className="ix_card-rotate-left card card_body"
-                initial={{ opacity: 0, x: "-70%", rotateZ: -30 }}
-                whileInView={{ opacity: 1, x: "0%", rotateZ: 0 }}
-                transition={{ duration: 1.2, ease: [0.25, 0.46, 0.45, 0.94], delay: 1.2 }}
-                viewport={{ once: true, margin: "-50px" }}
+              <div className="ix_card-rotate-left card card_body"
               >
                 <div className="grid_1-col gap-medium ratio_16x9">
                   <div className="is-xlarge-1x1">
@@ -265,15 +247,10 @@ const DiagnosticToolPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onCon
                     <p className="paragraph_small text-color_secondary" style={{ color: '#333333' }}>実際の医療機関で働く先輩たちの生の声と最新の業界データを組み合わせた、「生きた」診断結果をお届けします。</p>
                   </div>
                 </div>
-              </motion.div>
+              </div>
 
               {/* Card 6 - Right rotation */}
-              <motion.div 
-                className="ix_card-rotate-right card card_body"
-                initial={{ opacity: 0, x: "70%", rotateZ: 30 }}
-                whileInView={{ opacity: 1, x: "0%", rotateZ: 0 }}
-                transition={{ duration: 1.2, ease: [0.25, 0.46, 0.45, 0.94], delay: 1.5 }}
-                viewport={{ once: true, margin: "-50px" }}
+              <div className="ix_card-rotate-right card card_body"
               >
                 <div className="grid_1-col gap-medium ratio_16x9">
                   <div className="is-xlarge-1x1">
@@ -286,7 +263,7 @@ const DiagnosticToolPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onCon
                     <p className="paragraph_small text-color_secondary" style={{ color: '#333333' }}>医師・看護師・薬剤師・検査技師など、どんな職種でも対応。常勤・非常勤・パートなど、あなたのライフスタイルに合う働き方を提案します。</p>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             </div>
           </div>
         </div>

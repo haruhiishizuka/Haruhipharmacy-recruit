@@ -15,6 +15,7 @@ import ServicePage from './components/pages/ServicePage';
 import ColumnPage from './components/pages/ColumnPage';
 import SupportPage from './components/pages/SupportPage';
 import VoicesPage from './components/pages/VoicesPage';
+import NewQuizFlow from './components/quiz/NewQuizFlow';
 // 新しいアナリティクス関数をインポート
 import { 
   initializeAnalytics, 
@@ -55,7 +56,7 @@ useEffect(() => {
   initializeAnalytics();
   
   // 無効なルートへのアクセスを修正
-  const validRoutes = ['/', '/profession', '/quiz', '/result', '/policy', '/diagnostic-tool', '/services', '/columns', '/support', '/voices'];
+  const validRoutes = ['/', '/profession', '/quiz', '/result', '/policy', '/diagnostic-tool', '/services', '/columns', '/support', '/voices', '/new-quiz'];
   if (!validRoutes.includes(location.pathname)) {
     console.log('無効なルートへのアクセスを検出: ', location.pathname);
     navigate('/', { replace: true });
@@ -93,14 +94,14 @@ useEffect(() => {
     exit: { opacity: 0, y: -20 }
   };
 
-// 診断開始時の処理
+// 診断開始時の処理 - 新システムにリダイレクト
 const handleStartQuiz = () => {
-  console.log('🧩 診断を開始します');
+  console.log('🧩 診断を開始します（新16タイプシステム）');
   // 診断開始時間を記録
   setQuizStartTime(new Date());
   // 診断開始イベントをトラッキング
-  trackQuizStart('welcome');
-  navigate('/profession');
+  trackQuizStart('welcome_redirect_to_new');
+  navigate('/new-quiz');
 };  
 
   // 基本質問セット - 共通質問
@@ -506,7 +507,7 @@ const handleProfessionSelect = (selectedProfession) => {
       case '/':
         return (
           <WelcomeScreen 
-            onStartQuiz={() => navigate('/profession')} 
+            onStartQuiz={() => navigate('/new-quiz')} 
             onOpenPolicy={handleOpenPolicy} 
             onReturnHome={handleReturnHome}
             onNavigateToPage={handleNavigateToPage}
@@ -566,7 +567,7 @@ const handleProfessionSelect = (selectedProfession) => {
         return (
           <DiagnosticToolPage 
             onReturnHome={handleReturnHome} 
-            onStartQuiz={() => navigate('/profession')}
+            onStartQuiz={() => navigate('/new-quiz')}
             onNavigateToPage={handleNavigateToPage}
             onConsultation={handleConsultation}
           />
@@ -575,7 +576,7 @@ const handleProfessionSelect = (selectedProfession) => {
         return (
           <ServicePage 
             onReturnHome={handleReturnHome} 
-            onStartQuiz={() => navigate('/profession')}
+            onStartQuiz={() => navigate('/new-quiz')}
             onNavigateToPage={handleNavigateToPage}
             onConsultation={handleConsultation}
           />
@@ -584,7 +585,7 @@ const handleProfessionSelect = (selectedProfession) => {
         return (
           <ColumnPage 
             onReturnHome={handleReturnHome} 
-            onStartQuiz={() => navigate('/profession')}
+            onStartQuiz={() => navigate('/new-quiz')}
             onNavigateToPage={handleNavigateToPage}
             onConsultation={handleConsultation}
           />
@@ -593,7 +594,7 @@ const handleProfessionSelect = (selectedProfession) => {
         return (
           <SupportPage 
             onReturnHome={handleReturnHome} 
-            onStartQuiz={() => navigate('/profession')}
+            onStartQuiz={() => navigate('/new-quiz')}
             onNavigateToPage={handleNavigateToPage}
             onConsultation={handleConsultation}
           />
@@ -602,9 +603,17 @@ const handleProfessionSelect = (selectedProfession) => {
         return (
           <VoicesPage 
             onReturnHome={handleReturnHome} 
-            onStartQuiz={() => navigate('/profession')}
+            onStartQuiz={() => navigate('/new-quiz')}
             onNavigateToPage={handleNavigateToPage}
             onConsultation={handleConsultation}
+          />
+        );
+      case '/new-quiz':
+        return (
+          <NewQuizFlow 
+            onReturnHome={handleReturnHome} 
+            onConsultation={handleConsultation}
+            onNavigateToPage={handleNavigateToPage}
           />
         );
       default:

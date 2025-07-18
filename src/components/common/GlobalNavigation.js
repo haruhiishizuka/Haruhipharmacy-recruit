@@ -164,7 +164,10 @@ const GlobalNavigation = ({
             <button 
               onClick={(e) => {
                 e.preventDefault();
-                if (typeof onStartQuiz === 'function') {
+                console.log("無料診断ボタンクリック - 新システムへ遷移");
+                if (typeof onNavigateToPage === 'function') {
+                  onNavigateToPage('/new-quiz');
+                } else if (typeof onStartQuiz === 'function') {
                   onStartQuiz();
                 }
               }}

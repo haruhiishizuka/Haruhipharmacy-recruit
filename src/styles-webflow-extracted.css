@@ -1492,3 +1492,162 @@ footer.section.is-secondary .text-link:hover {
     margin-left: 0;
   }
 }
+
+/* ================================
+   Feature Card Stack Unification
+   ================================ */
+
+/* 余白二重防止：.card + .card_body を同一要素に併記した場合 */
+.card.card_body {
+  padding: var(--spacing-lg); /* 単一適用 */
+}
+/* ネストされた場合の安全ガード */
+.card > .card_body {
+  padding: 0; /* 外側.cardで確保済み */
+}
+
+/* 中段カード領域共通ラッパ（任意で付与） */
+.feature-card-stack {
+  --feature-card-max-w: 320px;
+}
+
+/* DiagnosticToolPage専用のカードレイアウト */
+.feature-card-stack.grid_2-col {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: var(--spacing-small) !important;
+  justify-items: stretch;
+  align-items: start;
+  margin-inline: auto;
+  width: 100%;
+  max-width: 1000px;
+}
+
+.feature-card-stack.grid_2-col .ix_card-rotate-left,
+.feature-card-stack.grid_2-col .ix_card-rotate-right {
+  width: 100%;
+  max-width: none;
+}
+
+/* カード内のコンテンツ配置をWebflowに合わせる */
+.feature-card-stack .card .grid_1-col.gap-medium.ratio_16x9 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-sm);
+  text-align: left;
+  align-items: start;
+}
+
+.feature-card-stack .card .max-width_xsmall {
+  max-width: 100%;
+  width: 100%;
+}
+
+.feature-card-stack .card .paragraph_large.text_all-caps {
+  margin-bottom: var(--spacing-xxs);
+  line-height: 1.2;
+  font-weight: 600;
+}
+
+.feature-card-stack .card .paragraph_small.text-color_secondary {
+  line-height: 1.4;
+  opacity: 0.8;
+}
+
+/* モダンなアイコンデザイン */
+.feature-card-stack .card .is-xlarge-1x1 {
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(135deg, #d5e6d3 0%, #bcd7b9 100%);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--spacing-sm);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(213, 230, 211, 0.3);
+}
+
+.feature-card-stack .card .is-xlarge-1x1:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(213, 230, 211, 0.4);
+}
+
+.feature-card-stack .card .is-xlarge-1x1 svg {
+  width: 32px;
+  height: 32px;
+  color: #2d5a2a;
+}
+
+/* カード全体のモダンなデザイン */
+.feature-card-stack .card.card_body {
+  background: #ffffff;
+  border: 1px solid rgba(213, 230, 211, 0.3);
+  border-radius: 20px;
+  padding: var(--spacing-xl);
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.feature-card-stack .card.card_body:hover {
+  border-color: rgba(213, 230, 211, 0.6);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  transform: translateY(-4px);
+}
+
+/* アニメーションカード初期状態（デスクトップ以上） */
+@media (min-width: 768px) {
+  .feature-card-stack .ix_card-rotate-left,
+  .feature-card-stack .ix_card-rotate-right {
+    padding: 0;                /* 外側余白は grid に任せる */
+    max-width: var(--feature-card-max-w);
+    transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+  }
+
+  .feature-card-stack .ix_card-rotate-left {
+    transform: translateX(-70%) rotate(-30deg);
+    transform-origin: center;
+    opacity: 0;
+  }
+  .feature-card-stack .ix_card-rotate-right {
+    transform: translateX(70%) rotate(30deg);
+    transform-origin: center;
+    opacity: 0;
+  }
+  
+  /* アニメーション表示状態 */
+  .feature-card-stack .ix_card-rotate-left.animate-in,
+  .feature-card-stack .ix_card-rotate-right.animate-in {
+    transform: translateX(0) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+/* モバイル：回転オフで読みやすさ優先 */
+@media (max-width: 767.98px) {
+  .feature-card-stack .ix_card-rotate-left,
+  .feature-card-stack .ix_card-rotate-right {
+    transform: none !important;
+    opacity: 1;
+  }
+}
+
+/* アクセシビリティ：動き軽減指定の利用者にも回転オフ */
+@media (prefers-reduced-motion: reduce) {
+  .feature-card-stack .ix_card-rotate-left,
+  .feature-card-stack .ix_card-rotate-right {
+    transition: none;
+    transform: none !important;
+    opacity: 1;
+  }
+}
+
+/* 内部グリッドを統一（アイコン + テキスト縦並び） */
+.feature-card-stack .ix_card-rotate-left .card_body,
+.feature-card-stack .ix_card-rotate-right .card_body {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-md);
+  padding: var(--spacing-lg); /* 一貫性 */
+  text-align: left;
+}

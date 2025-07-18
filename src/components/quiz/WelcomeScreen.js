@@ -6,12 +6,23 @@ import GlobalNavigation from '../common/GlobalNavigation';
 const WelcomeScreen = ({ onStartQuiz, onOpenPolicy, onReturnHome, onNavigateToPage, onConsultation }) => {
   const handleStartQuizClick = (e) => {
     e.preventDefault();
-    if (typeof onStartQuiz === 'function') {
-      console.log("診断を開始します...");
-      trackQuizStart('welcome');
+    console.log("新しい診断システムを開始します（従来ボタンから）...");
+    trackQuizStart('welcome_legacy');
+    if (typeof onNavigateToPage === 'function') {
+      onNavigateToPage('/new-quiz');
+    } else if (typeof onStartQuiz === 'function') {
       onStartQuiz();
     } else {
-      console.error("onStartQuiz is not a function");
+      console.error("onNavigateToPage is not a function");
+    }
+  };
+
+  const handleNewQuizClick = (e) => {
+    e.preventDefault();
+    console.log("新しい診断システムを開始します...");
+    trackQuizStart('new_system');
+    if (typeof onNavigateToPage === 'function') {
+      onNavigateToPage('/new-quiz');
     }
   };
 
@@ -127,10 +138,27 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy, onReturnHome, onNavigateToPa
             </div>
             <div className="button-group">
               <button 
-                onClick={handleStartQuizClick}
+                onClick={handleNewQuizClick}
                 className="button"
+                style={{
+                  backgroundColor: '#333333',
+                  borderColor: '#333333',
+                  color: '#fff',
+                  fontWeight: 'bold'
+                }}
               >
-                診断開始
+                🔬 新・16タイプ診断
+              </button>
+              <button 
+                onClick={handleStartQuizClick}
+                className="button is-secondary"
+                style={{
+                  backgroundColor: 'transparent',
+                  color: '#333333',
+                  border: '2px solid #333333'
+                }}
+              >
+                従来の診断
               </button>
               <button 
                 onClick={(e) => {
@@ -140,6 +168,11 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy, onReturnHome, onNavigateToPa
                   }
                 }}
                 className="button is-secondary"
+                style={{
+                  backgroundColor: 'transparent',
+                  color: '#333333',
+                  border: '2px solid #333333'
+                }}
               >
                 相談する
               </button>
