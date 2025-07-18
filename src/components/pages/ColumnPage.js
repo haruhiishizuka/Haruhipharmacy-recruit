@@ -179,6 +179,29 @@ const ColumnPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onConsultatio
         <h2>まとめ</h2>
         <p>ポジティブアプローチ転職は、自分らしいキャリアを実現するための有効な手段です。適切な準備と積極的なアプローチにより、理想の職場での転職が可能になります。</p>
       `
+    },
+    {
+      id: 'recommended-3',
+      title: '現場で働く先輩の声',
+      category: '現場の声',
+      date: '2024/04/20',
+      author: 'Hiroshi Tanaka',
+      excerpt: '実際に転職を成功させた医療従事者の体験談や、現場のリアルな声をご紹介します。',
+      readTime: '12分',
+      image: '/images/webflow/6876f4663a153d4faec8f158_e006255f-4c9f-4863-aa8b-82f8fa8232ee.avif',
+      content: `
+        <h2>現場の生の声</h2>
+        <p>医療現場で実際に働く先輩方から、転職体験談やキャリアアドバイスをお聞きしました。</p>
+        
+        <h3>看護師Aさんのケース</h3>
+        <p>急性期から慢性期への転職で見つけた、自分らしい働き方についてお話しいただきました。</p>
+        
+        <h3>薬剤師Bさんのケース</h3>
+        <p>病院薬剤師から地域薬局への転職で得られた新たなやりがいについて伺いました。</p>
+        
+        <h3>医師Cさんのケース</h3>
+        <p>大学病院から地域医療への転職で感じた充実感と今後の展望について語っていただきました。</p>
+      `
     }
   ];
 
@@ -459,120 +482,6 @@ const ColumnPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onConsultatio
                       </div>
                     </motion.article>
                   ))}
-                </div>
-              </div>
-            </section>
-
-            {/* キャリアヒント専用セクション */}
-            <section id="personality-advice" className="section">
-              <div className="container">
-                <div className="header is-align-center" style={{ marginBottom: '40px' }}>
-                  <h2 className="heading_h3" style={{ color: '#675032' }}>性格タイプ別アドバイス</h2>
-                  <p className="paragraph" style={{ color: '#675032', marginBottom: '0' }}>
-                    16タイプ診断を活かしたキャリアの選び方や、現場で役立つコミュニケーション術をご紹介します
-                  </p>
-                </div>
-                <div className="grid_2-col gap-large">
-                  <motion.article 
-                    className="link-content-block"
-                    onClick={() => handleColumnSelect(recommendedContent[0])}
-                    style={{ cursor: 'pointer' }}
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6 }}
-                    whileHover={{ scale: 1.02 }}
-                  >
-                    <div className="ratio_3x2 margin-bottom_xsmall">
-                      <img 
-                        alt={recommendedContent[0].title} 
-                        src={recommendedContent[0].image} 
-                        loading="lazy" 
-                        className="image_cover"
-                      />
-                    </div>
-                    <div className="tag_group margin-bottom_xsmall">
-                      <div className="tag" style={{ backgroundColor: '#f8f2e8', color: '#675032' }}>
-                        {recommendedContent[0].category}
-                      </div>
-                    </div>
-                    <h3 className="heading_h4">{recommendedContent[0].title}</h3>
-                    <p className="paragraph">{recommendedContent[0].excerpt}</p>
-                  </motion.article>
-                </div>
-              </div>
-            </section>
-
-            <section id="positive-career" className="section is-secondary">
-              <div className="container">
-                <div className="header is-align-center" style={{ marginBottom: '40px' }}>
-                  <h2 className="heading_h3" style={{ color: '#675032' }}>ポジティブ転職の魅力</h2>
-                  <p className="paragraph" style={{ color: '#675032', marginBottom: '0' }}>
-                    自分に合う医療機関を選ぶコツや、前向きな転職アプローチのメリット・体験談をまとめました
-                  </p>
-                </div>
-                <div className="grid_2-col gap-large">
-                  <motion.article 
-                    className="link-content-block"
-                    onClick={() => handleColumnSelect(recommendedContent[1])}
-                    style={{ cursor: 'pointer' }}
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6 }}
-                    whileHover={{ scale: 1.02 }}
-                  >
-                    <div className="ratio_3x2 margin-bottom_xsmall">
-                      <img 
-                        alt={recommendedContent[1].title} 
-                        src={recommendedContent[1].image} 
-                        loading="lazy" 
-                        className="image_cover"
-                      />
-                    </div>
-                    <div className="tag_group margin-bottom_xsmall">
-                      <div className="tag" style={{ backgroundColor: '#f8f2e8', color: '#675032' }}>
-                        {recommendedContent[1].category}
-                      </div>
-                    </div>
-                    <h3 className="heading_h4">{recommendedContent[1].title}</h3>
-                    <p className="paragraph">{recommendedContent[1].excerpt}</p>
-                  </motion.article>
-                </div>
-              </div>
-            </section>
-
-            <section id="workplace-voices" className="section">
-              <div className="container">
-                <div className="header is-align-center" style={{ marginBottom: '40px' }}>
-                  <h2 className="heading_h3" style={{ color: '#675032' }}>現場で働く先輩の声</h2>
-                  <p className="paragraph" style={{ color: '#675032', marginBottom: '0' }}>
-                    実際に転職を成功させた医療従事者の体験談や、現場のリアルな声をご紹介します
-                  </p>
-                </div>
-                <div className="grid_2-col gap-large">
-                  <motion.article 
-                    className="link-content-block"
-                    style={{ cursor: 'pointer' }}
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6 }}
-                    whileHover={{ scale: 1.02 }}
-                  >
-                    <div className="ratio_3x2 margin-bottom_xsmall">
-                      <img 
-                        alt="現場で働く先輩の声" 
-                        src="/images/webflow/6876f4663a153d4faec8f158_e006255f-4c9f-4863-aa8b-82f8fa8232ee.avif" 
-                        loading="lazy" 
-                        className="image_cover"
-                      />
-                    </div>
-                    <div className="tag_group margin-bottom_xsmall">
-                      <div className="tag" style={{ backgroundColor: '#f8f2e8', color: '#675032' }}>
-                        現場の声
-                      </div>
-                    </div>
-                    <h3 className="heading_h4">現場で働く先輩の声</h3>
-                    <p className="paragraph">実際に転職を成功させた医療従事者の体験談や、現場のリアルな声をご紹介します。</p>
-                  </motion.article>
                 </div>
               </div>
             </section>

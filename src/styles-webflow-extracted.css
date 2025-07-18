@@ -421,6 +421,7 @@ header.section.flex_vertical .ratio_3x2 {
   padding-bottom: 60% !important; /* より統一的なアスペクト比に調整 */
   height: 0;
   overflow: hidden;
+  border-radius: 8px;
 }
 
 /* 画像のオブジェクトフィットを強制 */
@@ -432,6 +433,49 @@ header.section.flex_vertical .ratio_3x2 {
   width: 100% !important;
   height: 100% !important;
   object-fit: cover !important;
+  border-radius: 8px;
+}
+
+/* PCビューでのコラムページの画像統一 - おすすめコンテンツのスタイルを基準に */
+@media (min-width: 768px) {
+  /* おすすめコンテンツと最新コラムの画像を完全に統一 */
+  .grid_3-col .ratio_3x2 {
+    padding-bottom: 60% !important; /* 統一的なアスペクト比 */
+    height: 0 !important;
+    overflow: hidden !important;
+    position: relative !important;
+    border-radius: 8px !important;
+  }
+  
+  .grid_3-col .ratio_3x2 .image_cover {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    border-radius: 8px !important;
+  }
+  
+  /* カード全体のレイアウトを統一 */
+  .grid_3-col .link-content-block {
+    display: block !important;
+    width: 100% !important;
+  }
+  
+  /* 最新コラムセクション特有の調整 */
+  .section.is-secondary .grid_3-col .ratio_3x2 {
+    padding-bottom: 60% !important; /* おすすめコンテンツと同じ比率 */
+  }
+  
+  .section.is-secondary .grid_3-col .ratio_3x2 .image_cover {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+  }
 }
 
 header.section.flex_vertical .ratio_3x2 .image_cover {

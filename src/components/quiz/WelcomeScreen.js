@@ -199,7 +199,7 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy, onReturnHome, onNavigateToPa
                 onClick={(e) => {
                   e.preventDefault();
                   if (typeof onNavigateToPage === 'function') {
-                    onNavigateToPage('/column', { scrollTo: 'personality-advice' });
+                    onNavigateToPage('/columns', { scrollTo: 'personality-advice' });
                   }
                 }}
                 className="link-content-block w-inline-block"
@@ -225,8 +225,8 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy, onReturnHome, onNavigateToPa
                 <div className="tag_group margin-bottom_xsmall">
                   <div className="tag">診断</div>
                 </div>
-                <h3 className="heading_h4">性格タイプ別アドバイス</h3>
-                <p>16タイプ診断を活かしたキャリアの選び方や、現場で役立つコミュニケーション術を紹介します。</p>
+                <h3 className="heading_h4">医療従事者のキャリア形成における16タイプ性格診断の活用法</h3>
+                <p>医療現場で働く皆様が、自分らしいキャリアを築くために、16タイプ性格診断をどのように活用できるかを詳しく解説します。</p>
                 <div className="flex_horizontal is-y-center gap-xsmall">
                   <div className="avatar">
                     <img 
@@ -247,7 +247,7 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy, onReturnHome, onNavigateToPa
                 onClick={(e) => {
                   e.preventDefault();
                   if (typeof onNavigateToPage === 'function') {
-                    onNavigateToPage('/column', { scrollTo: 'positive-career' });
+                    onNavigateToPage('/columns', { scrollTo: 'positive-career' });
                   }
                 }}
                 className="link-content-block w-inline-block"
@@ -273,8 +273,8 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy, onReturnHome, onNavigateToPa
                 <div className="tag_group margin-bottom_xsmall">
                   <div className="tag">転職</div>
                 </div>
-                <h3 className="heading_h4">ポジティブ転職の魅力</h3>
-                <p>自分に合う医療機関を選ぶコツや、前向きな転職アプローチのメリット・体験談をまとめました。</p>
+                <h3 className="heading_h4">ポジティブアプローチ転職のメリットと成功のポイント</h3>
+                <p>従来の転職活動とは異なる「ポジティブアプローチ転職」について、そのメリットと成功させるためのポイントを詳しく解説します。</p>
                 <div className="flex_horizontal is-y-center gap-xsmall">
                   <div className="avatar">
                     <img 
@@ -295,7 +295,7 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy, onReturnHome, onNavigateToPa
                 onClick={(e) => {
                   e.preventDefault();
                   if (typeof onNavigateToPage === 'function') {
-                    onNavigateToPage('/column', { scrollTo: 'workplace-voices' });
+                    onNavigateToPage('/columns', { scrollTo: 'workplace-voices' });
                   }
                 }}
                 className="link-content-block w-inline-block"
