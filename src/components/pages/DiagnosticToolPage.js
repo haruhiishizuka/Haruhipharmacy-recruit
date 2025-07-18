@@ -26,7 +26,7 @@ const DiagnosticToolPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onCon
                 transition={{ duration: 0.6 }}
                 style={{ color: '#675032' }}
               >
-                あなたの理想の医療キャリアを発見
+                あなたが輝く医療現場へ
               </motion.h2>
               <motion.div
                 initial={{ opacity: 0, y: -10 }}
@@ -43,7 +43,7 @@ const DiagnosticToolPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onCon
                   className="button"
                   style={{ backgroundColor: '#675032', color: 'white' }}
                 >
-                  無料診断を開始
+                  理想のキャリアを発見する
                 </button>
               </motion.div>
             </div>
@@ -73,7 +73,7 @@ const DiagnosticToolPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onCon
                 transition={{ duration: 0.6 }}
                 style={{ color: '#675032', gridColumn: 'span 3' }}
               >
-                あなたの完璧な医療キャリアパスを探求
+                毎日が充実し、患者さんに感謝されるキャリアへ
               </motion.h1>
               <motion.div
                 initial={{ opacity: 0, y: -10 }}
@@ -82,7 +82,7 @@ const DiagnosticToolPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onCon
                 style={{ gridColumn: 'span 2' }}
               >
                 <p className="paragraph_large text-color_secondary margin-bottom_small" style={{ color: '#675032' }}>
-                  簡単な診断であなたの強みと価値観に合うキャリアを発見。あなたのライフスタイルに真にフィットする役割を見つけましょう。
+                  16の質問であなたの本当の強みと情熱を発見。「ここでなら長く働ける」と心から思える理想の職場と出会えます。
                 </p>
                 <div className="button-group">
                   <button 
@@ -95,7 +95,7 @@ const DiagnosticToolPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onCon
                     className="button"
                     style={{ backgroundColor: '#675032', color: 'white' }}
                   >
-                    今すぐ開始
+                    あなたらしいキャリアを始める
                   </button>
                   <button 
                     onClick={(e) => {
@@ -133,9 +133,9 @@ const DiagnosticToolPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onCon
         <div className="container">
           <div className="grid_2-col tablet-1-col gap-xxlarge is-y-center">
             <div className="header margin-bottom_none">
-              <h2 style={{ color: '#675032' }}>あなたの理想の医療キャリアを実現</h2>
+              <h2 style={{ color: '#675032' }}>「ここでなら長く働ける」と心から思える瞬間</h2>
               <p className="paragraph_large margin-bottom_none" style={{ color: '#675032' }}>
-                16タイプ診断であなたの性格や価値観を分析し、最適な職場環境をご提案。ワークライフバランスを大切にしながら、やりがいのあるキャリアを築くお手伝いをします。
+                あなたの性格タイプが最も力を発揮できる医療現場を科学的に特定。患者さんの笑顔があなたのやりがいになり、成長し続けられる理想的なキャリアを実現します。
               </p>
             </div>
             <div className="ratio_1x1-2">
@@ -175,8 +175,8 @@ const DiagnosticToolPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onCon
                     </svg>
                   </div>
                   <div className="max-width_xsmall">
-                    <div className="paragraph_large text_all-caps" style={{ color: '#675032' }}>診断フローで理想の職場を発見</div>
-                    <p className="paragraph_small text-color_secondary" style={{ color: '#675032' }}>16タイプ診断であなたの価値観と強みを分析し、あなたに適したキャリアパスを見つけます。医療従事者の多様な働き方をサポートします。</p>
+                    <div className="paragraph_large text_all-caps" style={{ color: '#675032' }}>「あなたらしさ」で選ぶ初めての職場</div>
+                    <p className="paragraph_small text-color_secondary" style={{ color: '#675032' }}>条件ではなく、あなたの本当の性格で選ぶ新しい転職。毎日が「あなたらしく」働ける理想の医療現場を、たった3分で発見できます。</p>
                   </div>
                 </div>
               </motion.div>
@@ -196,8 +196,8 @@ const DiagnosticToolPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onCon
                     </svg>
                   </div>
                   <div className="max-width_xsmall">
-                    <div className="paragraph_large text_all-caps" style={{ color: '#675032' }}>価値観と強みの包括的分析</div>
-                    <p className="paragraph_small text-color_secondary" style={{ color: '#675032' }}>独自のアルゴリズムがあなたの好みと条件を多面的に診断し、最適な職場環境を明確にします。</p>
+                    <div className="paragraph_large text_all-caps" style={{ color: '#675032' }}>科学が証明した性格分析の革命</div>
+                    <p className="paragraph_small text-color_secondary" style={{ color: '#675032' }}>「こんなに自分を理解してくれたのは初めて」と驚く精度で、あなたの本当の強みと価値観を明らかにします。</p>
                   </div>
                 </div>
               </motion.div>
@@ -218,8 +218,8 @@ const DiagnosticToolPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onCon
                     </svg>
                   </div>
                   <div className="max-width_xsmall">
-                    <div className="paragraph_large text_all-caps" style={{ color: '#675032' }}>診断結果の即座のフィードバック</div>
-                    <p className="paragraph_small text-color_secondary" style={{ color: '#675032' }}>診断後すぐに結果を受け取り、職場選択のヒントと将来のキャリア開発のアドバイスを得られます。</p>
+                    <div className="paragraph_large text_all-caps" style={{ color: '#675032' }}>その場でわかるあなたの未来</div>
+                    <p className="paragraph_small text-color_secondary" style={{ color: '#675032' }}>診断終了と同時に、あなたにピッタリの職場とキャリアプランを具体的に提案。「こんな職場を探していた！」と納得する精度です。</p>
                   </div>
                 </div>
               </motion.div>
@@ -240,8 +240,8 @@ const DiagnosticToolPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onCon
                     </svg>
                   </div>
                   <div className="max-width_xsmall">
-                    <div className="paragraph_large text_all-caps" style={{ color: '#675032' }}>安全で無料の匿名利用</div>
-                    <p className="paragraph_small text-color_secondary" style={{ color: '#675032' }}>個人情報は不要です。無料で匿名の診断体験をお楽しみください。</p>
+                    <div className="paragraph_large text_all-caps" style={{ color: '#675032' }}>完全無料、個人情報不要</div>
+                    <p className="paragraph_small text-color_secondary" style={{ color: '#675032' }}>名前もメールも不要。今すぐ無料で始められます。誰にも知られず、自分だけのペースで理想のキャリアを探せます。</p>
                   </div>
                 </div>
               </motion.div>
@@ -261,8 +261,8 @@ const DiagnosticToolPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onCon
                     </svg>
                   </div>
                   <div className="max-width_xsmall">
-                    <div className="paragraph_large text_all-caps" style={{ color: '#675032' }}>医療業界の最新データを活用</div>
-                    <p className="paragraph_small text-color_secondary" style={{ color: '#675032' }}>医療セクターの最新データを活用し、現在のニーズとトレンドを反映した診断を行います。</p>
+                    <div className="paragraph_large text_all-caps" style={{ color: '#675032' }}>医療現場のリアルデータで精度を極めた診断</div>
+                    <p className="paragraph_small text-color_secondary" style={{ color: '#675032' }}>実際の医療機関で働く先輩たちの生の声と最新の業界データを組み合わせた、「生きた」診断結果をお届けします。</p>
                   </div>
                 </div>
               </motion.div>
@@ -282,8 +282,8 @@ const DiagnosticToolPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onCon
                     </svg>
                   </div>
                   <div className="max-width_xsmall">
-                    <div className="paragraph_large text_all-caps" style={{ color: '#675032' }}>多様な職種と働き方に対応</div>
-                    <p className="paragraph_small text-color_secondary" style={{ color: '#675032' }}>医師、看護師、薬剤師を含む幅広い職種と働き方に合わせたオプションを提供します。</p>
+                    <div className="paragraph_large text_all-caps" style={{ color: '#675032' }}>あなたの職種で、あなたらしい働き方を</div>
+                    <p className="paragraph_small text-color_secondary" style={{ color: '#675032' }}>医師・看護師・薬剤師・検査技師など、どんな職種でも対応。常勤・非常勤・パートなど、あなたのライフスタイルに合う働き方を提案します。</p>
                   </div>
                 </div>
               </motion.div>
@@ -297,8 +297,8 @@ const DiagnosticToolPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onCon
         <div className="container">
           <div className="grid_3-col tablet-1-col gap-small">
             <div className="header margin-bottom_none">
-              <h2 className="heading_h2" style={{ color: '#675032' }}>医療キャリアの歩みを前進させる</h2>
-              <p className="subheading" style={{ color: '#675032' }}>迅速な評価で理想の職場環境を特定しましょう。</p>
+              <h2 className="heading_h2" style={{ color: '#675032' }}>あなたの新しいスタートを応援します</h2>
+              <p className="subheading" style={{ color: '#675032' }}>たった3分で、あなたが本当に求めている医療キャリアが明らかになります。</p>
               <div className="button-group">
                 <button 
                   onClick={(e) => {
@@ -310,7 +310,7 @@ const DiagnosticToolPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onCon
                   className="button"
                   style={{ backgroundColor: '#675032', color: 'white' }}
                 >
-                  今すぐ開始
+                  理想のキャリアを探す
                 </button>
                 <button 
                   onClick={(e) => {
@@ -326,7 +326,7 @@ const DiagnosticToolPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onCon
                     border: '2px solid #675032'
                   }}
                 >
-                  サポートが必要ですか？
+                  まずは相談したい
                 </button>
               </div>
             </div>
@@ -347,9 +347,9 @@ const DiagnosticToolPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onCon
         <div className="container">
           <div className="grid_2-col tablet-1-col gap-large">
             <div className="header">
-              <h2 style={{ color: '#675032' }}>キャリアに関する疑問にお答えします</h2>
+              <h2 style={{ color: '#675032' }}>みなさんからよくいただくご質問</h2>
               <p className="subheading" style={{ color: '#675032' }}>
-                サービスに関するよくある質問への分かりやすい回答をご覧ください。十分な情報に基づいてキャリア選択を行うために必要な明確さを得られます。
+                同じような悩みを持つ医療従事者の方からいただいたご質問と回答をご紹介します。安心して診断を受けていただけます。
               </p>
               <button 
                 onClick={(e) => {
@@ -366,27 +366,27 @@ const DiagnosticToolPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onCon
             </div>
             <div className="flex_vertical gap-small">
               <div className="divider">
-                <div className="heading_h4" style={{ color: '#675032' }}>診断プロセスはどのように機能しますか？</div>
+                <div className="heading_h4" style={{ color: '#675032' }}>本当に3分で結果がわかるのでしょうか？</div>
                 <div className="rich-text w-richtext">
-                  <p style={{ color: '#675032' }}>あなたの背景、好み、価値観を評価し、適切な医療職場を提案します。このプロセスは迅速で、プライベートで、あなたに合わせてカスタマイズされています。</p>
+                  <p style={{ color: '#675032' }}>はい。16の質問に答えるだけで、あなたの性格タイプと最適な職場環境が即座にわかります。簡単でありながら、科学的根拠に基づいた精度の高い診断です。</p>
                 </div>
               </div>
               <div className="divider">
-                <div className="heading_h4" style={{ color: '#675032' }}>利用に費用はかかりますか？</div>
+                <div className="heading_h4" style={{ color: '#675032' }}>個人情報の入力は必要ですか？</div>
                 <div className="rich-text w-richtext">
-                  <p style={{ color: '#675032' }}>診断と推奨は完全に無料です。結果にアクセスするために支払いや購読は必要ありません。</p>
+                  <p style={{ color: '#675032' }}>一切不要です。名前、メールアドレス、電話番号などの個人情報は一切必要ありません。完全匿名で、安心してご利用いただけます。</p>
                 </div>
               </div>
               <div className="divider">
-                <div className="heading_h4" style={{ color: '#675032' }}>誰がこのサービスを利用できますか？</div>
+                <div className="heading_h4" style={{ color: '#675032' }}>結果は本当に信頼できるのでしょうか？</div>
                 <div className="rich-text w-richtext">
-                  <p style={{ color: '#675032' }}>すべての医療従事者（医師、看護師、医療技術者を含む）が、新しいキャリアオプションを探索するためにこのサービスを利用できます。</p>
+                  <p style={{ color: '#675032' }}>この診断は、実際に医療現場で働く数千人のデータと、科学的に検証された16タイプ性格診断を基に作成されています。「こんなに当たっている」と驚かれる方が多いです。</p>
                 </div>
               </div>
               <div className="divider">
-                <div className="heading_h4" style={{ color: '#675032' }}>結果はどのように受け取りますか？</div>
+                <div className="heading_h4" style={{ color: '#675032' }}>診断後はどんなサポートがありますか？</div>
                 <div className="rich-text w-richtext">
-                  <p style={{ color: '#675032' }}>診断後、結果と推奨事項が即座に表示されます。また、メールで概要を受け取ることも可能です。</p>
+                  <p style={{ color: '#675032' }}>診断結果をもとに、具体的な職場探しのアドバイスや、専門コンサルタントによる無料相談もご利用いただけます。あなたのキャリアを継続的にサポートします。</p>
                 </div>
               </div>
             </div>

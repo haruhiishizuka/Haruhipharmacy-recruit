@@ -333,8 +333,8 @@ body {
   gap: var(--spacing-lg);
 }
 
-/* CTAセクション用の3カラムスタイルを上書き */
-.section.is-secondary .grid_3-col {
+/* CTAセクション専用の3カラムスタイル（コラムページ以外） */
+.section.is-secondary .grid_3-col:not([class*="gap-large"]) {
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: var(--spacing-xxl);
@@ -356,7 +356,8 @@ body {
   text-align: left;
 }
 
-.section.is-secondary .image_cover {
+/* CTAセクション専用の画像スタイル（コラムページの画像には適用しない） */
+.section.is-secondary .image_cover:not(.ratio_3x2 .image_cover) {
   width: 100%;
   height: auto;
   object-fit: cover;
@@ -419,12 +420,13 @@ header.section.flex_vertical .ratio_3x2 {
 .tabs_content .grid_3-col .ratio_3x2,
 .grid_3-col .ratio_3x2 {
   padding-bottom: 60% !important; /* より統一的なアスペクト比に調整 */
-  height: 0;
-  overflow: hidden;
-  border-radius: 8px;
+  height: 0 !important;
+  overflow: hidden !important;
+  border-radius: 8px !important;
+  position: relative !important;
 }
 
-/* 画像のオブジェクトフィットを強制 */
+/* 画像のオブジェクトフィットを強制 - is-secondaryの影響を完全に打ち消し */
 .tabs_content .grid_3-col .ratio_3x2 .image_cover,
 .grid_3-col .ratio_3x2 .image_cover {
   position: absolute !important;
@@ -433,7 +435,24 @@ header.section.flex_vertical .ratio_3x2 {
   width: 100% !important;
   height: 100% !important;
   object-fit: cover !important;
-  border-radius: 8px;
+  border-radius: 8px !important;
+}
+
+/* is-secondaryセクションでもコラムページの画像は統一 */
+.section.is-secondary .grid_3-col .ratio_3x2 {
+  padding-bottom: 60% !important;
+  height: 0 !important;
+  overflow: hidden !important;
+  position: relative !important;
+}
+
+.section.is-secondary .grid_3-col .ratio_3x2 .image_cover {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
 }
 
 /* PCビューでのコラムページの画像統一 - おすすめコンテンツのスタイルを基準に */
@@ -463,19 +482,6 @@ header.section.flex_vertical .ratio_3x2 {
     width: 100% !important;
   }
   
-  /* 最新コラムセクション特有の調整 */
-  .section.is-secondary .grid_3-col .ratio_3x2 {
-    padding-bottom: 60% !important; /* おすすめコンテンツと同じ比率 */
-  }
-  
-  .section.is-secondary .grid_3-col .ratio_3x2 .image_cover {
-    position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: cover !important;
-  }
 }
 
 header.section.flex_vertical .ratio_3x2 .image_cover {
