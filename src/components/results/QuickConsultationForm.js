@@ -23,7 +23,7 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
     phone: '',
     email: '',
     postalCode: '',
-    contactMethod: 'line',
+    contactMethod: 'phone',
     message: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -615,9 +615,37 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                     </div>
                   </div>
                 ) : (
+                  {/* LINE友達追加ボタン - 最上部 */}
+                  <div style={{ marginBottom: '24px', textAlign: 'center' }}>
+                    <a href="https://lin.ee/xolKvUO"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        backgroundColor: '#06C755',
+                        color: '#fff',
+                        padding: '16px 32px',
+                        borderRadius: '50px',
+                        fontWeight: 600,
+                        fontSize: '16px',
+                        textDecoration: 'none',
+                        boxShadow: '0 4px 12px rgba(6, 199, 85, 0.3)',
+                        transition: 'all 0.2s ease'
+                      }}
+                    >
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M24 10.304c0-5.369-5.383-9.738-12-9.738-6.616 0-12 4.369-12 9.738 0 4.819 4.588 8.857 10.778 9.623.421.091.999.28 1.145.641.132.331.089.848.044 1.182-.132.611-.611 2.38-.611 2.38-.033.16-.066.26.088.33.154.07.275-.05.421-.111 1.893-.798 9.488-5.494 12.954-9.412 2.354-2.581 2.851-5.239 2.181-7.593z"></path>
+                      </svg>
+                      <span>友達追加して相談</span>
+                    </a>
+                  </div>
+
                   <form onSubmit={handleSubmit} noValidate>
-                    <p style={{ marginBottom: '20px', fontSize: '15px', color: '#4A5568' }}>
-                      以下の情報を入力いただくと、専任のキャリアアドバイザーからご連絡いたします。
+                    <p style={{ marginBottom: '20px', fontSize: '15px', color: '#4A5568', textAlign: 'center' }}>
+                      電話でのご相談は、以下の情報を入力いただくと、<br />
+                      <strong>千人のキャリアアドバイザー</strong>からご連絡いたします。
                     </p>
                     
                     {/* エラーメッセージ */}
@@ -814,114 +842,6 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                       />
                     </div>
                     
-                    {/* LINE友達追加 - メイン選択肢 */}
-                    <div style={{ marginBottom: '24px' }}>
-                      <label 
-                        style={{
-                          display: 'block',
-                          padding: '20px',
-                          borderRadius: '12px',
-                          border: `2px solid ${formData.contactMethod === 'line' ? '#2d5a2a' : '#2d5a2a'}`,
-                          backgroundColor: formData.contactMethod === 'line' ? '#d5e6d3' : '#d5e6d3',
-                          cursor: 'pointer',
-                          textAlign: 'center',
-                          marginBottom: '16px'
-                        }}
-                      >
-                        <input
-                          type="radio"
-                          name="contactMethod"
-                          value="line"
-                          checked={formData.contactMethod === 'line'}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          style={{ display: 'none' }}
-                        />
-                        <div style={{ fontSize: '18px', fontWeight: '700', color: '#333333', marginBottom: '8px' }}>
-                          📱 LINE友達追加して相談
-                        </div>
-                        <div style={{ fontSize: '14px', color: '#333333' }}>
-                          LINEで気軽にキャリア相談ができます
-                        </div>
-                      </label>
-
-                      {/* 電話での相談 - サブ選択肢 */}
-                      <div style={{ fontSize: '13px', color: '#6B7280', marginBottom: '8px' }}>
-                        電話でのご相談をご希望の場合
-                      </div>
-                      <label 
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          padding: '12px 16px',
-                          borderRadius: '8px',
-                          border: `1px solid ${formData.contactMethod === 'phone' ? '#2d5a2a' : '#E5E7EB'}`,
-                          backgroundColor: formData.contactMethod === 'phone' ? '#f0f9ff' : 'white',
-                          cursor: 'pointer'
-                        }}
-                      >
-                        <input
-                          type="radio"
-                          name="contactMethod"
-                          value="phone"
-                          checked={formData.contactMethod === 'phone'}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          style={{ marginRight: '8px' }}
-                        />
-                        <span style={{ fontSize: '14px', color: '#374151' }}>📞 電話での相談</span>
-                      </label>
-                    </div>
-    
-                    {/* LINE友だち追加ボタン - LINEが選択された場合のみ表示 */}
-                    <AnimatePresence>
-                      {formData.contactMethod === 'line' && (
-                        <motion.div
-                          initial={{ opacity: 0, height: 0 }}
-                          animate={{ opacity: 1, height: 'auto' }}
-                          exit={{ opacity: 0, height: 0 }}
-                          transition={{ duration: 0.3 }}
-                          style={{
-                            backgroundColor: '#F7FAFC',
-                            borderRadius: '12px',
-                            padding: '16px',
-                            marginTop: '16px',
-                            textAlign: 'center'
-                          }}
-                        >
-                          <p style={{ 
-                            marginBottom: '12px', 
-                            fontSize: '14px', 
-                            color: '#4A5568' 
-                          }}>
-                            <strong>LINEで相談</strong>をご希望の方は、公式アカウントを友だち追加してください。
-                          </p>
-                          
-                          <a href="https://lin.ee/xolKvUO"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            style={{
-                              display: 'inline-flex',
-                              alignItems: 'center',
-                              gap: '8px',
-                              backgroundColor: '#06C755',
-                              color: '#fff',
-                              padding: '10px 20px',
-                              borderRadius: '30px',
-                              fontWeight: 600,
-                              textDecoration: 'none',
-                              boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-                              transition: 'all 0.2s ease'
-                            }}
-                          >
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                              <path d="M24 10.304c0-5.369-5.383-9.738-12-9.738-6.616 0-12 4.369-12 9.738 0 4.819 4.588 8.857 10.778 9.623.421.091.999.28 1.145.641.132.331.089.848.044 1.182-.132.611-.611 2.38-.611 2.38-.033.16-.066.26.088.33.154.07.275-.05.421-.111 1.893-.798 9.488-5.494 12.954-9.412 2.354-2.581 2.851-5.239 2.181-7.593z"></path>
-                            </svg>
-                            <span>友だち追加して相談</span>
-                          </a>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
 
                     {/* 診断情報の表示 */}
                     <div style={{

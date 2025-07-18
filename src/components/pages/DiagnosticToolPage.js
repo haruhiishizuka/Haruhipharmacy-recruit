@@ -388,67 +388,6 @@ const DiagnosticToolPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onCon
         </div>
       </section>
 
-      {/* Contact Section */}
-      <section className="section is-secondary">
-        <div className="container">
-          <div className="header">
-            <h2 className="eyebrow" style={{ color: '#333333' }}>お問い合わせ</h2>
-            <h2 className="heading_h2" style={{ color: '#333333' }}>お問い合わせとご質問</h2>
-            <p className="subheading max-width_large" style={{ color: '#333333' }}>
-              サービスに関するご質問がございましたら、お気軽にお問い合わせください。
-            </p>
-          </div>
-          <ul role="list" className="grid_4-col gap-small w-list-unstyled">
-            <li className="margin-bottom_none">
-              <div 
-                className="is-large-1x1 margin-bottom_xsmall is-background"
-                style={{
-                  width: '60px',
-                  height: '60px',
-                  borderRadius: '50%',
-                  backgroundColor: '#d5e6d3',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24" fill="none">
-                  <path d="M5.25 6.75H18.75V17.25H5.25V6.75Z" stroke="#333333" strokeWidth="1.5" strokeLinejoin="round"></path>
-                  <path d="M5.25 6.75L12 12L18.75 6.75" stroke="#333333" strokeWidth="1.5" strokeLinejoin="round"></path>
-                </svg>
-              </div>
-              <h5 className="heading_h5" style={{ color: '#333333' }}>メール</h5>
-              <p className="text-color_secondary" style={{ color: '#333333' }}>24時間以内に回答いたします。</p>
-              <div>
-                <a href="mailto:support@medimatch.com" className="text-link is-secondary" style={{ color: '#333333' }}>
-                  support@medimatch.com
-                </a>
-              </div>
-            </li>
-            <li className="margin-bottom_none">
-              <div 
-                className="is-large-1x1 margin-bottom_xsmall is-background"
-                style={{
-                  width: '60px',
-                  height: '60px',
-                  borderRadius: '50%',
-                  backgroundColor: '#d5e6d3',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24" fill="none">
-                  <path d="M12.5 18.25C16.2279 18.25 19.25 15.2279 19.25 11.5C19.25 7.77208 16.2279 4.75 12.5 4.75C8.77208 4.75 5.75 7.77208 5.75 11.5C5.75 12.6007 6.01345 13.6398 6.48072 14.5578L5 19L9.71819 17.6519C10.5664 18.0361 11.5082 18.25 12.5 18.25Z" stroke="#333333" strokeWidth="1.5" strokeLinejoin="round"></path>
-                </svg>
-              </div>
-              <h4 className="heading_h5" style={{ color: '#333333' }}>電話</h4>
-              <p className="text-color_secondary" style={{ color: '#333333' }}>平日 8:00–17:00 対応</p>
-              <div style={{ color: '#333333' }}>0587-50-7535</div>
-            </li>
-          </ul>
-        </div>
-      </section>
 
       {/* Footer */}
       <footer className="section is-secondary">
