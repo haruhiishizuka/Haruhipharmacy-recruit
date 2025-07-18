@@ -123,7 +123,7 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy, onReturnHome, onNavigateToPa
             <div className="eyebrow">診断フローのご案内</div>
             <h1 className="heading_h2">診断ステップはとてもシンプル</h1>
             <div className="rich-text paragraph_large w-richtext">
-              <p>まずは職種を選び、いくつかの質問に答えるだけ。あなたの性格や志向にぴったりの医療職場を、動物アイコンとともにご提案します。診断結果は分かりやすく、理想のキャリアへの第一歩を応援します。新しい自分に出会う準備はできていますか？</p>
+              <p>まずは職種を選び、いくつかの質問に答えるだけ。あなたの性格や志向にぴったりの医療職場をご提案します。診断結果は分かりやすく、理想のキャリアへの第一歩を応援します。新しい自分に出会う準備はできていますか？</p>
             </div>
             <div className="button-group">
               <button 

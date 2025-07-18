@@ -7,7 +7,6 @@ import { trackContactStart, trackRestart, trackShare } from '../../utils/analyti
 import { getTypeData, getTypeCodeExplanation } from '../../data/typeDescriptions';
 import { Chart as ChartJS, RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend } from 'chart.js';
 import { Radar } from 'react-chartjs-2';
-import AnimalIcon from '../AnimalIcon';
 import GlobalNavigation from '../common/GlobalNavigation';
 
 // Chart.jsの設定
@@ -383,29 +382,6 @@ const EnhancedResultScreen = ({ results, profession, postalCode, answers, onRest
     );
   }
 
-  // タイプコードから動物名を取得
-  const getAnimalName = (typeCode) => {
-    const animalMap = {
-      'SIHA': 'フクロウ',
-      'SIHP': 'キツネ',
-      'SITA': 'ワシ',
-      'SITP': 'イルカ',
-      'SCHA': 'カメ',
-      'SCHP': 'クマ',
-      'SCTA': 'ビーバー',
-      'SCTP': 'ゾウ',
-      'GIHA': 'サル',
-      'GIHP': 'ネコ',
-      'GITA': 'オオカミ',
-      'GITP': 'ウマ',
-      'GCHA': 'コアラ',
-      'GCHP': 'ウサギ',
-      'GCTA': 'シカ',
-      'GCTP': 'イヌ'
-    };
-    
-    return animalMap[typeCode] || 'フクロウ';
-  };
 
   // タイプごとの一言キャッチフレーズ
   const getCatchPhrase = (typeCode) => {
@@ -457,7 +433,6 @@ const EnhancedResultScreen = ({ results, profession, postalCode, answers, onRest
 
   // タイプコードを取得
   const typeCode = results.type || '';
-  const animalName = getAnimalName(typeCode);
   const catchPhrase = getCatchPhrase(typeCode);
   const oneLiner = getOneLiner(typeCode);
   
@@ -537,25 +512,6 @@ const EnhancedResultScreen = ({ results, profession, postalCode, answers, onRest
             <div className="eyebrow">診断ステップ 3</div>
             <h1 className="heading_h2">診断結果</h1>
             
-            {/* 動物アイコン */}
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          style={{
-            margin: '0 auto 16px',
-            width: '140px',
-            height: '140px',
-            backgroundColor: 'rgba(255, 255, 255, 0.9)',
-            borderRadius: '50%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            boxShadow: '0 8px 20px rgba(0, 0, 0, 0.15)'
-          }}
-        >
-          <AnimalIcon type={typeCode} />
-        </motion.div>
         
         <motion.div
           initial={{ opacity: 0, y: -10 }}
@@ -590,7 +546,7 @@ const EnhancedResultScreen = ({ results, profession, postalCode, answers, onRest
             color: '#675032',
             textAlign: 'center'
           }}>
-            あなたは<span style={{ color: '#ffffff', backgroundColor: '#675032', padding: '0.2em 0.4em', borderRadius: 'var(--radius-small)' }}>『{animalName}型』</span>
+            あなたの診断結果
           </h2>
           
           <h3 className="heading_h3" style={{ 
