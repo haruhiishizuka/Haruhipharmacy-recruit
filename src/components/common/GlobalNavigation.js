@@ -154,8 +154,8 @@ const GlobalNavigation = ({
               className="button is-secondary"
               style={{ 
                 backgroundColor: 'transparent',
-                color: '#675032',
-                border: '2px solid #675032',
+                color: '#2d5a2a',
+                border: '2px solid #2d5a2a',
                 marginRight: '10px'
               }}
             >

@@ -64,7 +64,7 @@ const TypeRadarChart = ({ axisScores }) => {
             size: 14,
             weight: 'bold'
           },
-          color: '#675032'
+          color: '#2d5a2a'
         },
         ticks: {
           display: false
@@ -139,7 +139,7 @@ const ShareSection = ({ resultType, profession }) => {
   
   return (
     <div>
-      <h3 className="heading_h4" style={{ marginBottom: 'var(--spacing-lg)', color: '#675032' }}>
+      <h3 className="heading_h4" style={{ marginBottom: 'var(--spacing-lg)', color: '#2d5a2a' }}>
         診断結果をシェアする
       </h3>
       
@@ -150,7 +150,7 @@ const ShareSection = ({ resultType, profession }) => {
         marginBottom: 'var(--spacing-lg)',
         border: '1px solid #e6d5c3'
       }}>
-        <p className="paragraph" style={{ marginBottom: 'var(--spacing-md)', color: '#675032' }}>
+        <p className="paragraph" style={{ marginBottom: 'var(--spacing-md)', color: '#2d5a2a' }}>
           あなたの診断結果を友達や同僚とシェアして、お互いのタイプを比較してみましょう！
         </p>
         
@@ -159,7 +159,7 @@ const ShareSection = ({ resultType, profession }) => {
             onClick={() => handleShare('native')}
             className="button"
             style={{
-              backgroundColor: '#675032',
+              backgroundColor: '#2d5a2a',
               color: 'white',
               border: 'none',
               fontSize: '16px',
@@ -185,7 +185,7 @@ const ShareSection = ({ resultType, profession }) => {
             onClick={handleCopyLink}
             style={{
               backgroundColor: 'white',
-              color: '#675032',
+              color: '#2d5a2a',
               padding: '12px 24px',
               borderRadius: '8px',
               border: '1px solid #CBD5E0',
@@ -293,16 +293,16 @@ const ShareSection = ({ resultType, profession }) => {
         alignItems: 'flex-start',
         gap: '12px'
       }}>
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#675032" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2d5a2a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <circle cx="12" cy="12" r="10"></circle>
           <line x1="12" y1="16" x2="12" y2="12"></line>
           <line x1="12" y1="8" x2="12.01" y2="8"></line>
         </svg>
         <div>
-          <p style={{ margin: '0 0 8px 0', fontSize: '14px', color: '#675032', fontWeight: '600' }}>
+          <p style={{ margin: '0 0 8px 0', fontSize: '14px', color: '#2d5a2a', fontWeight: '600' }}>
             周りと比較することで新たな気づきが！
           </p>
-          <p style={{ margin: 0, fontSize: '14px', color: '#675032' }}>
+          <p style={{ margin: 0, fontSize: '14px', color: '#2d5a2a' }}>
             異なるタイプの医療従事者が協力することで、より良いチーム医療が実現できます。周りの人とタイプを共有して、お互いの強みを活かしましょう。
           </p>
         </div>
@@ -439,7 +439,7 @@ const EnhancedResultScreen = ({ results, profession, postalCode, answers, onRest
   // 職種ごとの色設定
   const getProfessionColor = () => {
     // 全職種でブラウン系に統一
-    return '#675032'; // Webflowブラウン
+    return '#2d5a2a'; // Webflowブラウン
   };
 
   const professionColor = getProfessionColor();
@@ -543,7 +543,7 @@ const EnhancedResultScreen = ({ results, profession, postalCode, answers, onRest
           
           <h2 className="heading_h2" style={{ 
             marginBottom: 'var(--spacing-lg)',
-            color: '#675032',
+            color: '#2d5a2a',
             textAlign: 'center'
           }}>
             あなたの診断結果
@@ -551,7 +551,7 @@ const EnhancedResultScreen = ({ results, profession, postalCode, answers, onRest
           
           <h3 className="heading_h3" style={{ 
             marginBottom: 'var(--spacing-md)',
-            color: '#675032',
+            color: '#2d5a2a',
             textAlign: 'center',
             fontWeight: '500'
           }}>
@@ -561,7 +561,7 @@ const EnhancedResultScreen = ({ results, profession, postalCode, answers, onRest
           <p className="paragraph_large" style={{ 
             maxWidth: '600px', 
             margin: '0 auto var(--spacing-lg)',
-            color: '#675032',
+            color: '#2d5a2a',
             textAlign: 'center',
             opacity: 0.8
           }}>
@@ -575,7 +575,7 @@ const EnhancedResultScreen = ({ results, profession, postalCode, answers, onRest
             whileTap={{ scale: 0.98 }}
             className="button on-accent-primary"
             style={{
-              backgroundColor: '#675032',
+              backgroundColor: '#2d5a2a',
               color: '#ffffff',
               border: 'none',
               borderRadius: 'var(--radius-medium)',
@@ -646,7 +646,7 @@ const EnhancedResultScreen = ({ results, profession, postalCode, answers, onRest
               display: 'flex',
               gap: '16px',
               fontSize: '14px',
-              color: '#675032'
+              color: '#2d5a2a'
             }}>
               <div>S/G: {Math.round((results.axisScores.specialist + 1) * 50)}%</div>
               <div>I/C: {Math.round((results.axisScores.innovative + 1) * 50)}%</div>
@@ -761,8 +761,8 @@ const EnhancedResultScreen = ({ results, profession, postalCode, answers, onRest
             className="button is-secondary"
             style={{
               backgroundColor: 'transparent',
-              color: '#675032',
-              border: '2px solid #675032',
+              color: '#2d5a2a',
+              border: '2px solid #2d5a2a',
               borderRadius: 'var(--radius-medium)',
               padding: 'var(--spacing-sm) var(--spacing-lg)',
               fontSize: 'var(--text-size-medium)',
@@ -781,8 +781,8 @@ const EnhancedResultScreen = ({ results, profession, postalCode, answers, onRest
       {/* フッター - 修正済みリンク */}
       <footer className="section is-secondary" style={{ textAlign: 'center', paddingTop: 'var(--spacing-xl)' }}>
         <div className="container">
-          <p className="paragraph_small" style={{ color: '#675032', marginBottom: 'var(--spacing-sm)' }}>MediMatchは看護師・薬剤師・リハビリ系（PT/OT/ST）などのためのキャリア診断</p>
-          <p className="paragraph_small" style={{ color: '#675032' }}>© 2021 MediMatch. All rights reserved.</p>
+          <p className="paragraph_small" style={{ color: '#2d5a2a', marginBottom: 'var(--spacing-sm)' }}>MediMatchは看護師・薬剤師・リハビリ系（PT/OT/ST）などのためのキャリア診断</p>
+          <p className="paragraph_small" style={{ color: '#2d5a2a' }}>© 2021 MediMatch. All rights reserved.</p>
           <a 
             href="#" 
             onClick={(e) => {
@@ -791,7 +791,7 @@ const EnhancedResultScreen = ({ results, profession, postalCode, answers, onRest
               navigate('/policy');
             }}
             className="text-link"
-            style={{ color: '#675032', marginTop: 'var(--spacing-sm)', display: 'inline-block' }}
+            style={{ color: '#2d5a2a', marginTop: 'var(--spacing-sm)', display: 'inline-block' }}
           >
             プライバシーポリシー・利用規約・お問い合わせ
           </a>

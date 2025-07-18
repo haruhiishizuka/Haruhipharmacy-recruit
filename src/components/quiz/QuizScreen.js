@@ -143,7 +143,7 @@ const QuizScreen = ({ questions, onComplete, onReturnHome, onNavigateToPage, onC
           <div className="header is-align-center">
             <div className="eyebrow">診断ステップ 2</div>
             <h1 className="heading_h2">質問に答えてください</h1>
-            <p className="paragraph" style={{ color: '#675032' }}>
+            <p className="paragraph" style={{ color: '#2d5a2a' }}>
               質問 {currentPage * QUESTIONS_PER_PAGE + 1}〜
               {Math.min((currentPage + 1) * QUESTIONS_PER_PAGE, questions.length)} / {questions.length}
             </p>
@@ -181,7 +181,7 @@ const QuizScreen = ({ questions, onComplete, onReturnHome, onNavigateToPage, onC
                     }}>
                       <h3 className="heading_h4" style={{ 
                         marginBottom: 'var(--spacing-lg)',
-                        color: '#675032'
+                        color: '#2d5a2a'
                       }}>
                         {question.text}
                       </h3>
@@ -192,10 +192,10 @@ const QuizScreen = ({ questions, onComplete, onReturnHome, onNavigateToPage, onC
                           justifyContent: 'space-between',
                           marginBottom: 'var(--spacing-md)'
                         }}>
-                          <span className="paragraph_small" style={{ color: '#675032', opacity: 0.8 }}>
+                          <span className="paragraph_small" style={{ color: '#2d5a2a', opacity: 0.8 }}>
                             {labels.negative}
                           </span>
-                          <span className="paragraph_small" style={{ color: '#675032', opacity: 0.8 }}>
+                          <span className="paragraph_small" style={{ color: '#2d5a2a', opacity: 0.8 }}>
                             {labels.positive}
                           </span>
                         </div>
@@ -226,14 +226,14 @@ const QuizScreen = ({ questions, onComplete, onReturnHome, onNavigateToPage, onC
                                   margin: '0 auto',
                                   borderRadius: '50%',
                                   backgroundColor: 
-                                    answers[question.id] === value ? '#675032' : 'var(--neutral-100)',
+                                    answers[question.id] === value ? '#2d5a2a' : 'var(--neutral-100)',
                                   display: 'flex',
                                   alignItems: 'center',
                                   justifyContent: 'center',
                                   cursor: 'pointer',
                                   transition: 'all 0.2s ease',
                                   border: `2px solid ${
-                                    answers[question.id] === value ? '#675032' : 'var(--neutral-300)'
+                                    answers[question.id] === value ? '#2d5a2a' : 'var(--neutral-300)'
                                   }`,
                                   transform: answers[question.id] === value ? 'scale(1.1)' : 'scale(1)'
                                 }}
@@ -261,7 +261,7 @@ const QuizScreen = ({ questions, onComplete, onReturnHome, onNavigateToPage, onC
                           {[-3, -2, -1, 0, 1, 2, 3].map((value) => (
                             <span key={value} style={{ 
                               fontSize: 'var(--text-size-small)',
-                              color: '#675032',
+                              color: '#2d5a2a',
                               opacity: 0.6,
                               textAlign: 'center',
                               flex: '1'
@@ -294,8 +294,8 @@ const QuizScreen = ({ questions, onComplete, onReturnHome, onNavigateToPage, onC
                     className="button is-secondary"
                     style={{
                       backgroundColor: 'transparent',
-                      color: '#675032',
-                      border: '2px solid #675032'
+                      color: '#2d5a2a',
+                      border: '2px solid #2d5a2a'
                     }}
                   >
                     前へ
@@ -312,7 +312,7 @@ const QuizScreen = ({ questions, onComplete, onReturnHome, onNavigateToPage, onC
                   whileTap={isNextEnabled ? { scale: 0.98 } : {}}
                   className="button"
                   style={{
-                    backgroundColor: isNextEnabled ? '#675032' : 'var(--neutral-400)',
+                    backgroundColor: isNextEnabled ? '#2d5a2a' : 'var(--neutral-400)',
                     color: '#ffffff',
                     border: 'none',
                     cursor: isNextEnabled ? 'pointer' : 'not-allowed',
@@ -334,13 +334,13 @@ const QuizScreen = ({ questions, onComplete, onReturnHome, onNavigateToPage, onC
                     width: '12px',
                     height: '4px',
                     borderRadius: '2px',
-                    backgroundColor: index === currentPage ? '#675032' : 'var(--neutral-300)'
+                    backgroundColor: index === currentPage ? '#2d5a2a' : 'var(--neutral-300)'
                   }}></div>
                 ))}
               </div>
 
               <div className="text-align_center" style={{ marginTop: 'var(--spacing-md)' }}>
-                <p className="paragraph_small" style={{ color: '#675032' }}>
+                <p className="paragraph_small" style={{ color: '#2d5a2a' }}>
                   ページ {currentPage + 1} / {totalPages}
                 </p>
               </div>

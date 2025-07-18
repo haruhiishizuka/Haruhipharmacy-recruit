@@ -81,14 +81,14 @@ const ProfessionSelect = ({ onSelect, onReturnHome, onNavigateToPage, onConsulta
                 style={{
                   cursor: 'pointer',
                   border: selectedProfession === profession.id 
-                    ? '2px solid #675032' 
+                    ? '2px solid #2d5a2a' 
                     : '2px solid var(--neutral-300)',
                   backgroundColor: selectedProfession === profession.id 
-                    ? '#675032' 
+                    ? '#2d5a2a' 
                     : 'var(--neutral-primary)',
                   color: selectedProfession === profession.id 
                     ? '#ffffff' 
-                    : '#675032',
+                    : '#2d5a2a',
                   transition: 'all var(--transition-base)',
                   textAlign: 'center',
                   padding: 'var(--spacing-xl)',
@@ -138,14 +138,14 @@ const ProfessionSelect = ({ onSelect, onReturnHome, onNavigateToPage, onConsulta
                     marginBottom: 'var(--spacing-xs)',
                     color: selectedProfession === profession.id 
                       ? '#ffffff' 
-                      : '#675032'
+                      : '#2d5a2a'
                   }}>
                     {profession.label}
                   </h3>
                   <p className="paragraph_small" style={{
                     color: selectedProfession === profession.id 
                       ? 'rgba(255, 255, 255, 0.9)' 
-                      : '#675032',
+                      : '#2d5a2a',
                     whiteSpace: 'pre-line',
                     lineHeight: '1.4',
                     opacity: selectedProfession === profession.id ? 0.9 : 0.7
@@ -172,7 +172,7 @@ const ProfessionSelect = ({ onSelect, onReturnHome, onNavigateToPage, onConsulta
               width: '12px',
               height: '4px',
               borderRadius: '2px',
-              backgroundColor: '#675032'
+              backgroundColor: '#2d5a2a'
             }}></div>
             <div style={{
               width: '12px',
@@ -195,7 +195,7 @@ const ProfessionSelect = ({ onSelect, onReturnHome, onNavigateToPage, onConsulta
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 1.0 }}
           >
-            <p className="paragraph_small" style={{ color: '#675032' }}>
+            <p className="paragraph_small" style={{ color: '#2d5a2a' }}>
               ステップ 1 / 3
             </p>
           </motion.div>

@@ -311,8 +311,8 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
         {/* ヘッダー */}
         <div
           style={{
-            backgroundColor: '#f8f2e8',
-            color: '#675032',
+            backgroundColor: '#d5e6d3',
+            color: '#2d5a2a',
             padding: '20px',
             position: 'relative'
           }}
@@ -368,7 +368,7 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
               borderBottom: activeTab === 'form' ? 'none' : '1px solid transparent',
               borderTopLeftRadius: '8px',
               borderTopRightRadius: '8px',
-              color: activeTab === 'form' ? '#675032' : '#4A5568',
+              color: activeTab === 'form' ? '#2d5a2a' : '#4A5568',
               cursor: 'pointer',
               transition: 'all 0.2s',
               display: 'flex',
@@ -399,7 +399,7 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                 left: '0',
                 right: '0',
                 height: '3px',
-                backgroundColor: '#675032',
+                backgroundColor: '#2d5a2a',
                 borderTopLeftRadius: '2px',
                 borderTopRightRadius: '2px'
               }}></span>
@@ -422,7 +422,7 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
               borderBottom: activeTab === 'about' ? 'none' : '1px solid transparent',
               borderTopLeftRadius: '8px',
               borderTopRightRadius: '8px',
-              color: activeTab === 'about' ? '#675032' : '#4A5568',
+              color: activeTab === 'about' ? '#2d5a2a' : '#4A5568',
               cursor: 'pointer',
               transition: 'all 0.2s',
               display: 'flex',
@@ -450,7 +450,7 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                 left: '0',
                 right: '0',
                 height: '3px',
-                backgroundColor: '#675032',
+                backgroundColor: '#2d5a2a',
                 borderTopLeftRadius: '2px',
                 borderTopRightRadius: '2px'
               }}></span>
@@ -518,7 +518,7 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                       }}
                       type="button"
                       style={{ 
-                        backgroundColor: '#675032',
+                        backgroundColor: '#2d5a2a',
                         color: 'white',
                         border: 'none',
                         borderRadius: '50px',
@@ -836,7 +836,7 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                             alignItems: 'center',
                             padding: '10px 16px',
                             borderRadius: '8px',
-                            border: `1px solid ${formData.contactMethod === 'phone' ? '#675032' : '#CBD5E0'}`,
+                            border: `1px solid ${formData.contactMethod === 'phone' ? '#2d5a2a' : '#CBD5E0'}`,
                             backgroundColor: formData.contactMethod === 'phone' ? '#f8f2e8' : 'white',
                             cursor: 'pointer',
                             flex: '1',
@@ -861,7 +861,7 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                             alignItems: 'center',
                             padding: '10px 16px',
                             borderRadius: '8px',
-                            border: `1px solid ${formData.contactMethod === 'zoom' ? '#675032' : '#CBD5E0'}`,
+                            border: `1px solid ${formData.contactMethod === 'zoom' ? '#2d5a2a' : '#CBD5E0'}`,
                             backgroundColor: formData.contactMethod === 'zoom' ? '#f8f2e8' : 'white',
                             cursor: 'pointer',
                             flex: '1',
@@ -886,7 +886,7 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                             alignItems: 'center',
                             padding: '10px 16px',
                             borderRadius: '8px',
-                            border: `1px solid ${formData.contactMethod === 'line' ? '#675032' : '#CBD5E0'}`,
+                            border: `1px solid ${formData.contactMethod === 'line' ? '#2d5a2a' : '#CBD5E0'}`,
                             backgroundColor: formData.contactMethod === 'line' ? '#f8f2e8' : 'white',
                             cursor: 'pointer',
                             flex: '1',
@@ -966,12 +966,12 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                       fontSize: '14px'
                     }}>
                       <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#675032" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '8px' }}>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2d5a2a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '8px' }}>
                           <circle cx="12" cy="12" r="10"></circle>
                           <line x1="12" y1="16" x2="12" y2="12"></line>
                           <line x1="12" y1="8" x2="12.01" y2="8"></line>
                         </svg>
-                        <span style={{ color: '#675032', fontWeight: '600' }}>診断情報</span>
+                        <span style={{ color: '#2d5a2a', fontWeight: '600' }}>診断情報</span>
                       </div>
                       <p style={{ color: '#4A5568', marginBottom: '4px' }}>
                         診断結果: <strong>{resultType}</strong>タイプ
@@ -989,7 +989,7 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                       disabled={isSubmitting}
                       style={{
                         width: '100%',
-                        backgroundColor: '#675032',
+                        backgroundColor: '#2d5a2a',
                         color: 'white',
                         border: 'none',
                         borderRadius: '50px',
@@ -1042,7 +1042,7 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                         style={{
                           background: 'none',
                           border: 'none',
-                          color: '#675032',
+                          color: '#2d5a2a',
                           textDecoration: 'underline',
                           cursor: 'pointer',
                           fontSize: '14px',
@@ -1081,7 +1081,7 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                   <h4 style={{ 
                     fontSize: '18px', 
                     fontWeight: '700', 
-                    color: '#675032',
+                    color: '#2d5a2a',
                     marginBottom: '12px' 
                   }}>
                     私たちの理念
@@ -1106,7 +1106,7 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                   <h4 style={{ 
                     fontSize: '18px', 
                     fontWeight: '700', 
-                    color: '#675032',
+                    color: '#2d5a2a',
                     marginBottom: '16px',
                     display: 'flex',
                     alignItems: 'center',
@@ -1157,7 +1157,7 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                         alignItems: 'flex-start'
                       }}>
                         <div style={{
-                          backgroundColor: '#675032',
+                          backgroundColor: '#2d5a2a',
                           color: 'white',
                           width: '40px',
                           height: '40px',
@@ -1175,7 +1175,7 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                           <h5 style={{ 
                             fontSize: '16px', 
                             fontWeight: '600', 
-                            color: '#675032',
+                            color: '#2d5a2a',
                             marginBottom: '6px' 
                           }}>
                             {strength.title}
@@ -1254,7 +1254,7 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                   <h4 style={{ 
                     fontSize: '17px', 
                     fontWeight: '600', 
-                    color: '#675032',
+                    color: '#2d5a2a',
                     marginBottom: '16px',
                     display: 'flex',
                     alignItems: 'center',
@@ -1298,7 +1298,7 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                     type="button"
                     onClick={() => handleTabChange('form')}
                     style={{
-                      backgroundColor: '#675032',
+                      backgroundColor: '#2d5a2a',
                       color: 'white',
                       border: 'none',
                       borderRadius: '50px',
