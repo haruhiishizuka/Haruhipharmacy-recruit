@@ -615,8 +615,9 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                     </div>
                   </div>
                 ) : (
-                  {/* LINE友達追加ボタン - 最上部 */}
-                  <div style={{ marginBottom: '24px', textAlign: 'center' }}>
+                  <>
+                    {/* LINE友達追加ボタン - 最上部 */}
+                    <div style={{ marginBottom: '24px', textAlign: 'center' }}>
                     <a href="https://lin.ee/xolKvUO"
                       target="_blank"
                       rel="noopener noreferrer"
@@ -936,6 +937,7 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                       </button>
                     </div>
                   </form>
+                  </>
                 )}
               </motion.div>
             )}
