@@ -23,7 +23,7 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
     phone: '',
     email: '',
     postalCode: '',
-    contactMethod: 'phone',
+    contactMethod: 'line',
     message: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -836,56 +836,6 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                             alignItems: 'center',
                             padding: '10px 16px',
                             borderRadius: '8px',
-                            border: `1px solid ${formData.contactMethod === 'phone' ? '#2d5a2a' : '#CBD5E0'}`,
-                            backgroundColor: formData.contactMethod === 'phone' ? '#f8f2e8' : 'white',
-                            cursor: 'pointer',
-                            flex: '1',
-                            minWidth: '120px'
-                          }}
-                        >
-                          <input
-                            type="radio"
-                            name="contactMethod"
-                            value="phone"
-                            checked={formData.contactMethod === 'phone'}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            style={{ marginRight: '8px' }}
-                          />
-                          <span style={{ fontSize: '15px', color: '#2D3748' }}>電話</span>
-                        </label>
-      
-                        <label 
-                          style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            padding: '10px 16px',
-                            borderRadius: '8px',
-                            border: `1px solid ${formData.contactMethod === 'zoom' ? '#2d5a2a' : '#CBD5E0'}`,
-                            backgroundColor: formData.contactMethod === 'zoom' ? '#f8f2e8' : 'white',
-                            cursor: 'pointer',
-                            flex: '1',
-                            minWidth: '120px'
-                          }}
-                        >
-                          <input
-                            type="radio"
-                            name="contactMethod"
-                            value="zoom"
-                            checked={formData.contactMethod === 'zoom'}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            style={{ marginRight: '8px' }}
-                          />
-                          <span style={{ fontSize: '15px', color: '#2D3748' }}>Zoom</span>
-                        </label>
-      
-                        <label 
-                          style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            padding: '10px 16px',
-                            borderRadius: '8px',
                             border: `1px solid ${formData.contactMethod === 'line' ? '#2d5a2a' : '#CBD5E0'}`,
                             backgroundColor: formData.contactMethod === 'line' ? '#f8f2e8' : 'white',
                             cursor: 'pointer',
@@ -903,6 +853,31 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                             style={{ marginRight: '8px' }}
                           />
                           <span style={{ fontSize: '15px', color: '#2D3748' }}>LINE</span>
+                        </label>
+      
+                        <label 
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            padding: '10px 16px',
+                            borderRadius: '8px',
+                            border: `1px solid ${formData.contactMethod === 'phone' ? '#2d5a2a' : '#CBD5E0'}`,
+                            backgroundColor: formData.contactMethod === 'phone' ? '#f8f2e8' : 'white',
+                            cursor: 'pointer',
+                            flex: '1',
+                            minWidth: '120px'
+                          }}
+                        >
+                          <input
+                            type="radio"
+                            name="contactMethod"
+                            value="phone"
+                            checked={formData.contactMethod === 'phone'}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            style={{ marginRight: '8px' }}
+                          />
+                          <span style={{ fontSize: '15px', color: '#2D3748' }}>電話</span>
                         </label>
                       </div>
     
