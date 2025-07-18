@@ -873,56 +873,55 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                       </label>
                     </div>
     
-                      {/* LINE友だち追加ボタン - LINEが選択された場合のみ表示 */}
-                      <AnimatePresence>
-                        {formData.contactMethod === 'line' && (
-                          <motion.div
-                            initial={{ opacity: 0, height: 0 }}
-                            animate={{ opacity: 1, height: 'auto' }}
-                            exit={{ opacity: 0, height: 0 }}
-                            transition={{ duration: 0.3 }}
+                    {/* LINE友だち追加ボタン - LINEが選択された場合のみ表示 */}
+                    <AnimatePresence>
+                      {formData.contactMethod === 'line' && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.3 }}
+                          style={{
+                            backgroundColor: '#F7FAFC',
+                            borderRadius: '12px',
+                            padding: '16px',
+                            marginTop: '16px',
+                            textAlign: 'center'
+                          }}
+                        >
+                          <p style={{ 
+                            marginBottom: '12px', 
+                            fontSize: '14px', 
+                            color: '#4A5568' 
+                          }}>
+                            <strong>LINEで相談</strong>をご希望の方は、公式アカウントを友だち追加してください。
+                          </p>
+                          
+                          <a href="https://lin.ee/xolKvUO"
+                            target="_blank"
+                            rel="noopener noreferrer"
                             style={{
-                              backgroundColor: '#F7FAFC',
-                              borderRadius: '12px',
-                              padding: '16px',
-                              marginTop: '16px',
-                              textAlign: 'center'
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '8px',
+                              backgroundColor: '#06C755',
+                              color: '#fff',
+                              padding: '10px 20px',
+                              borderRadius: '30px',
+                              fontWeight: 600,
+                              textDecoration: 'none',
+                              boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                              transition: 'all 0.2s ease'
                             }}
                           >
-                            <p style={{ 
-                              marginBottom: '12px', 
-                              fontSize: '14px', 
-                              color: '#4A5568' 
-                            }}>
-                              <strong>LINEで相談</strong>をご希望の方は、公式アカウントを友だち追加してください。
-                            </p>
-                            
-                            <a href="https://lin.ee/xolKvUO"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              style={{
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                gap: '8px',
-                                backgroundColor: '#06C755',
-                                color: '#fff',
-                                padding: '10px 20px',
-                                borderRadius: '30px',
-                                fontWeight: 600,
-                                textDecoration: 'none',
-                                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-                                transition: 'all 0.2s ease'
-                              }}
-                            >
-                              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M24 10.304c0-5.369-5.383-9.738-12-9.738-6.616 0-12 4.369-12 9.738 0 4.819 4.588 8.857 10.778 9.623.421.091.999.28 1.145.641.132.331.089.848.044 1.182-.132.611-.611 2.38-.611 2.38-.033.16-.066.26.088.33.154.07.275-.05.421-.111 1.893-.798 9.488-5.494 12.954-9.412 2.354-2.581 2.851-5.239 2.181-7.593z"></path>
-                              </svg>
-                              <span>友だち追加して相談</span>
-                            </a>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </div>
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                              <path d="M24 10.304c0-5.369-5.383-9.738-12-9.738-6.616 0-12 4.369-12 9.738 0 4.819 4.588 8.857 10.778 9.623.421.091.999.28 1.145.641.132.331.089.848.044 1.182-.132.611-.611 2.38-.611 2.38-.033.16-.066.26.088.33.154.07.275-.05.421-.111 1.893-.798 9.488-5.494 12.954-9.412 2.354-2.581 2.851-5.239 2.181-7.593z"></path>
+                            </svg>
+                            <span>友だち追加して相談</span>
+                          </a>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
 
                     {/* 診断情報の表示 */}
                     <div style={{
@@ -933,7 +932,7 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                       fontSize: '14px'
                     }}>
                       <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2d5a2a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '8px' }}>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#333333" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '8px' }}>
                           <circle cx="12" cy="12" r="10"></circle>
                           <line x1="12" y1="16" x2="12" y2="12"></line>
                           <line x1="12" y1="8" x2="12.01" y2="8"></line>
