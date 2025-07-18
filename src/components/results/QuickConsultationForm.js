@@ -646,7 +646,7 @@ const QuickConsultationForm = ({ resultType, profession, postalCode, onClose }) 
                   <form onSubmit={handleSubmit} noValidate>
                     <p style={{ marginBottom: '20px', fontSize: '15px', color: '#4A5568', textAlign: 'center' }}>
                       電話でのご相談は、以下の情報を入力いただくと、<br />
-                      <strong>千人のキャリアアドバイザー</strong>からご連絡いたします。
+                      専任のキャリアアドバイザーからご連絡いたします。
                     </p>
                     
                     {/* エラーメッセージ */}
