@@ -38,7 +38,7 @@ const SupportPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onConsultati
     },
     {
       title: 'キャリア相談',
-      description: '専門のキャリアコンサルタントが、あなたのキャリアに関する悩みをサポートします。',
+      description: '専門アドバイザーが、あなたのキャリアに関する悩みをサポートします。',
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
@@ -81,7 +81,7 @@ const SupportPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onConsultati
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              style={{ color: '#675032' }}
+              style={{ color: '#333333' }}
             >
               安心してご利用いただけるよう、<br />
               充実したサポート体制をご用意
@@ -97,7 +97,7 @@ const SupportPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onConsultati
                 lineHeight: '1.6', 
                 maxWidth: '900px', 
                 margin: '0 auto 30px',
-                color: '#675032',
+                color: '#333333',
                 padding: '0 20px'
               }}>
                 診断ツールの使い方からキャリア相談まで、専門スタッフがあなたをサポートします。
@@ -115,7 +115,12 @@ const SupportPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onConsultati
             <p className="subheading">お困りの内容に応じてお選びください</p>
           </div>
           
-          <div className="grid_3-col gap-large">
+          <div className="grid_3-col gap-large" style={{
+            '@media (max-width: 767px)': {
+              gridTemplateColumns: '1fr',
+              gap: 'var(--spacing-md)'
+            }
+          }}>
             {supportOptions.map((option, index) => (
               <motion.div 
                 key={index}
@@ -123,25 +128,33 @@ const SupportPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onConsultati
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
-                style={{ padding: '40px', textAlign: 'center' }}
+                style={{ 
+                  padding: '40px', 
+                  textAlign: 'center',
+                  backgroundColor: '#ffffff',
+                  border: '1px solid #e9ecef',
+                  borderRadius: '12px',
+                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)'
+                }}
               >
                 <div style={{ 
                   width: '80px',
                   height: '80px',
                   borderRadius: '50%',
-                  backgroundColor: '#d5e6d3',
-                  color: '#675032',
+                  backgroundColor: '#f8f9fa',
+                  color: '#333333',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  margin: '0 auto 20px'
+                  margin: '0 auto 20px',
+                  border: '2px solid #e9ecef'
                 }}>
                   {option.icon}
                 </div>
-                <h3 className="heading_h3" style={{ marginBottom: '16px' }}>
+                <h3 className="heading_h3" style={{ marginBottom: '16px', color: '#333333' }}>
                   {option.title}
                 </h3>
-                <p className="paragraph" style={{ marginBottom: '24px' }}>
+                <p className="paragraph" style={{ marginBottom: '24px', color: '#495057' }}>
                   {option.description}
                 </p>
               </motion.div>
@@ -234,7 +247,7 @@ const SupportPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onConsultati
                   }
                 }}
                 className="button"
-                style={{ backgroundColor: '#675032', color: 'white', marginRight: '20px' }}
+                style={{ backgroundColor: '#333333', color: '#ffffff', marginRight: '20px', border: 'none' }}
               >
                 キャリア相談を予約
               </button>
@@ -246,7 +259,7 @@ const SupportPage = ({ onReturnHome, onStartQuiz, onNavigateToPage, onConsultati
                   }
                 }}
                 className="button is-secondary"
-                style={{ borderColor: '#675032', color: '#675032' }}
+                style={{ borderColor: '#333333', color: '#333333', backgroundColor: 'transparent' }}
               >
                 お問い合わせフォーム
               </button>

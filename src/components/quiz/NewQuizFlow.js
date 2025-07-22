@@ -18,7 +18,7 @@ const NewQuizFlow = ({ onReturnHome, onConsultation, onNavigateToPage }) => {
 
   // 職種選択画面 - 従来のUIスタイルに合わせて調整
   const ProfessionSelect = () => (
-    <div style={{ minHeight: '100vh', width: '100%' }}>
+    <div style={{ minHeight: '100vh', width: '100%', backgroundColor: '#f8fafc' }}>
       {/* Navigation */}
       <GlobalNavigation 
         onReturnHome={onReturnHome}
@@ -29,7 +29,7 @@ const NewQuizFlow = ({ onReturnHome, onConsultation, onNavigateToPage }) => {
       />
 
       {/* Main Content */}
-      <section className="section is-secondary">
+      <section className="section is-secondary" style={{ backgroundColor: '#f8fafc' }}>
         <div className="container">
           <div className="header is-align-center">
             <div className="eyebrow">新16タイプ診断 - ステップ 1</div>
@@ -39,6 +39,12 @@ const NewQuizFlow = ({ onReturnHome, onConsultation, onNavigateToPage }) => {
 
           <motion.div 
             className="grid_2-col gap-medium"
+            style={{
+              '@media (max-width: 767px)': {
+                gridTemplateColumns: '1fr',
+                gap: 'var(--spacing-md)'
+              }
+            }}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
@@ -63,7 +69,11 @@ const NewQuizFlow = ({ onReturnHome, onConsultation, onNavigateToPage }) => {
                   flexDirection: 'column',
                   alignItems: 'center',
                   gap: 'var(--spacing-md)',
-                  borderRadius: 'var(--radius-large)'
+                  borderRadius: 'var(--radius-large)',
+                  '@media (max-width: 767px)': {
+                    padding: 'var(--spacing-lg)',
+                    gap: 'var(--spacing-sm)'
+                  }
                 }}
                 whileHover={{ 
                   scale: 1.02,
@@ -91,7 +101,12 @@ const NewQuizFlow = ({ onReturnHome, onConsultation, onNavigateToPage }) => {
                   alignItems: 'center',
                   justifyContent: 'center',
                   marginBottom: 'var(--spacing-sm)',
-                  fontSize: '32px'
+                  fontSize: '32px',
+                  '@media (max-width: 767px)': {
+                    width: '60px',
+                    height: '60px',
+                    fontSize: '24px'
+                  }
                 }}>
                   {profession.icon || '医療'}
                 </div>
@@ -99,14 +114,20 @@ const NewQuizFlow = ({ onReturnHome, onConsultation, onNavigateToPage }) => {
                 <div>
                   <h3 className="heading_h4" style={{
                     marginBottom: 'var(--spacing-xs)',
-                    color: '#333333'
+                    color: '#333333',
+                    '@media (max-width: 767px)': {
+                      fontSize: '18px'
+                    }
                   }}>
                     {profession.label}
                   </h3>
                   <p className="paragraph_small" style={{
                     color: '#333333',
                     lineHeight: '1.4',
-                    opacity: 0.7
+                    opacity: 0.7,
+                    '@media (max-width: 767px)': {
+                      fontSize: '14px'
+                    }
                   }}>
                     {profession.description}
                   </p>
@@ -217,12 +238,35 @@ const NewQuizFlow = ({ onReturnHome, onConsultation, onNavigateToPage }) => {
       }
     };
 
-    // 質問ごとのラベル定義（従来システムと同じパターン）
+    // 質問ごとのラベル定義（比較形式の質問に対応）
     const getQuestionLabels = (question) => {
       if (question.riasec === 'Behavior' || question.riasec === 'Stress') {
         return { negative: "当てはまらない", positive: "当てはまる" };
       }
-      return { negative: "全く当てはまらない", positive: "非常に当てはまる" };
+      
+      // 比較形式の質問に応じた適切なラベル
+      const questionLabels = {
+        1: { negative: "デスクワークを好む", positive: "医療機器・手技を好む" },
+        2: { negative: "会議・企画を好む", positive: "手を動かす作業を好む" },
+        3: { negative: "理論・概念を重視", positive: "手技・技術を重視" },
+        4: { negative: "日常業務を重視", positive: "新しい知識・研究を重視" },
+        5: { negative: "直感を重視", positive: "データ・統計を重視" },
+        6: { negative: "結果を重視", positive: "原因追求を重視" },
+        7: { negative: "マニュアル通りを好む", positive: "創造性・独創性を好む" },
+        8: { negative: "マニュアル・慣例を重視", positive: "感性・直感を重視" },
+        9: { negative: "一般的な方法を好む", positive: "独自性・個性を重視" },
+        10: { negative: "事務作業を重視", positive: "コミュニケーションを重視" },
+        11: { negative: "個人の成果を重視", positive: "人の成長支援を重視" },
+        12: { negative: "個人作業を重視", positive: "チーム連携を重視" },
+        13: { negative: "フォロワーを好む", positive: "リーダーシップを発揮したい" },
+        14: { negative: "プロセスを重視", positive: "目標達成・成果を重視" },
+        15: { negative: "現状維持を好む", positive: "新しい挑戦をしたい" },
+        16: { negative: "自由さを重視", positive: "ルール・手順の明確さを重視" },
+        17: { negative: "大雑把でも良い", positive: "正確性・細かい注意を重視" },
+        18: { negative: "変化の多い環境を好む", positive: "安定・予測可能な環境を好む" }
+      };
+      
+      return questionLabels[question.id] || { negative: "そう思わない", positive: "そう思う" };
     };
 
     // 結果計算関数
@@ -287,7 +331,7 @@ const NewQuizFlow = ({ onReturnHome, onConsultation, onNavigateToPage }) => {
     // ローディング画面
     if (isLoading) {
       return (
-        <div className="page_container" style={{ minHeight: '100vh', backgroundColor: 'var(--neutral-50)' }}>
+        <div className="page_container" style={{ minHeight: '100vh', backgroundColor: '#f8fafc' }}>
           <GlobalNavigation 
             onReturnHome={onReturnHome}
             onNavigateToPage={onNavigateToPage}
@@ -296,7 +340,7 @@ const NewQuizFlow = ({ onReturnHome, onConsultation, onNavigateToPage }) => {
             activeRoute="/new-quiz"
           />
           
-          <section className="section">
+          <section className="section" style={{ backgroundColor: '#f8fafc' }}>
             <div className="container">
               <motion.div
                 initial={{ opacity: 0 }}
@@ -364,7 +408,7 @@ const NewQuizFlow = ({ onReturnHome, onConsultation, onNavigateToPage }) => {
     };
 
     return (
-      <div className="page_container" style={{ minHeight: '100vh', backgroundColor: 'var(--neutral-50)' }}>
+      <div className="page_container" style={{ minHeight: '100vh', backgroundColor: '#f8fafc' }}>
         {/* Navigation */}
         <GlobalNavigation 
           onReturnHome={onReturnHome}
@@ -389,7 +433,7 @@ const NewQuizFlow = ({ onReturnHome, onConsultation, onNavigateToPage }) => {
         </header>
 
         {/* Main Content */}
-        <section className="section">
+        <section className="section" style={{ backgroundColor: '#f8fafc' }}>
           <div className="container is-small">
             <AnimatePresence initial={false} custom={direction} mode="wait">
               <motion.div
@@ -414,11 +458,20 @@ const NewQuizFlow = ({ onReturnHome, onConsultation, onNavigateToPage }) => {
                         border: '1px solid var(--neutral-200)',
                         borderRadius: 'var(--radius-large)',
                         padding: 'var(--spacing-xl)',
-                        marginBottom: 'var(--spacing-lg)'
+                        marginBottom: 'var(--spacing-lg)',
+                        '@media (max-width: 767px)': {
+                          padding: 'var(--spacing-lg)',
+                          marginBottom: 'var(--spacing-md)'
+                        }
                       }}>
                         <h3 className="heading_h4" style={{ 
                           marginBottom: 'var(--spacing-lg)',
-                          color: '#333333'
+                          color: '#333333',
+                          '@media (max-width: 767px)': {
+                            fontSize: '16px',
+                            marginBottom: 'var(--spacing-md)',
+                            lineHeight: '1.4'
+                          }
                         }}>
                           {question.text}
                         </h3>
@@ -436,7 +489,11 @@ const NewQuizFlow = ({ onReturnHome, onConsultation, onNavigateToPage }) => {
                                 marginBottom: 'var(--spacing-sm)',
                                 fontSize: '12px',
                                 color: '#856404',
-                                textAlign: 'center'
+                                textAlign: 'center',
+                                '@media (max-width: 767px)': {
+                                  fontSize: '11px',
+                                  padding: 'var(--spacing-xs)'
+                                }
                               }}>
                                 ヒント: どれか一つ、最も当てはまるものを選んでください
                               </div>
@@ -462,9 +519,9 @@ const NewQuizFlow = ({ onReturnHome, onConsultation, onNavigateToPage }) => {
                                   <div
                                     className="button is-secondary"
                                     style={{
-                                      backgroundColor: isSelected ? (isStressQuestion ? '#28a745' : '#333333') : 'transparent',
+                                      backgroundColor: isSelected ? '#333333' : 'transparent',
                                       color: isSelected ? '#ffffff' : '#333333',
-                                      border: `2px solid ${isSelected ? (isStressQuestion ? '#28a745' : '#333333') : 'var(--neutral-300)'}`,
+                                      border: `2px solid ${isSelected ? '#333333' : 'var(--neutral-300)'}`,
                                       textAlign: 'left',
                                       width: '100%',
                                       padding: 'var(--spacing-md) var(--spacing-lg)',
@@ -474,12 +531,17 @@ const NewQuizFlow = ({ onReturnHome, onConsultation, onNavigateToPage }) => {
                                       position: 'relative',
                                       minHeight: isStressQuestion ? '60px' : 'auto',
                                       display: 'flex',
-                                      alignItems: 'center'
+                                      alignItems: 'center',
+                                      '@media (max-width: 767px)': {
+                                        padding: 'var(--spacing-sm) var(--spacing-md)',
+                                        fontSize: isStressQuestion ? '14px' : '13px',
+                                        minHeight: isStressQuestion ? '50px' : 'auto'
+                                      }
                                     }}
                                     onMouseOver={(e) => {
                                       if (!isSelected) {
                                         e.currentTarget.style.backgroundColor = isStressQuestion ? '#f8f9fa' : 'var(--neutral-50)';
-                                        e.currentTarget.style.borderColor = isStressQuestion ? '#28a745' : '#333333';
+                                        e.currentTarget.style.borderColor = '#333333';
                                       }
                                     }}
                                     onMouseOut={(e) => {
@@ -496,14 +558,19 @@ const NewQuizFlow = ({ onReturnHome, onConsultation, onNavigateToPage }) => {
                                         height: '24px',
                                         borderRadius: '50%',
                                         backgroundColor: isSelected ? '#ffffff' : 'var(--neutral-200)',
-                                        color: isSelected ? '#28a745' : '#333333',
+                                        color: isSelected ? '#333333' : '#333333',
                                         fontSize: '14px',
                                         fontWeight: 'bold',
                                         marginRight: 'var(--spacing-sm)',
                                         display: 'flex',
                                         alignItems: 'center',
                                         justifyContent: 'center',
-                                        flexShrink: 0
+                                        flexShrink: 0,
+                                        '@media (max-width: 767px)': {
+                                          width: '20px',
+                                          height: '20px',
+                                          fontSize: '12px'
+                                        }
                                       }}>
                                         {String.fromCharCode(65 + index)}
                                       </span>
@@ -554,6 +621,10 @@ const NewQuizFlow = ({ onReturnHome, onConsultation, onNavigateToPage }) => {
                                       width: '100%',
                                       aspectRatio: '1/1',
                                       maxWidth: '40px',
+                                      '@media (max-width: 767px)': {
+                                        maxWidth: '32px',
+                                        minHeight: '32px'
+                                      },
                                       margin: '0 auto',
                                       borderRadius: '50%',
                                       backgroundColor: 
@@ -696,7 +767,7 @@ const NewQuizFlow = ({ onReturnHome, onConsultation, onNavigateToPage }) => {
   return (
     <div className="app-container" style={{
       minHeight: '100vh',
-      backgroundColor: 'var(--neutral-50)',
+      backgroundColor: '#f8fafc',
       width: '100%'
     }}>
       <AnimatePresence mode="wait">

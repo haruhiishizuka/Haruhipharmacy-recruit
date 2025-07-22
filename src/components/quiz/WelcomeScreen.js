@@ -120,7 +120,7 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy, onReturnHome, onNavigateToPa
                 transition={{ duration: 0.8, delay: 0.7 }}
               >
                 16タイプ診断が"あなたらしい職場"を導き出す。<br />
-                ――やりがいとライフバランス、その両方を手に入れよう。
+                RIASEC理論×行動スタイル分析で、医療キャリアの新たな可能性を発見しよう。
               </motion.p>
             </div>
           </div>
@@ -134,31 +134,25 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy, onReturnHome, onNavigateToPa
             <div className="eyebrow">診断フローのご案内</div>
             <h1 className="heading_h2">診断ステップはとてもシンプル</h1>
             <div className="rich-text paragraph_large w-richtext">
-              <p>まずは職種を選び、いくつかの質問に答えるだけ。あなたの性格や志向にぴったりの医療職場をご提案します。診断結果は分かりやすく、理想のキャリアへの第一歩を応援します。新しい自分に出会う準備はできていますか？</p>
+              <p>職種を選択し、24の質問に答えるだけで、あなたの性格や志向にぴったりの医療職場をご提案します。RIASEC理論に基づく科学的分析で、16タイプのキャラクター診断結果をお届けします。理想のキャリアへの第一歩を応援します。</p>
             </div>
-            <div className="button-group">
+            <div className="button-group" style={{ display: 'flex', gap: '16px', justifyContent: 'flex-start', alignItems: 'center' }}>
               <button 
                 onClick={handleNewQuizClick}
                 className="button"
                 style={{
                   backgroundColor: '#333333',
                   borderColor: '#333333',
-                  color: '#fff',
-                  fontWeight: 'bold'
+                  color: '#ffffff',
+                  fontWeight: 'bold',
+                  fontSize: '16px',
+                  padding: '14px 28px',
+                  border: 'none',
+                  borderRadius: '8px',
+                  cursor: 'pointer'
                 }}
               >
-                🔬 新・16タイプ診断
-              </button>
-              <button 
-                onClick={handleStartQuizClick}
-                className="button is-secondary"
-                style={{
-                  backgroundColor: 'transparent',
-                  color: '#333333',
-                  border: '2px solid #333333'
-                }}
-              >
-                従来の診断
+                診断する
               </button>
               <button 
                 onClick={(e) => {
@@ -171,7 +165,12 @@ const WelcomeScreen = ({ onStartQuiz, onOpenPolicy, onReturnHome, onNavigateToPa
                 style={{
                   backgroundColor: 'transparent',
                   color: '#333333',
-                  border: '2px solid #333333'
+                  border: '2px solid #333333',
+                  fontWeight: 'normal',
+                  fontSize: '16px',
+                  padding: '12px 24px',
+                  borderRadius: '8px',
+                  cursor: 'pointer'
                 }}
               >
                 相談する

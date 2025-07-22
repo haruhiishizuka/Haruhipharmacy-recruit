@@ -222,8 +222,8 @@ export const newTypeDescriptions = {
     workplacePreferences: {
       ideal: [
         "医療情報システム部門",
-        "診療報酬・医事課",
-        "治験・臨床研究部門"
+        "治験・臨床研究部門",
+        "医療安全・質改善部門"
       ],
       suitable: [
         "薬剤部（薬物動態解析）",

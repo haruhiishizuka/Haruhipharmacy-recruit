@@ -4,21 +4,21 @@ export const mainQuestions = [
   // Realistic（現実的）タイプの質問 - 3問
   {
     id: 1,
-    text: "医療機器の操作や手技を習得することに興味がありますか？",
+    text: "デスクワークよりも、医療機器や手技を使った作業の方が好みですか？",
     riasec: "Realistic",
     weight: 1.0,
     category: "技術志向"
   },
   {
     id: 2, 
-    text: "手を使った作業や、実際に「もの」を扱う仕事にやりがいを感じますか？",
+    text: "会議や企画よりも、実際に手を動かす作業の方が得意ですか？",
     riasec: "Realistic",
     weight: 0.8,
     category: "実践志向"
   },
   {
     id: 3,
-    text: "確実で正確な手技を身につけることを重視しますか？",
+    text: "理論や概念よりも、確実な手技や技術の方が重要だと思いますか？",
     riasec: "Realistic", 
     weight: 0.9,
     category: "技術志向"
@@ -27,21 +27,21 @@ export const mainQuestions = [
   // Investigative（研究的）タイプの質問 - 3問
   {
     id: 4,
-    text: "新しい医学知識や研究成果を学ぶことに強い関心がありますか？",
+    text: "日常業務よりも、新しい医学知識や研究の方が興味深いですか？",
     riasec: "Investigative",
     weight: 1.0,
     category: "学習志向"
   },
   {
     id: 5,
-    text: "データや統計を分析することが得意ですか？",
+    text: "直感よりも、データや統計に基づいて判断するタイプですか？",
     riasec: "Investigative",
     weight: 0.8,
     category: "分析志向"
   },
   {
     id: 6,
-    text: "「なぜこうなるのか？」という疑問を追求することが好きですか？",
+    text: "結果よりも、「なぜこうなるのか？」という原因を追求する方が大切ですか？",
     riasec: "Investigative",
     weight: 0.9,
     category: "探究志向"
@@ -50,44 +50,44 @@ export const mainQuestions = [
   // Artistic（芸術的）タイプの質問 - 3問
   {
     id: 7,
-    text: "創造性や独創的なアイデアを活かした仕事をしたいですか？",
+    text: "マニュアル通りよりも、創造性や独創的なアイデアを活かした仕事の方が好みですか？",
     riasec: "Artistic",
     weight: 1.0,
     category: "創造志向"
   },
   {
     id: 8,
-    text: "患者さんとの関わりにおいて、感性や直感を大切にしますか？",
+    text: "マニュアルや慣例よりも、感性や直感を大切にしたアプローチの方が好みですか？",
     riasec: "Artistic",
     weight: 0.7,
     category: "感性志向"
   },
   {
     id: 9,
-    text: "既存の方法にとらわれず、新しいアプローチを試すことが好きですか？",
+    text: "一般的な方法よりも、独自性や個性を活かしたアプローチを好みますか？",
     riasec: "Artistic",
     weight: 0.8,
-    category: "革新志向"
+    category: "個性志向"
   },
 
   // Social（社会的）タイプの質問 - 3問
   {
     id: 10,
-    text: "患者さんや同僚との人間関係を築くことを重視しますか？",
+    text: "事務作業よりも、患者さんや同僚とのコミュニケーションの方が大切ですか？",
     riasec: "Social",
     weight: 1.0,
     category: "人間関係志向"
   },
   {
     id: 11,
-    text: "他の人を支援したり、教えたりすることにやりがいを感じますか？",
+    text: "個人の成果よりも、人の成長や学習を支援することの方がやりがいを感じますか？",
     riasec: "Social",
     weight: 0.9,
     category: "支援志向"
   },
   {
     id: 12,
-    text: "チームワークを大切にし、協調して働くことを好みますか？",
+    text: "個人作業よりも、チームでの連携や協力の方が重要だと思いますか？",
     riasec: "Social",
     weight: 0.8,
     category: "協調志向"
@@ -96,21 +96,21 @@ export const mainQuestions = [
   // Enterprising（企業的）タイプの質問 - 3問
   {
     id: 13,
-    text: "チームのリーダーとして責任を持つことが好きですか？",
+    text: "フォロワーよりも、リーダーシップを発揮してチームを引っ張る方が得意ですか？",
     riasec: "Enterprising",
     weight: 1.0,
     category: "リーダーシップ志向"
   },
   {
     id: 14,
-    text: "目標達成に向けて積極的に行動することが得意ですか？",
+    text: "プロセスよりも、目標達成や成果を出すことの方が重要だと思いますか？",
     riasec: "Enterprising",
     weight: 0.9,
     category: "達成志向"
   },
   {
     id: 15,
-    text: "新しいプロジェクトや改善提案に積極的に参加しますか？",
+    text: "現状維持よりも、新しいプロジェクトや企画を推進する方がワクワクしますか？",
     riasec: "Enterprising",
     weight: 0.8,
     category: "推進志向"
@@ -119,21 +119,21 @@ export const mainQuestions = [
   // Conventional（慣習的）タイプの質問 - 3問  
   {
     id: 16,
-    text: "ルールや手順を守ることを重視しますか？",
+    text: "自由さよりも、ルールや手順が明確な環境で作業する方が安心ですか？",
     riasec: "Conventional",
     weight: 1.0,
     category: "規則志向"
   },
   {
     id: 17,
-    text: "正確性や安全性を最優先に考えますか？",
+    text: "大雑把な作業よりも、正確性や細かい注意が必要な作業の方が得意ですか？",
     riasec: "Conventional",
     weight: 0.9,
     category: "安全志向"
   },
   {
     id: 18,
-    text: "組織的で計画的な作業環境を好みますか？",
+    text: "変化の多い環境よりも、安定した環境で予測可能な仕事の方が好みですか？",
     riasec: "Conventional",
     weight: 0.8,
     category: "組織志向"
