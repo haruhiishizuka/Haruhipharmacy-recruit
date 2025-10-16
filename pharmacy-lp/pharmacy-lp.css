@@ -22,12 +22,19 @@
     box-sizing: border-box;
 }
 
+html {
+    margin: 0;
+    padding: 0;
+}
+
 body {
     font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
     color: var(--text-color);
     line-height: 1.8;
     background-color: var(--white);
     -webkit-font-smoothing: antialiased;
+    margin: 0;
+    padding: 0;
 }
 
 img {
@@ -49,7 +56,7 @@ ul {
    ヘッダー
    ================================================ */
 .header {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
@@ -71,7 +78,7 @@ ul {
 .logo {
     font-size: 18px;
     font-weight: bold;
-    color: var(--heading-color);
+    color: var(--white);
 }
 
 .nav {
@@ -82,8 +89,8 @@ ul {
 .nav a {
     font-size: 14px;
     font-weight: 500;
-    color: var(--text-color);
-    transition: color 0.3s;
+    color: var(--white);
+    transition: opacity 0.3s;
     position: relative;
 }
 
@@ -99,7 +106,7 @@ ul {
 }
 
 .nav a:hover {
-    color: var(--main-color);
+    opacity: 0.7;
 }
 
 .nav a:hover::after {
@@ -129,13 +136,16 @@ ul {
    ================================================ */
 .hero {
     position: relative;
-    margin-top: 0;
+    margin: 0;
+    padding: 0;
     width: 100%;
 }
 
 .hero-image {
     position: relative;
     width: 100%;
+    margin: 0;
+    padding: 0;
     z-index: 1;
 }
 
@@ -144,6 +154,8 @@ ul {
     height: auto;
     display: block;
     vertical-align: top;
+    margin: 0;
+    padding: 0;
 }
 
 .hero-content {
@@ -212,12 +224,29 @@ ul {
     }
 }
 
+@media (max-width: 375px) {
+    .hero {
+        height: auto;
+        min-height: 0;
+    }
+
+    .hero-image {
+        height: auto;
+    }
+
+    .hero-image img {
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+    }
+}
+
 /* ================================================
    メッセージセクション
    ================================================ */
 .message {
     background-color: var(--white);
-    padding: 80px 0;
+    padding: 60px 0;
 }
 
 .message-content {
@@ -238,9 +267,17 @@ ul {
     letter-spacing: 0.5px;
 }
 
+.message-title {
+    font-size: 25.5px;
+    font-weight: bold;
+    display: block;
+    font-family: '游教科書体', 'Yu Kyokasho', 'YuKyokasho', serif;
+    margin-bottom: 0.5em;
+}
+
 @media (max-width: 768px) {
     .message {
-        padding: 60px 0;
+        padding: 45px 0;
     }
 
     .message-content {
@@ -250,6 +287,31 @@ ul {
     .message-text {
         font-size: 15px;
         line-height: 2;
+    }
+
+    .message-title {
+        font-size: 22px;
+        margin-bottom: 0.5em;
+    }
+}
+
+@media (max-width: 375px) {
+    .message {
+        padding: 30px 0;
+    }
+
+    .message-content {
+        padding: 30px 20px;
+    }
+
+    .message-text {
+        font-size: 14px;
+        line-height: 1.9;
+    }
+
+    .message-title {
+        font-size: 20px;
+        margin-bottom: 0.4em;
     }
 }
 
@@ -327,7 +389,7 @@ ul {
 }
 
 section {
-    padding: 80px 0;
+    padding: 60px 0;
 }
 
 .section-title {
@@ -351,7 +413,7 @@ section {
 
 @media (max-width: 768px) {
     section {
-        padding: 70px 0;
+        padding: 45px 0;
     }
 
     .container {
@@ -364,17 +426,81 @@ section {
     }
 }
 
+@media (max-width: 375px) {
+    section {
+        padding: 35px 0;
+    }
+
+    .container {
+        padding: 0 16px;
+    }
+
+    .section-title {
+        font-size: 11px;
+        margin-bottom: 12px;
+    }
+
+    .section-subtitle {
+        font-size: 20px;
+        margin-bottom: 24px;
+    }
+}
+
 /* ================================================
    選ばれる理由セクション
    ================================================ */
 .why-us {
     background-color: var(--white);
+    background-image: url('images/haikei.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+.why-us::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.95);
+    z-index: 0;
+}
+
+.why-us .container {
+    position: relative;
+    z-index: 1;
 }
 
 .features-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 40px;
+}
+
+@media (max-width: 375px) {
+    .features-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    .feature-card {
+        padding: 32px 24px;
+    }
+
+    .feature-title {
+        font-size: 18px;
+    }
+
+    .feature-text {
+        font-size: 14px;
+    }
+
+    .feature-list li {
+        font-size: 13px;
+    }
 }
 
 .feature-card {
@@ -504,6 +630,7 @@ section {
     padding: 20px 24px;
     border-radius: 10px;
     border-left: 3px solid var(--accent-color);
+    box-shadow: none;
 }
 
 @media (max-width: 768px) {
@@ -513,6 +640,30 @@ section {
 
     .job-tasks {
         grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 375px) {
+    .job-box {
+        padding: 28px 20px;
+    }
+
+    .job-title {
+        font-size: 18px;
+        margin-bottom: 28px;
+    }
+
+    .task-item {
+        padding: 14px 18px;
+    }
+
+    .task-name {
+        font-size: 14px;
+    }
+
+    .job-note {
+        font-size: 13px;
+        padding: 16px 18px;
     }
 }
 
@@ -577,6 +728,28 @@ section {
 
     .req-highlight {
         font-size: 20px;
+    }
+}
+
+@media (max-width: 375px) {
+    .req-item {
+        padding: 20px 16px;
+    }
+
+    .req-label {
+        font-size: 13px;
+    }
+
+    .req-content {
+        font-size: 14px;
+    }
+
+    .req-highlight {
+        font-size: 18px;
+    }
+
+    .req-note {
+        font-size: 13px;
     }
 }
 
@@ -684,6 +857,27 @@ section {
    ================================================ */
 .voices {
     background-color: var(--white);
+    background-image: url('images/haikei.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+.voices::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.95);
+    z-index: 0;
+}
+
+.voices .container {
+    position: relative;
+    z-index: 1;
 }
 
 .workplace-info {
@@ -762,7 +956,7 @@ section {
 
 .voice-image {
     width: 100%;
-    height: 280px;
+    height: 120px;
     overflow: hidden;
 }
 
@@ -775,6 +969,24 @@ section {
 
 .voice-card:hover .voice-image img {
     transform: scale(1.05);
+}
+
+.voice-icon {
+    background: linear-gradient(135deg, var(--bg-light), #F0E5D8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.voice-icon::before {
+    content: '';
+    width: 60px;
+    height: 60px;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23E8B4D9"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 .voice-content {
@@ -819,9 +1031,9 @@ section {
 
 .recommend-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    grid-template-columns: 1fr;
     gap: 24px;
-    max-width: 1100px;
+    max-width: 600px;
     margin: 0 auto 40px;
 }
 
@@ -856,7 +1068,7 @@ section {
 
 @media (max-width: 768px) {
     .recommend-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: 1fr;
     }
 }
 
@@ -865,6 +1077,27 @@ section {
    ================================================ */
 .flow {
     background-color: var(--white);
+    background-image: url('images/haikei.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+.flow::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.95);
+    z-index: 0;
+}
+
+.flow .container {
+    position: relative;
+    z-index: 1;
 }
 
 .flow-steps {
@@ -944,34 +1177,74 @@ section {
 
 .faq-item {
     background-color: var(--white);
-    padding: 32px 36px;
+    padding: 28px 36px;
     border-radius: 16px;
     border-left: 4px solid var(--main-color);
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
     border: 1px solid rgba(0, 0, 0, 0.04);
     border-left: 4px solid var(--main-color);
+    transition: all 0.3s ease;
 }
 
 .faq-question {
     font-size: 16px;
     font-weight: bold;
     color: var(--heading-color);
-    margin-bottom: 12px;
+    margin-bottom: 0;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    user-select: none;
+    transition: color 0.3s;
+}
+
+.faq-question:hover {
+    color: var(--main-color);
+}
+
+.faq-toggle {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--main-color);
+    transition: transform 0.3s;
+    flex-shrink: 0;
+    margin-left: 16px;
+}
+
+.faq-item.active .faq-toggle {
+    transform: rotate(45deg);
 }
 
 .faq-answer {
     font-size: 15px;
     color: var(--text-light);
     line-height: 1.8;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, margin-top 0.3s ease, padding-top 0.3s ease;
+    padding-top: 0;
+    margin-top: 0;
+}
+
+.faq-item.active .faq-answer {
+    max-height: 500px;
+    margin-top: 12px;
+    padding-top: 12px;
 }
 
 @media (max-width: 768px) {
     .faq-item {
-        padding: 24px 20px;
+        padding: 20px 20px;
     }
 
     .faq-question {
         font-size: 15px;
+    }
+
+    .faq-toggle {
+        font-size: 22px;
+        margin-left: 12px;
     }
 
     .faq-answer {
@@ -1037,6 +1310,27 @@ section {
     }
 }
 
+@media (max-width: 375px) {
+    .cta {
+        padding: 60px 16px;
+    }
+
+    .cta-title {
+        font-size: 22px;
+        margin-bottom: 16px;
+    }
+
+    .cta-subtitle {
+        font-size: 14px;
+        margin-bottom: 32px;
+    }
+
+    .btn-large {
+        padding: 18px 36px;
+        font-size: 16px;
+    }
+}
+
 /* ================================================
    固定CTAボタン
    ================================================ */
@@ -1065,18 +1359,18 @@ section {
     max-width: 500px;
     margin: 0 auto;
     padding: 18px 32px;
-    background-color: var(--main-color);
+    background: linear-gradient(135deg, #FF6B6B, #FF8E53);
     color: var(--white);
     font-size: 17px;
     font-weight: bold;
     border-radius: 50px;
-    box-shadow: 0 4px 16px rgba(232, 180, 217, 0.4);
+    box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
     transition: all 0.3s;
 }
 
 .btn-fixed:hover {
-    background-color: #D89CC4;
-    box-shadow: 0 6px 20px rgba(232, 180, 217, 0.5);
+    background: linear-gradient(135deg, #FF8E53, #FF6B6B);
+    box-shadow: 0 8px 24px rgba(255, 107, 107, 0.5);
     transform: translateY(-2px);
 }
 
@@ -1108,21 +1402,20 @@ section {
     margin-bottom: 8px;
 }
 
-.footer-social {
-    display: flex;
-    justify-content: center;
-    gap: 24px;
+.footer-link {
     margin-top: 24px;
 }
 
-.social-link {
+.official-link {
+    display: inline-block;
     font-size: 14px;
     color: var(--main-color);
     transition: opacity 0.3s;
     font-weight: 500;
+    text-decoration: underline;
 }
 
-.social-link:hover {
+.official-link:hover {
     opacity: 0.7;
 }
 
