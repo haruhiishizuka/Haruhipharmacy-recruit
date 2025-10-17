@@ -5,6 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>採用情報 | はるひ薬局 - 2023年オープンのキレイな調剤薬局</title>
     <link rel="stylesheet" href="index.css">
+
+    <!-- Meta Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '596355990166785');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=596355990166785&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- End Meta Pixel Code -->
 </head>
 <body>
     <!-- ファーストビュー -->
@@ -394,7 +412,7 @@
             <h2 class="cta-title">ENTRYは履歴書不要！まずは気軽にお話ししませんか？</h2>
             <p class="cta-subtitle">職場見学だけでもOK。あなたに合った働き方を一緒に考えましょう。</p>
             <div class="cta-buttons">
-                <a href="https://lin.ee/KWE9iSX" class="btn btn-large btn-cta">
+                <a href="https://lin.ee/KWE9iSX" class="btn btn-large btn-cta" onclick="fbq('track', 'Contact');">
                     LINEで気軽に相談する
                 </a>
             </div>
@@ -403,7 +421,7 @@
 
     <!-- 固定CTAボタン（スクロール時表示） -->
     <div class="fixed-cta">
-        <a href="https://lin.ee/KWE9iSX" class="btn-fixed">
+        <a href="https://lin.ee/KWE9iSX" class="btn-fixed" onclick="fbq('track', 'Contact');">
             <span class="btn-text">履歴書不要でカンタン応募</span>
         </a>
     </div>
