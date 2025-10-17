@@ -270,21 +270,29 @@ ul {
 }
 
 .message-text {
-    font-size: 16.5px;
-    line-height: 2.1;
-    color: var(--text-color);
     text-align: center;
+}
+
+.message-paragraph {
+    font-size: 16.5px;
+    line-height: 2;
+    color: var(--text-color);
     letter-spacing: 0.3px;
     word-break: keep-all;
-    overflow-wrap: anywhere;
+    overflow-wrap: break-word;
+    margin-bottom: 1.5em;
+}
+
+.message-paragraph:last-child {
+    margin-bottom: 0;
 }
 
 .message-title {
     font-size: 25.5px;
     font-weight: bold;
-    display: block;
     font-family: '游教科書体', 'Yu Kyokasho', 'YuKyokasho', serif;
-    margin-bottom: 0.5em;
+    margin-bottom: 1.2em;
+    color: var(--heading-color);
 }
 
 @media (max-width: 768px) {
@@ -297,14 +305,14 @@ ul {
         border-radius: 16px;
     }
 
-    .message-text {
+    .message-paragraph {
         font-size: 15px;
-        line-height: 2;
+        line-height: 1.95;
     }
 
     .message-title {
         font-size: 22px;
-        margin-bottom: 0.5em;
+        margin-bottom: 1em;
     }
 }
 
@@ -318,14 +326,14 @@ ul {
         border-radius: 12px;
     }
 
-    .message-text {
+    .message-paragraph {
         font-size: 14.5px;
-        line-height: 1.95;
+        line-height: 1.9;
     }
 
     .message-title {
         font-size: 21px;
-        margin-bottom: 0.45em;
+        margin-bottom: 0.9em;
     }
 }
 
@@ -339,14 +347,14 @@ ul {
         border-radius: 12px;
     }
 
-    .message-text {
+    .message-paragraph {
         font-size: 14px;
-        line-height: 1.9;
+        line-height: 1.85;
     }
 
     .message-title {
         font-size: 20px;
-        margin-bottom: 0.4em;
+        margin-bottom: 0.8em;
     }
 }
 
