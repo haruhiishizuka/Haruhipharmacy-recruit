@@ -33,8 +33,98 @@
         })(window, document, "clarity", "script", "tswv0aanu1");
     </script>
     <!-- End Microsoft Clarity -->
+
+    <!-- 固定ヘッダーのスタイル -->
+    <style>
+        .urgent-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(135deg, #FF6B6B, #FF8E53);
+            z-index: 10000;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            animation: headerPulse 2s ease-in-out infinite;
+        }
+
+        .urgent-text {
+            margin: 0;
+            padding: 12px 16px;
+            text-align: center;
+            color: #ffffff;
+            font-weight: bold;
+            font-size: 14px;
+            line-height: 1.4;
+            letter-spacing: 0.5px;
+        }
+
+        .urgent-emphasis {
+            font-size: 18px;
+        }
+
+        @keyframes headerPulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.9;
+            }
+        }
+
+        /* bodyに上部余白を追加してヘッダーの下にコンテンツが隠れないようにする */
+        body {
+            padding-top: 48px !important;
+        }
+
+        @media (min-width: 768px) {
+            .urgent-text {
+                font-size: 16px;
+                padding: 14px 20px;
+            }
+            .urgent-emphasis {
+                font-size: 20px;
+            }
+            body {
+                padding-top: 52px !important;
+            }
+        }
+
+        /* PC画面でも固定ヘッダーを全幅表示 */
+        @media (min-width: 769px) {
+            .urgent-header {
+                max-width: 100% !important;
+                width: 100% !important;
+            }
+        }
+
+        /* 固定CTAボタンのサブテキスト */
+        .btn-text-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            align-items: center;
+        }
+
+        .btn-subtext {
+            font-size: 11px;
+            font-weight: 400;
+            opacity: 0.9;
+            letter-spacing: 0.3px;
+            text-align: center;
+        }
+
+        @media (min-width: 768px) {
+            .btn-subtext {
+                font-size: 12px;
+            }
+        }
+    </style>
 </head>
 <body>
+    <!-- 緊急告知固定ヘッダー -->
+    <div class="urgent-header">
+        <p class="urgent-text">採用枠残り<span class="urgent-emphasis">1枠！</span>※埋まり次第終了</p>
+    </div>
     <!-- ファーストビュー -->
     <section class="hero">
         <div class="hero-image">
@@ -425,7 +515,10 @@
     <!-- 固定CTAボタン（スクロール時表示） -->
     <div class="fixed-cta">
         <a href="https://lin.ee/KWE9iSX" class="btn-fixed" onclick="fbq('track', 'Contact');">
-            <span class="btn-text">履歴書不要でカンタン応募</span>
+            <span class="btn-text-wrapper">
+                <span class="btn-text">履歴書不要でカンタン応募</span>
+                <span class="btn-subtext">質問だけでも大歓迎✨</span>
+            </span>
         </a>
     </div>
 
