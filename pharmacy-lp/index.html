@@ -128,7 +128,7 @@
     <!-- ファーストビュー -->
     <section class="hero">
         <div class="hero-image">
-            <img src="images/TOP.png" alt="明るい薬局の様子">
+            <img src="images/TOP.jpg" alt="明るい薬局の様子">
         </div>
     </section>
 
@@ -513,7 +513,7 @@
     </section>
 
     <!-- 固定CTAボタン（スクロール時表示） -->
-    <div class="fixed-cta">
+    <div class="fixed-cta show">
         <a href="https://lin.ee/KWE9iSX" class="btn-fixed" onclick="fbq('track', 'Contact');">
             <span class="btn-text-wrapper">
                 <span class="btn-text">履歴書不要でカンタン応募</span>
@@ -538,19 +538,6 @@
     </footer>
 
     <script>
-        // 固定CTAボタンのスクロール表示制御
-        window.addEventListener('scroll', function() {
-            const fixedCta = document.querySelector('.fixed-cta');
-            const heroSection = document.querySelector('.hero');
-            const heroHeight = heroSection.offsetHeight;
-
-            if (window.scrollY > heroHeight) {
-                fixedCta.classList.add('show');
-            } else {
-                fixedCta.classList.remove('show');
-            }
-        });
-
         // FAQのトグル機能
         document.addEventListener('DOMContentLoaded', function() {
             const faqQuestions = document.querySelectorAll('.faq-question');
