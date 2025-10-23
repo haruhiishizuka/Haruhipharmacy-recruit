@@ -1522,18 +1522,18 @@ section {
     max-width: 500px;
     margin: 0 auto;
     padding: 18px 32px;
-    background: linear-gradient(135deg, #FF6B6B, #FF8E53);
+    background: #06C755;
     color: var(--white);
     font-size: 17px;
     font-weight: bold;
     border-radius: 50px;
-    box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+    box-shadow: 0 6px 20px rgba(6, 199, 85, 0.4);
     transition: all 0.3s;
 }
 
 .btn-fixed:hover {
-    background: linear-gradient(135deg, #FF8E53, #FF6B6B);
-    box-shadow: 0 8px 24px rgba(255, 107, 107, 0.5);
+    background: #05B34C;
+    box-shadow: 0 8px 24px rgba(6, 199, 85, 0.5);
     transform: translateY(-2px);
 }
 
