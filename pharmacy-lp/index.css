@@ -1589,3 +1589,293 @@ section {
     padding-top: 24px;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
+
+/* ================================================
+   不安解消セクション
+   ================================================ */
+.anxiety-relief {
+    background-color: var(--bg-light);
+    padding: 60px 0;
+}
+
+.anxiety-title {
+    font-size: 28px;
+    font-weight: bold;
+    color: var(--heading-color);
+    text-align: center;
+    margin-bottom: 48px;
+    line-height: 1.6;
+}
+
+.anxiety-list {
+    max-width: 600px;
+    margin: 0 auto 48px;
+    background-color: var(--white);
+    padding: 32px 28px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.anxiety-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.anxiety-item:last-child {
+    border-bottom: none;
+}
+
+.anxiety-check {
+    font-size: 20px;
+    color: var(--accent-color);
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+.anxiety-text {
+    font-size: 16px;
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+.anxiety-message {
+    max-width: 700px;
+    margin: 0 auto 40px;
+    text-align: center;
+}
+
+.anxiety-arrow {
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--heading-color);
+    margin-bottom: 24px;
+}
+
+.anxiety-reassurance {
+    font-size: 17px;
+    color: var(--text-color);
+    line-height: 1.9;
+}
+
+.anxiety-cta {
+    text-align: center;
+}
+
+.btn-line {
+    display: inline-block;
+    padding: 18px 40px;
+    background: #06C755;
+    color: var(--white);
+    font-size: 17px;
+    font-weight: bold;
+    border-radius: 50px;
+    box-shadow: 0 6px 20px rgba(6, 199, 85, 0.4);
+    transition: all 0.3s;
+    text-decoration: none;
+}
+
+.btn-line:hover {
+    background: #05B34C;
+    box-shadow: 0 8px 24px rgba(6, 199, 85, 0.5);
+    transform: translateY(-2px);
+}
+
+.btn-line-large {
+    padding: 22px 48px;
+    font-size: 18px;
+}
+
+@media (max-width: 768px) {
+    .anxiety-title {
+        font-size: 24px;
+        margin-bottom: 36px;
+    }
+
+    .anxiety-list {
+        padding: 28px 20px;
+    }
+
+    .anxiety-text {
+        font-size: 15px;
+    }
+
+    .anxiety-arrow {
+        font-size: 18px;
+    }
+
+    .anxiety-reassurance {
+        font-size: 16px;
+    }
+
+    .btn-line {
+        font-size: 16px;
+        padding: 16px 32px;
+    }
+
+    .btn-line-large {
+        font-size: 17px;
+        padding: 18px 36px;
+    }
+}
+
+@media (max-width: 375px) {
+    .anxiety-title {
+        font-size: 22px;
+    }
+
+    .anxiety-list {
+        padding: 24px 16px;
+    }
+
+    .anxiety-text {
+        font-size: 14px;
+    }
+
+    .anxiety-reassurance {
+        font-size: 15px;
+    }
+}
+
+/* ================================================
+   スタッフ紹介セクション
+   ================================================ */
+.staff-stories {
+    background-color: var(--white);
+    padding: 60px 0;
+}
+
+.staff-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 32px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.staff-card {
+    background-color: var(--white);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.staff-header {
+    padding: 20px 24px;
+    background: linear-gradient(135deg, var(--main-color), #D4708D);
+}
+
+.staff-attribute {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--white);
+    text-align: center;
+    margin: 0;
+}
+
+.staff-before {
+    padding: 24px;
+    background-color: #FFF5F5;
+    border-bottom: 2px dashed var(--border-color);
+}
+
+.staff-after {
+    padding: 24px;
+    background-color: #F1F8F4;
+}
+
+.staff-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: #FFFFFF;
+    background: linear-gradient(135deg, #FF6B6B, #FF8E53);
+    padding: 4px 12px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 12px;
+}
+
+.staff-after .staff-label {
+    background: linear-gradient(135deg, #06C755, #05B34C);
+}
+
+.staff-comment {
+    font-size: 15px;
+    color: var(--text-color);
+    line-height: 1.8;
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    .staff-cards {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    .staff-before,
+    .staff-after {
+        padding: 20px;
+    }
+
+    .staff-comment {
+        font-size: 14px;
+    }
+}
+
+/* ================================================
+   最終CTAセクション
+   ================================================ */
+.final-cta {
+    background: linear-gradient(135deg, var(--bg-light), #FFF8F3);
+    padding: 80px 0;
+    text-align: center;
+}
+
+.final-cta-title {
+    font-size: 32px;
+    font-weight: bold;
+    color: var(--heading-color);
+    margin-bottom: 20px;
+}
+
+.final-cta-subtitle {
+    font-size: 17px;
+    color: var(--text-color);
+    margin-bottom: 40px;
+    line-height: 1.8;
+}
+
+.final-cta-button {
+    margin-top: 40px;
+}
+
+@media (max-width: 768px) {
+    .final-cta {
+        padding: 60px 0;
+    }
+
+    .final-cta-title {
+        font-size: 26px;
+    }
+
+    .final-cta-subtitle {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 375px) {
+    .final-cta {
+        padding: 50px 0;
+    }
+
+    .final-cta-title {
+        font-size: 24px;
+    }
+
+    .final-cta-subtitle {
+        font-size: 15px;
+    }
+}
