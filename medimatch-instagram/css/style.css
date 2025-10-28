@@ -1,0 +1,909 @@
+/* ========================================
+   Reset & Base Styles
+   ======================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-blue: #00c4cd;
+    --light-blue: #E0F7F8;
+    --white: #FFFFFF;
+    --text-dark: #333333;
+    --text-gray: #666666;
+    --text-light: #999999;
+
+    --font-main: 'Noto Sans JP', sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-main);
+    font-size: 16px;
+    line-height: 1.8;
+    color: var(--text-dark);
+    background-color: var(--white);
+    font-weight: 400;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    transition: opacity 0.3s ease;
+}
+
+a:hover {
+    opacity: 0.7;
+}
+
+/* ========================================
+   Container
+   ======================================== */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* ========================================
+   Buttons
+   ======================================== */
+.cta-button {
+    display: inline-block;
+    padding: 16px 40px;
+    border-radius: 50px;
+    font-weight: 500;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.cta-button.primary {
+    background: var(--primary-blue);
+    color: var(--white);
+    box-shadow: 0 4px 15px rgba(0, 196, 205, 0.3);
+}
+
+.cta-button.primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 196, 205, 0.4);
+    opacity: 1;
+}
+
+.cta-button.secondary {
+    background: var(--white);
+    color: var(--primary-blue);
+    border: 2px solid var(--primary-blue);
+}
+
+.cta-button.secondary:hover {
+    background: var(--primary-blue);
+    color: var(--white);
+    opacity: 1;
+}
+
+.cta-button.large {
+    padding: 20px 50px;
+    font-size: 18px;
+}
+
+/* ========================================
+   Section Titles
+   ======================================== */
+.section-title {
+    font-size: 32px;
+    font-weight: 500;
+    text-align: center;
+    margin-bottom: 10px;
+    color: var(--text-dark);
+}
+
+.section-subtitle {
+    font-size: 14px;
+    text-align: center;
+    color: var(--text-gray);
+    margin-bottom: 60px;
+    font-weight: 300;
+}
+
+/* ========================================
+   Hero Section
+   ======================================== */
+.hero-section {
+    background: linear-gradient(180deg, var(--light-blue) 0%, var(--white) 100%);
+    padding: 100px 0 120px;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-bg-shapes {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.shape {
+    position: absolute;
+    border-radius: 50%;
+    background: var(--primary-blue);
+    opacity: 0.15;
+}
+
+.shape-1 {
+    width: 500px;
+    height: 500px;
+    top: -200px;
+    left: -100px;
+}
+
+.shape-2 {
+    width: 300px;
+    height: 300px;
+    top: 50%;
+    right: -100px;
+}
+
+.shape-3 {
+    width: 200px;
+    height: 200px;
+    bottom: -50px;
+    left: 30%;
+}
+
+.hero-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+}
+
+.hero-text {
+    padding-right: 20px;
+}
+
+.hero-heading {
+    font-size: 42px;
+    font-weight: 500;
+    line-height: 1.5;
+    color: var(--text-dark);
+    margin-bottom: 30px;
+}
+
+.hero-subtext {
+    font-size: 15px;
+    color: var(--text-dark);
+    margin-bottom: 25px;
+    line-height: 1.9;
+    font-weight: 300;
+}
+
+.hero-subtext strong {
+    font-weight: 500;
+}
+
+.hero-tagline {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--primary-blue);
+    margin-bottom: 35px;
+}
+
+.hero-images {
+    position: relative;
+}
+
+.image-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.grid-item {
+    background-color: #d9d9d9;
+    border-radius: 10px;
+    aspect-ratio: 1;
+    overflow: hidden;
+}
+
+.grid-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* ========================================
+   Problems Section
+   ======================================== */
+.problems-section {
+    padding: 100px 0;
+    background-color: var(--white);
+}
+
+.problems-list {
+    max-width: 900px;
+    margin: 0 auto 60px;
+}
+
+.problem-item {
+    display: flex;
+    gap: 25px;
+    margin-bottom: 40px;
+    align-items: flex-start;
+}
+
+.problem-icon {
+    flex-shrink: 0;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary-blue), #00a3ab);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.problem-content {
+    flex: 1;
+}
+
+.problem-title {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--text-dark);
+    margin-bottom: 10px;
+    line-height: 1.6;
+}
+
+.problem-text {
+    font-size: 15px;
+    color: var(--text-gray);
+    line-height: 1.8;
+    font-weight: 300;
+}
+
+.problems-solution {
+    text-align: center;
+    background: linear-gradient(135deg, var(--light-blue), #f0fcfd);
+    padding: 40px 30px;
+    border-radius: 15px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.solution-text {
+    font-size: 16px;
+    line-height: 2;
+    color: var(--text-dark);
+    font-weight: 300;
+}
+
+.solution-text strong {
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--primary-blue);
+}
+
+/* ========================================
+   Point Section
+   ======================================== */
+.point-section {
+    padding: 100px 0;
+}
+
+.point-section-blue {
+    background: linear-gradient(180deg, var(--white) 0%, var(--light-blue) 50%, var(--white) 100%);
+}
+
+.point-section-white {
+    background: var(--white);
+}
+
+.point-content {
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: 60px;
+    align-items: center;
+}
+
+.point-content-reverse {
+    grid-template-columns: 400px 1fr;
+}
+
+.point-label {
+    font-size: 14px;
+    color: var(--primary-blue);
+    font-weight: 500;
+    margin-bottom: 15px;
+    letter-spacing: 0.05em;
+}
+
+.point-title {
+    font-size: 28px;
+    font-weight: 500;
+    line-height: 1.6;
+    margin-bottom: 30px;
+    color: var(--text-dark);
+}
+
+.point-box {
+    background: var(--white);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    margin-bottom: 25px;
+}
+
+.point-description {
+    font-size: 15px;
+    line-height: 1.9;
+    color: var(--text-dark);
+    font-weight: 300;
+    margin-bottom: 20px;
+}
+
+.point-list {
+    list-style: none;
+    padding: 0;
+}
+
+.point-list li {
+    padding: 10px 0 10px 25px;
+    position: relative;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--text-dark);
+}
+
+.point-list li::before {
+    content: "●";
+    position: absolute;
+    left: 0;
+    color: var(--primary-blue);
+    font-size: 12px;
+}
+
+.point-link {
+    color: var(--primary-blue);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.point-image {
+    background-color: #d9d9d9;
+    border-radius: 15px;
+    width: 100%;
+    height: 400px;
+}
+
+.point-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 15px;
+}
+
+/* ========================================
+   Empathy Section
+   ======================================== */
+.empathy-section {
+    padding: 120px 0;
+    background: linear-gradient(180deg, #f9f9f9 0%, #ffffff 100%);
+}
+
+.empathy-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.empathy-text {
+    text-align: center;
+}
+
+.empathy-question {
+    font-size: 28px;
+    font-weight: 400;
+    line-height: 1.8;
+    color: var(--text-dark);
+    margin-bottom: 40px;
+}
+
+.empathy-description {
+    font-size: 16px;
+    line-height: 2;
+    color: var(--text-gray);
+    margin-bottom: 60px;
+    font-weight: 300;
+}
+
+.empathy-answer {
+    background: var(--white);
+    padding: 50px 40px;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    margin-bottom: 50px;
+}
+
+.empathy-answer p {
+    font-size: 16px;
+    line-height: 2;
+    color: var(--text-dark);
+    margin-bottom: 30px;
+    font-weight: 300;
+}
+
+.empathy-answer p:last-child {
+    margin-bottom: 0;
+}
+
+.empathy-highlight {
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--primary-blue);
+    margin: 40px 0 !important;
+}
+
+/* ========================================
+   FAQ Section
+   ======================================== */
+.faq-section {
+    padding: 100px 0;
+    background-color: var(--light-blue);
+}
+
+.faq-list {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.faq-item {
+    background: var(--white);
+    border-radius: 10px;
+    margin-bottom: 15px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.faq-question {
+    padding: 25px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.faq-question:hover {
+    background-color: #f8f8f8;
+}
+
+.faq-question h3 {
+    flex: 1;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-dark);
+    line-height: 1.6;
+}
+
+.faq-toggle {
+    font-size: 24px;
+    font-weight: 300;
+    color: var(--primary-blue);
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+    margin-left: 20px;
+}
+
+.faq-item.active .faq-toggle {
+    transform: rotate(45deg);
+}
+
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+    padding: 0 30px;
+    background-color: #f8f8f8;
+}
+
+.faq-item.active .faq-answer {
+    max-height: 500px;
+    padding: 25px 30px;
+}
+
+.faq-answer p {
+    font-size: 15px;
+    line-height: 1.8;
+    color: var(--text-dark);
+    font-weight: 300;
+}
+
+/* ========================================
+   Contact Section
+   ======================================== */
+.contact-section {
+    padding: 100px 0;
+    background: linear-gradient(135deg, var(--primary-blue), #00a3ab);
+}
+
+.contact-content {
+    text-align: center;
+}
+
+.contact-title {
+    font-size: 36px;
+    font-weight: 500;
+    color: var(--white);
+    margin-bottom: 20px;
+}
+
+.contact-text {
+    font-size: 16px;
+    color: var(--white);
+    margin-bottom: 50px;
+    line-height: 1.9;
+    font-weight: 300;
+}
+
+.contact-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+/* ========================================
+   Career Diagnosis Section
+   ======================================== */
+.diagnosis-section {
+    padding: 80px 0;
+    background-color: #f9f9f9;
+}
+
+.diagnosis-content {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.diagnosis-title {
+    font-size: 28px;
+    font-weight: 500;
+    color: var(--text-dark);
+    margin-bottom: 20px;
+}
+
+.diagnosis-description {
+    font-size: 16px;
+    color: var(--text-gray);
+    line-height: 1.9;
+    margin-bottom: 40px;
+    font-weight: 300;
+}
+
+.diagnosis-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.diagnosis-note {
+    font-size: 14px;
+    color: var(--text-gray);
+    margin: 0;
+    font-weight: 300;
+}
+
+/* ========================================
+   Footer
+   ======================================== */
+.footer {
+    background-color: #1a1a1a;
+    color: var(--white);
+    padding: 50px 0 30px;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-logo h3 {
+    font-size: 24px;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+.footer-logo p {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 300;
+}
+
+.footer-links {
+    display: flex;
+    gap: 30px;
+}
+
+.footer-links a {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 300;
+}
+
+.footer-links a:hover {
+    color: var(--white);
+}
+
+.footer-copyright {
+    text-align: center;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.5);
+    font-weight: 300;
+}
+
+/* ========================================
+   Responsive Design
+   ======================================== */
+
+/* Tablet */
+@media (max-width: 992px) {
+    .hero-content,
+    .point-content,
+    .point-content-reverse {
+        grid-template-columns: 1fr;
+        gap: 50px;
+    }
+
+    .hero-heading {
+        font-size: 36px;
+    }
+
+    .point-image {
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    .point-content-reverse .point-image {
+        order: 2;
+    }
+
+    .point-content-reverse .point-text-wrapper {
+        order: 1;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .hero-section,
+    .problems-section,
+    .point-section,
+    .empathy-section,
+    .faq-section,
+    .contact-section,
+    .diagnosis-section {
+        padding: 60px 0;
+    }
+
+    .hero-heading {
+        font-size: 28px;
+    }
+
+    .hero-subtext {
+        font-size: 14px;
+    }
+
+    .hero-tagline {
+        font-size: 16px;
+    }
+
+    .image-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .section-title {
+        font-size: 26px;
+    }
+
+    .point-title {
+        font-size: 24px;
+    }
+
+    .contact-title {
+        font-size: 28px;
+    }
+
+    .contact-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .cta-button.large {
+        width: 100%;
+        max-width: 350px;
+    }
+
+    .footer-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 30px;
+    }
+
+    .footer-links {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .faq-question h3 {
+        font-size: 14px;
+    }
+
+    .faq-question,
+    .faq-item.active .faq-answer {
+        padding: 20px;
+    }
+
+    .empathy-question {
+        font-size: 22px;
+    }
+
+    .empathy-description {
+        font-size: 15px;
+    }
+
+    .empathy-highlight {
+        font-size: 18px;
+    }
+
+    .empathy-answer {
+        padding: 30px 25px;
+    }
+
+    .problem-item {
+        gap: 15px;
+    }
+
+    .problem-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 16px;
+    }
+
+    .problem-title {
+        font-size: 16px;
+    }
+
+    .problem-text {
+        font-size: 14px;
+    }
+
+    .problems-solution {
+        padding: 30px 20px;
+    }
+
+    .solution-text strong {
+        font-size: 18px;
+    }
+
+    .diagnosis-title {
+        font-size: 24px;
+    }
+
+    .diagnosis-description {
+        font-size: 15px;
+    }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+    .container {
+        padding: 0 15px;
+    }
+
+    .hero-heading {
+        font-size: 24px;
+    }
+
+    .section-title {
+        font-size: 22px;
+    }
+
+    .cta-button {
+        padding: 14px 30px;
+        font-size: 15px;
+    }
+
+    .cta-button.large {
+        padding: 18px 40px;
+        font-size: 16px;
+    }
+
+    .image-grid {
+        gap: 10px;
+    }
+
+    .shape-1 {
+        width: 300px;
+        height: 300px;
+    }
+
+    .shape-2 {
+        width: 200px;
+        height: 200px;
+    }
+
+    .empathy-question {
+        font-size: 20px;
+    }
+
+    .empathy-description {
+        font-size: 14px;
+    }
+
+    .empathy-highlight {
+        font-size: 16px;
+    }
+
+    .empathy-answer {
+        padding: 25px 20px;
+    }
+
+    .problem-item {
+        gap: 12px;
+    }
+
+    .problem-icon {
+        width: 45px;
+        height: 45px;
+        font-size: 14px;
+    }
+
+    .problem-title {
+        font-size: 15px;
+    }
+
+    .problem-text {
+        font-size: 13px;
+    }
+
+    .solution-text {
+        font-size: 15px;
+    }
+
+    .solution-text strong {
+        font-size: 17px;
+    }
+
+    .diagnosis-title {
+        font-size: 22px;
+    }
+
+    .diagnosis-description {
+        font-size: 14px;
+    }
+}
