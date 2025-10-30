@@ -280,6 +280,18 @@ a:hover {
     color: var(--text-gray);
     line-height: 1.8;
     font-weight: 300;
+    margin-bottom: 15px;
+}
+
+.problem-solution {
+    font-size: 15px;
+    color: var(--primary-blue);
+    line-height: 1.8;
+    font-weight: 500;
+    background: linear-gradient(135deg, var(--light-blue), #f0fcfd);
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 15px;
 }
 
 .problems-solution {
@@ -288,7 +300,11 @@ a:hover {
     padding: 40px 30px;
     border-radius: 15px;
     max-width: 800px;
-    margin: 0 auto;
+    margin: 50px auto 0;
+}
+
+.problems-solution .cta-button {
+    margin-top: 30px;
 }
 
 .solution-text {
@@ -305,8 +321,93 @@ a:hover {
 }
 
 /* ========================================
-   Point Section
+   Reasons Header
    ======================================== */
+.reasons-header {
+    padding: 80px 0 20px;
+    background: var(--white);
+    text-align: center;
+}
+
+.reasons-header + .point-section {
+    padding-top: 60px;
+}
+
+/* ========================================
+   Point Section - Simple Design
+   ======================================== */
+.point-section-simple {
+    padding: 30px 0;
+    background: var(--white);
+}
+
+.point-card {
+    max-width: 800px;
+    margin: 0 auto;
+    background: linear-gradient(135deg, var(--light-blue), #f0fcfd);
+    padding: 50px 40px;
+    border-radius: 15px;
+    text-align: center;
+}
+
+.point-number {
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    line-height: 60px;
+    border-radius: 50%;
+    background: var(--primary-blue);
+    color: var(--white);
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.point-card-title {
+    font-size: 26px;
+    font-weight: 500;
+    color: var(--text-dark);
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.point-card-text {
+    font-size: 16px;
+    line-height: 1.9;
+    color: var(--text-dark);
+    font-weight: 300;
+    margin-bottom: 30px;
+}
+
+.point-card-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 30px 0;
+    text-align: left;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.point-card-list li {
+    padding: 12px 0 12px 30px;
+    position: relative;
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--text-dark);
+    line-height: 1.8;
+}
+
+.point-card-list li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--primary-blue);
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* Old Point Section Styles (Keep for compatibility) */
 .point-section {
     padding: 100px 0;
 }
@@ -401,6 +502,221 @@ a:hover {
     height: 100%;
     object-fit: cover;
     border-radius: 15px;
+}
+
+/* ========================================
+   Testimonials Section
+   ======================================== */
+.testimonials-section {
+    padding: 100px 0;
+    background: var(--white);
+}
+
+.testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-top: 50px;
+}
+
+.testimonial-card {
+    background: linear-gradient(135deg, #fff8e1, #fffbf0);
+    padding: 35px 30px;
+    border-radius: 15px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.06);
+    border-left: 5px solid #ffa726;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.testimonial-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.testimonial-title {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--text-dark);
+    margin-bottom: 15px;
+    line-height: 1.6;
+}
+
+.testimonial-author {
+    font-size: 14px;
+    color: var(--text-gray);
+    margin-bottom: 20px;
+    font-weight: 400;
+}
+
+.testimonial-text {
+    font-size: 15px;
+    line-height: 1.9;
+    color: var(--text-dark);
+    font-weight: 300;
+}
+
+/* ========================================
+   Consultant Section
+   ======================================== */
+.consultant-section {
+    padding: 100px 0;
+    background: var(--white);
+}
+
+.consultant-content {
+    max-width: 800px;
+    margin: 50px auto 0;
+    text-align: center;
+}
+
+.consultant-image {
+    width: 200px;
+    height: 200px;
+    background-color: #d9d9d9;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0 auto 30px;
+}
+
+.consultant-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.consultant-text {
+    background: linear-gradient(135deg, var(--light-blue), #f0fcfd);
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.06);
+}
+
+.consultant-title {
+    font-size: 24px;
+    font-weight: 500;
+    color: var(--primary-blue);
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.consultant-description {
+    font-size: 16px;
+    line-height: 1.9;
+    color: var(--text-dark);
+    font-weight: 300;
+    margin-bottom: 30px;
+}
+
+.consultant-qualification {
+    background: var(--light-blue);
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+}
+
+.consultant-qualification h4 {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-dark);
+    margin-bottom: 10px;
+}
+
+.consultant-qualification p {
+    font-size: 15px;
+    color: var(--text-dark);
+    font-weight: 300;
+    line-height: 1.8;
+}
+
+.consultant-message {
+    font-size: 17px;
+    line-height: 1.9;
+    color: var(--primary-blue);
+    font-weight: 500;
+    text-align: center;
+    padding: 25px;
+    background: linear-gradient(135deg, var(--light-blue), #f0fcfd);
+    border-radius: 10px;
+}
+
+/* ========================================
+   Free Consultation Section
+   ======================================== */
+.free-consultation-section {
+    padding: 100px 0;
+    background: var(--white);
+    text-align: center;
+}
+
+.consultation-subtitle {
+    font-size: 20px;
+    color: var(--primary-blue);
+    font-weight: 500;
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
+
+.consultation-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.consultation-intro {
+    font-size: 17px;
+    line-height: 1.9;
+    color: var(--text-dark);
+    font-weight: 300;
+    margin-bottom: 50px;
+}
+
+.consultation-features {
+    background: linear-gradient(135deg, var(--light-blue), #f0fcfd);
+    padding: 50px 40px;
+    border-radius: 15px;
+    margin-bottom: 40px;
+}
+
+.features-heading {
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--text-dark);
+    margin-bottom: 35px;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-bottom: 0;
+}
+
+.feature-item {
+    background: var(--white);
+    padding: 30px 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.06);
+}
+
+.feature-icon {
+    font-size: 28px;
+    color: var(--primary-blue);
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+.feature-text {
+    font-size: 16px;
+    color: var(--text-dark);
+    font-weight: 500;
+    line-height: 1.6;
+}
+
+.consultation-closing {
+    font-size: 18px;
+    line-height: 1.9;
+    color: var(--text-dark);
+    font-weight: 400;
+    margin-bottom: 40px;
 }
 
 /* ========================================
@@ -696,6 +1012,35 @@ a:hover {
     .point-content-reverse .point-text-wrapper {
         order: 1;
     }
+
+    .testimonials-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .consultant-content {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+
+    .consultant-image {
+        max-width: 400px;
+        height: 450px;
+        margin: 0 auto;
+    }
+
+    .features-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .point-card {
+        padding: 40px 30px;
+    }
+
+    .point-card-title {
+        font-size: 24px;
+    }
 }
 
 /* Mobile */
@@ -703,11 +1048,46 @@ a:hover {
     .hero-section,
     .problems-section,
     .point-section,
+    .point-section-simple,
+    .testimonials-section,
+    .consultant-section,
+    .free-consultation-section,
     .empathy-section,
     .faq-section,
     .contact-section,
     .diagnosis-section {
         padding: 60px 0;
+    }
+
+    .point-section-simple {
+        padding: 20px 0;
+    }
+
+    .point-card {
+        padding: 35px 25px;
+    }
+
+    .point-number {
+        width: 50px;
+        height: 50px;
+        line-height: 50px;
+        font-size: 20px;
+    }
+
+    .point-card-title {
+        font-size: 22px;
+    }
+
+    .point-card-text {
+        font-size: 15px;
+    }
+
+    .point-card-list li {
+        font-size: 15px;
+    }
+
+    .reasons-header {
+        padding: 60px 0 20px;
     }
 
     .hero-heading {
@@ -802,6 +1182,11 @@ a:hover {
         font-size: 14px;
     }
 
+    .problem-solution {
+        font-size: 14px;
+        padding: 15px;
+    }
+
     .problems-solution {
         padding: 30px 20px;
     }
@@ -816,6 +1201,83 @@ a:hover {
 
     .diagnosis-description {
         font-size: 15px;
+    }
+
+    .testimonial-card {
+        padding: 30px 25px;
+    }
+
+    .testimonial-title {
+        font-size: 16px;
+    }
+
+    .testimonial-author {
+        font-size: 13px;
+    }
+
+    .testimonial-text {
+        font-size: 14px;
+    }
+
+    .consultant-image {
+        height: 400px;
+    }
+
+    .consultant-text {
+        padding: 30px 25px;
+    }
+
+    .consultant-title {
+        font-size: 22px;
+    }
+
+    .consultant-description {
+        font-size: 15px;
+    }
+
+    .consultant-qualification h4 {
+        font-size: 15px;
+    }
+
+    .consultant-qualification p {
+        font-size: 14px;
+    }
+
+    .consultant-message {
+        font-size: 16px;
+        padding: 20px;
+    }
+
+    .consultation-subtitle {
+        font-size: 18px;
+    }
+
+    .consultation-intro {
+        font-size: 16px;
+    }
+
+    .consultation-features {
+        padding: 40px 30px;
+    }
+
+    .features-heading {
+        font-size: 20px;
+    }
+
+    .feature-item {
+        padding: 25px 20px;
+    }
+
+    .feature-icon {
+        font-size: 24px;
+    }
+
+    .feature-text {
+        font-size: 15px;
+    }
+
+    .consultation-closing {
+        font-size: 16px;
     }
 }
 
@@ -891,6 +1353,11 @@ a:hover {
         font-size: 13px;
     }
 
+    .problem-solution {
+        font-size: 13px;
+        padding: 12px;
+    }
+
     .solution-text {
         font-size: 15px;
     }
@@ -904,6 +1371,110 @@ a:hover {
     }
 
     .diagnosis-description {
+        font-size: 14px;
+    }
+
+    .testimonial-card {
+        padding: 25px 20px;
+    }
+
+    .testimonial-title {
+        font-size: 15px;
+    }
+
+    .testimonial-author {
+        font-size: 12px;
+    }
+
+    .testimonial-text {
+        font-size: 13px;
+    }
+
+    .consultant-image {
+        height: 350px;
+    }
+
+    .consultant-text {
+        padding: 25px 20px;
+    }
+
+    .consultant-title {
+        font-size: 20px;
+    }
+
+    .consultant-description {
+        font-size: 14px;
+    }
+
+    .consultant-qualification {
+        padding: 15px;
+    }
+
+    .consultant-qualification h4 {
+        font-size: 14px;
+    }
+
+    .consultant-qualification p {
+        font-size: 13px;
+    }
+
+    .consultant-message {
+        font-size: 15px;
+        padding: 18px;
+    }
+
+    .consultation-subtitle {
+        font-size: 17px;
+    }
+
+    .consultation-intro {
+        font-size: 15px;
+    }
+
+    .consultation-features {
+        padding: 30px 20px;
+    }
+
+    .features-heading {
+        font-size: 18px;
+    }
+
+    .feature-item {
+        padding: 20px 15px;
+    }
+
+    .feature-icon {
+        font-size: 22px;
+    }
+
+    .feature-text {
+        font-size: 14px;
+    }
+
+    .consultation-closing {
+        font-size: 15px;
+    }
+
+    .point-card {
+        padding: 30px 20px;
+    }
+
+    .point-number {
+        width: 45px;
+        height: 45px;
+        line-height: 45px;
+        font-size: 18px;
+    }
+
+    .point-card-title {
+        font-size: 20px;
+    }
+
+    .point-card-text {
+        font-size: 14px;
+    }
+
+    .point-card-list li {
         font-size: 14px;
     }
 }
