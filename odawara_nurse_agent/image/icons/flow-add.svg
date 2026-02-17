@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96">
+  <!-- Background circle -->
+  <circle cx="48" cy="48" r="44" fill="#fef2f6"/>
+  <!-- Smartphone body -->
+  <rect x="30" y="20" width="28" height="50" rx="5" fill="#d47494"/>
+  <!-- Screen -->
+  <rect x="33" y="26" width="22" height="38" rx="2" fill="#fff"/>
+  <!-- Home button -->
+  <circle cx="44" cy="66" r="2.5" fill="#e88aab"/>
+  <!-- Plus mark on screen -->
+  <rect x="41" y="34" width="6" height="20" rx="2" fill="#e88aab"/>
+  <rect x="35" y="41" width="18" height="6" rx="2" fill="#e88aab"/>
+  <!-- Notification badge -->
+  <circle cx="62" cy="28" r="8" fill="#e88aab"/>
+  <text x="62" y="32" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#fff">+</text>
+</svg>

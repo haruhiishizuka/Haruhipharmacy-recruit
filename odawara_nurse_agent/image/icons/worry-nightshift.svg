@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96">
+  <!-- Background circle -->
+  <circle cx="48" cy="48" r="44" fill="#fef2f6"/>
+  <!-- Crescent moon -->
+  <path d="M52 20c-14 0-25 11-25 25s11 25 25 25c3.8 0 7.4-0.8 10.6-2.3C56 72 49 76 41 76c-16 0-29-13-29-29S25 18 41 18c4 0 7.8 0.8 11.3 2.2C52.1 20 52 20 52 20z" fill="#d47494"/>
+  <!-- Tired face circle -->
+  <circle cx="60" cy="50" r="14" fill="#e88aab"/>
+  <!-- Tired eyes (X shapes as filled paths) -->
+  <path d="M53 45l2 2 2-2 1.5 1.5-2 2 2 2-1.5 1.5-2-2-2 2-1.5-1.5 2-2-2-2z" fill="#fff"/>
+  <path d="M63 45l2 2 2-2 1.5 1.5-2 2 2 2-1.5 1.5-2-2-2 2-1.5-1.5 2-2-2-2z" fill="#fff"/>
+  <!-- Tired mouth (frown) -->
+  <path d="M55 58c1.5-2 4-3 5-3s3.5 1 5 3c-1.5-0.5-3.3-0.8-5-0.8s-3.5 0.3-5 0.8z" fill="#fff"/>
+  <!-- Small stars -->
+  <circle cx="34" cy="26" r="2.5" fill="#e88aab"/>
+  <circle cx="68" cy="28" r="1.8" fill="#e88aab"/>
+  <circle cx="40" cy="18" r="1.5" fill="#d47494"/>
+</svg>

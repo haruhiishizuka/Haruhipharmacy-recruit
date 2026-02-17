@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96">
+  <!-- Background circle -->
+  <circle cx="48" cy="48" r="44" fill="#fef2f6"/>
+  <!-- Chat bubble 1 (left) -->
+  <path d="M16 26h30c3 0 5 2 5 5v14c0 3-2 5-5 5h-18l-6 7v-7h-6c-3 0-5-2-5-5v-14c0-3 2-5 5-5z" fill="#e88aab"/>
+  <!-- Lines in bubble 1 -->
+  <rect x="22" y="34" width="18" height="3" rx="1.5" fill="#fff"/>
+  <rect x="22" y="40" width="12" height="3" rx="1.5" fill="#fff"/>
+  <!-- Chat bubble 2 (right) -->
+  <path d="M50 48h30c3 0 5 2 5 5v14c0 3-2 5-5 5h-6v7l-6-7h-18c-3 0-5-2-5-5v-14c0-3 2-5 5-5z" fill="#d47494"/>
+  <!-- Lines in bubble 2 -->
+  <rect x="56" y="56" width="18" height="3" rx="1.5" fill="#fff"/>
+  <rect x="56" y="62" width="12" height="3" rx="1.5" fill="#fff"/>
+  <!-- Smiley face -->
+  <circle cx="70" cy="28" r="9" fill="#d47494"/>
+  <circle cx="67" cy="26" r="1.5" fill="#fff"/>
+  <circle cx="73" cy="26" r="1.5" fill="#fff"/>
+  <path d="M65 30a5 3 0 0 0 10 0z" fill="#fff"/>
+</svg>

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96">
+  <!-- Background circle -->
+  <circle cx="48" cy="48" r="44" fill="#fef2f6"/>
+  <!-- Document -->
+  <rect x="24" y="18" width="36" height="50" rx="4" fill="#e88aab"/>
+  <!-- Document lines -->
+  <rect x="30" y="26" width="24" height="3" rx="1.5" fill="#fff"/>
+  <rect x="30" y="33" width="20" height="3" rx="1.5" fill="#fff"/>
+  <rect x="30" y="40" width="22" height="3" rx="1.5" fill="#fff"/>
+  <rect x="30" y="47" width="16" height="3" rx="1.5" fill="#fff"/>
+  <!-- Checkmark circle -->
+  <circle cx="64" cy="58" r="15" fill="#d47494"/>
+  <!-- Checkmark (filled path) -->
+  <path d="M56 57l3 1 3 4 1 1 2-1 7-10 2-2-4-1-6 9-3-4z" fill="#fff"/>
+</svg>

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96">
+  <!-- Background circle -->
+  <circle cx="48" cy="48" r="44" fill="#fef2f6"/>
+  <!-- Coin/circle background -->
+  <circle cx="44" cy="48" r="20" fill="#e88aab"/>
+  <!-- Yen symbol -->
+  <text x="44" y="56" text-anchor="middle" font-family="Arial, sans-serif" font-size="26" font-weight="bold" fill="#fff">¥</text>
+  <!-- Up arrow (positive) -->
+  <path d="M68 58l8-14 8 14" fill="#d47494"/>
+  <rect x="73" y="56" width="6" height="16" rx="2" fill="#d47494"/>
+  <!-- Sparkle effects -->
+  <circle cx="72" cy="30" r="2.5" fill="#e88aab"/>
+  <circle cx="80" cy="38" r="1.5" fill="#d47494"/>
+  <circle cx="66" cy="24" r="1.5" fill="#d47494"/>
+</svg>

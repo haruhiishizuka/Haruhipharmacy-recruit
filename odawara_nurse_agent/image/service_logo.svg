@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 80">
+  <defs>
+    <linearGradient id="heartGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#e88aab"/>
+      <stop offset="100%" stop-color="#f4b8a0"/>
+    </linearGradient>
+  </defs>
+  <!-- Stethoscope heart icon -->
+  <g transform="translate(10, 8)">
+    <!-- Heart shape -->
+    <path d="M32 20
+      C32 14, 26 8, 20 8
+      C14 8, 8 14, 8 22
+      C8 34, 20 46, 32 56
+      C44 46, 56 34, 56 22
+      C56 14, 50 8, 44 8
+      C38 8, 32 14, 32 20Z"
+      fill="url(#heartGrad)" opacity="0.95"/>
+    <!-- Stethoscope tubing - left ear piece -->
+    <path d="M20 12 C18 6, 16 2, 22 0" stroke="#d47494" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Stethoscope tubing - right ear piece -->
+    <path d="M44 12 C46 6, 48 2, 42 0" stroke="#d47494" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Stethoscope earpiece connectors -->
+    <circle cx="22" cy="0" r="2" fill="#d47494"/>
+    <circle cx="42" cy="0" r="2" fill="#d47494"/>
+    <!-- Stethoscope Y-connector -->
+    <path d="M22 0 L32 6 L42 0" stroke="#d47494" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- Stethoscope chest piece (circle at bottom of heart) -->
+    <circle cx="32" cy="48" r="6" fill="none" stroke="#d47494" stroke-width="2.5"/>
+    <circle cx="32" cy="48" r="2.5" fill="#d47494"/>
+    <!-- Tube from heart to chest piece -->
+    <path d="M32 56 L32 62" stroke="#d47494" stroke-width="2.5" stroke-linecap="round"/>
+  </g>
+  <!-- Text: 小田原ナース・パートナーズ -->
+  <text x="82" y="48" font-family="'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic', sans-serif" font-size="28" font-weight="500" fill="#d47494" letter-spacing="1">小田原ナース・パートナーズ</text>
+</svg>
